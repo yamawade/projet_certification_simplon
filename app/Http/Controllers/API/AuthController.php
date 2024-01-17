@@ -119,7 +119,7 @@ class AuthController extends Controller
             'prenom' => $request->prenom,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'type' => 'commercant'
+            'type' => 'livreur'
         ]);
 
         $client = $user->livreur()->create([
