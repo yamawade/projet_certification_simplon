@@ -12,7 +12,8 @@ class Commercant extends Model
 
     protected $fillable = [
         'ninea',
-        'adresse'
+        'adresse',
+        'nin'
     ];
 
     public function user()

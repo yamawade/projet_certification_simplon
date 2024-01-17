@@ -46,7 +46,8 @@ class AuthController extends Controller
 
         $client = $user->commercant()->create([
             'ninea'=>$request->ninea,
-            'adresse'=>$request->adresse
+            'adresse'=>$request->adresse,
+            'nin'=>$request->nin
         ]);
 
         return response()->json([
