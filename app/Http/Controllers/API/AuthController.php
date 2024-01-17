@@ -132,6 +132,14 @@ class AuthController extends Controller
         ]);
     }
 
+    public function logout()
+    {
+        Auth::logout();
+        return response()->json([
+            'message' => 'Déconnexion réussi',
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      */

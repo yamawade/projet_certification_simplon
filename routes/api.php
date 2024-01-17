@@ -23,11 +23,28 @@ Route::post('login',[AuthController::class,'login']);
 //CLIENT
 Route::post('registerClient',[AuthController::class,'registerClient']);
 
+Route::middleware(['auth:api','client'])->group(function(){
+    Route::post('deconnexion',[AuthController::class,'logout']);
+
+});
+
 //COMMERCANT
 Route::post('registerCommercant',[AuthController::class,'registerCommercant']);
+
+Route::middleware(['auth:api','commercant'])->group(function(){
+    Route::post('deconnexion',[AuthController::class,'logout']);
+
+});
 
 //ADMIN
 Route::middleware(['auth:api','admin'])->group(function(){
     Route::post('registerLivreur',[AuthController::class,'registerLivreur']);
+    Route::post('deconnexion',[AuthController::class,'logout']);
+
+});
+
+//LIVREUR
+Route::middleware(['auth:api','livreur'])->group(function(){
+    Route::post('deconnexion',[AuthController::class,'logout']);
 
 });
