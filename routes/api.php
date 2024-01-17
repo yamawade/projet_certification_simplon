@@ -26,3 +26,8 @@ Route::post('registerClient',[AuthController::class,'registerClient']);
 //COMMERCANT
 Route::post('registerCommercant',[AuthController::class,'registerCommercant']);
 
+//ADMIN
+Route::middleware(['auth:api','admin'])->group(function(){
+    Route::post('registerLivreur',[AuthController::class,'registerLivreur']);
+
+});

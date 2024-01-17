@@ -113,6 +113,25 @@ class AuthController extends Controller
        
     }
 
+    public function registerLivreur(Request $request){
+        $user =User::create([
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'type' => 'commercant'
+        ]);
+
+        $client = $user->livreur()->create([
+            'matricule' => $request->matricule
+        ]);
+
+        return response()->json([
+            'message' => 'Utilisateur créer avec succes',
+            'user' => $user
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      */
