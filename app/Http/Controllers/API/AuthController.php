@@ -4,9 +4,13 @@ namespace App\Http\Controllers\API;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreLogin;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\StoreRegisterClient;
+use App\Http\Requests\StoreRegisterLivreur;
+use App\Http\Requests\StoreRegisterCommercant;
 
 class AuthController extends Controller
 {
@@ -16,7 +20,7 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login', 'registerClient','registerCommercant']]);
     }
 
-    public function registerClient(Request $request){
+    public function registerClient(StoreRegisterClient $request){
         $user =User::create([
             'nom' => $request->nom,
             'prenom' => $request->prenom,
@@ -35,7 +39,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function registerCommercant(Request $request){
+    public function registerCommercant(StoreRegisterCommercant $request){
         $user =User::create([
             'nom' => $request->nom,
             'prenom' => $request->prenom,
@@ -56,7 +60,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function login(Request $request)
+    public function login(StoreLogin $request)
     {
         $request->validate([
             'email' => 'required|string|email',
@@ -113,7 +117,7 @@ class AuthController extends Controller
        
     }
 
-    public function registerLivreur(Request $request){
+    public function registerLivreur(StoreRegisterLivreur $request){
         $user =User::create([
             'nom' => $request->nom,
             'prenom' => $request->prenom,

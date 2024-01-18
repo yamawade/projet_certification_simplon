@@ -25,7 +25,7 @@ Route::post('login',[AuthController::class,'login']);
 Route::post('registerClient',[AuthController::class,'registerClient']);
 
 Route::middleware(['auth:api','client'])->group(function(){
-    Route::post('deconnexion',[AuthController::class,'logout']);
+    Route::post('deconnexionClient',[AuthController::class,'logout']);
 
 });
 
@@ -33,14 +33,14 @@ Route::middleware(['auth:api','client'])->group(function(){
 Route::post('registerCommercant',[AuthController::class,'registerCommercant']);
 
 Route::middleware(['auth:api','commercant'])->group(function(){
-    Route::post('deconnexion',[AuthController::class,'logout']);
+    Route::post('deconnexionCommercant',[AuthController::class,'logout']);
 
 });
 
 //ADMIN
 Route::middleware(['auth:api','admin'])->group(function(){
     Route::post('registerLivreur',[AuthController::class,'registerLivreur']);
-    Route::post('deconnexion',[AuthController::class,'logout']);
+    Route::post('deconnexionAdmin',[AuthController::class,'logout']);
     Route::post('categorie/create',[CategorieController::class,'store']);
     Route::put('categorie/update/{id}',[CategorieController::class,'update']);
     Route::delete('categorie/{id}',[CategorieController::class,'destroy']);
@@ -50,6 +50,6 @@ Route::middleware(['auth:api','admin'])->group(function(){
 
 //LIVREUR
 Route::middleware(['auth:api','livreur'])->group(function(){
-    Route::post('deconnexion',[AuthController::class,'logout']);
+    Route::post('deconnexionLivreur',[AuthController::class,'logout']);
 
 });
