@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UpdateCategorie extends FormRequest
 {
@@ -11,7 +13,7 @@ class UpdateCategorie extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,23 @@ class UpdateCategorie extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nom_categorie' => 'required|string|max:255',
+        ];
+    }
+
+    public function failedValidation(Validator $validator){
+        throw new HttpResponseException(response()->json([
+            'success'=>false,
+            'status_code'=>422,
+            'error'=>true,
+            'message'=>'Erreur de validation',
+            'errorsList'=> $validator->errors()
+        ]));
+    }
+
+    public function messages(){
+        return[
+            'nom_categorie.required'=>'Un nom doit etre fourni'
         ];
     }
 }

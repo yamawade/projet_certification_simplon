@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Models\Categorie;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCategorie;
+use App\Http\Requests\UpdateCategorie;
 
 class CategorieController extends Controller
 {
@@ -32,17 +34,22 @@ class CategorieController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCategorie $request)
     {
-        $categorie = new Categorie();
-        $categorie->nom_categorie = $request->nom_categorie;
-        if($categorie->save()){
-            return response()->json([
-                'status_code'=>200,
-                'status_message'=>'La categorie a ete ajouté',
-                'data'=>$categorie
-            ]);
+       try {
+            $categorie = new Categorie();
+            $categorie->nom_categorie = $request->nom_categorie;
+            if($categorie->save()){
+                return response()->json([
+                    'status_code'=>200,
+                    'status_message'=>'La categorie a ete ajouté',
+                    'data'=>$categorie
+                ]);
+            }
+       }catch(Exception $e){
+            return response()->json($e);
         }
+
     }
 
     /**
@@ -64,17 +71,22 @@ class CategorieController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCategorie $request, $id)
     {
-        $categorie = Categorie::FindorFail($id);
-        $categorie->nom_categorie=$request->nom_categorie;
-        if($categorie->update()){
-            return response()->json([
-                'status_code'=>200,
-                'status_message'=>'La categorie a ete modifier',
-                'data'=>$categorie
-            ]);
+        try {
+            $categorie = Categorie::FindorFail($id);
+            $categorie->nom_categorie=$request->nom_categorie;
+            if($categorie->update()){
+                return response()->json([
+                    'status_code'=>200,
+                    'status_message'=>'La categorie a ete modifier',
+                    'data'=>$categorie
+                ]);
+            }
+        }catch(Exception $e){
+            return response()->json($e);
         }
+
     }
 
     /**
@@ -82,13 +94,18 @@ class CategorieController extends Controller
      */
     public function destroy($id)
     {
-        $categorie = Categorie::FindorFail($id);
-        if($categorie->delete()){
-            return response()->json([
-                'status_code'=>200,
-                'status_message'=>'La categorie a ete supprimer',
-                'data'=>$categorie
-            ]);
-        }
+       try {
+            $categorie = Categorie::FindorFail($id);
+            if($categorie->delete()){
+                return response()->json([
+                    'status_code'=>200,
+                    'status_message'=>'La categorie a ete supprimer',
+                    'data'=>$categorie
+                ]);
+            }
+       }catch(Exception $e){
+        return response()->json($e);
+    }
+
     }
 }
