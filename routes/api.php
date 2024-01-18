@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\ProduitController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CategorieController;
 
@@ -31,9 +32,12 @@ Route::middleware(['auth:api','client'])->group(function(){
 
 //COMMERCANT
 Route::post('registerCommercant',[AuthController::class,'registerCommercant']);
-
+Route::get('produits',[ProduitController::class,'index']);
 Route::middleware(['auth:api','commercant'])->group(function(){
     Route::post('deconnexionCommercant',[AuthController::class,'logout']);
+    Route::post('produit/create',[ProduitController::class,'store']);
+    Route::post('produit/update/{produit}',[ProduitController::class,'update']);
+    Route::delete('produit/{produit}',[ProduitController::class,'destroy']);
 
 });
 

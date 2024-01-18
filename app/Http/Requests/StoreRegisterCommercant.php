@@ -28,7 +28,7 @@ class StoreRegisterCommercant extends FormRequest
             'prenom' => 'required|string|max:255',
             'adresse' => 'required|string|max:255',
             'ninea' => 'required|string|max:255',
-            'date_naiss' => 'required|string|max:255',
+            'nin' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
         ];
@@ -50,7 +50,7 @@ class StoreRegisterCommercant extends FormRequest
             'prenom.required'=>'Un prenom doit etre fourni',
             'adresse.required'=>'Une adresse doit etre fourni',
             'ninea.required'=>'Un NINEA doit etre fourni',
-            'date_naiss.required'=>'Une date de naissance doit etre fourni',
+            'nin.required'=>'Un NIN doit etre fourni',
             'email.required'=>'Un email doit etre fourni',
             'email.unique'=>'L\'adresse email existe deja',
             'password.required'=>'Un mot de passe doit etre fourni',

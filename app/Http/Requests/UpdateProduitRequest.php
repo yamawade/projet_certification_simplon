@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class StoreRegisterClient extends FormRequest
+class UpdateProduitRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,14 @@ class StoreRegisterClient extends FormRequest
     public function rules(): array
     {
         return [
-            'nom' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
-            'adresse' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
+            'nom_produit' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'image' => 'required|image',
+            'quantite' => 'required|integer',
+            'prix' => 'required|numeric|min:0|max:99999.99',
         ];
     }
+
     public function failedValidation(Validator $validator){
         throw new HttpResponseException(response()->json([
             'success'=>false,
@@ -43,12 +44,11 @@ class StoreRegisterClient extends FormRequest
 
     public function messages(){
         return[
-            'nom.required'=>'Un nom doit etre fourni',
-            'prenom.required'=>'Un prenom doit etre fourni',
-            'adresse.required'=>'Une adresse doit etre fourni',
-            'email.required'=>'Un email doit etre fourni',
-            'email.unique'=>'L\'adresse email existe deja',
-            'password.required'=>'Un mot de passe doit etre fourni',
+            'nom_produit.required'=>'Un nom doit etre fourni',
+            'description.required'=>'Une description doit etre fourni',
+            'image.required' => 'Une image doit etre fourni',
+            'quantite.required' => 'une quantite doit etre fourni',
+            'prix.required' => 'Un prix doit etre fourni',
         ];
     }
 }
