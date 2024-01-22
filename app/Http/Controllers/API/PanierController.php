@@ -41,36 +41,38 @@ class PanierController extends Controller
         ]);
     }
 
-    // public function voirPanier() {
-    //     $user = Auth::user();
+    public function voirPanier() {
+        $user = Auth::user();
 
-    //     $panier = Panier::where('user_id', $user->id)->first();
+        $panier = Panier::where('user_id', $user->id)->first();
 
-    //     if (!$panier) {
-    //         return response()->json(['status_code' => 404, 'status_message' => 'Le panier est vide ou n\'existe pas.']);
-    //     }
+        if (!$panier) {
+            return response()->json(['status_code' => 404, 'status_message' => 'Le panier est vide ou n\'existe pas.']);
+        }
+
+        $produitsPanier = $panier->produits()->withPivot('quantite')->get();
+
+        $listeProduit = [];
+        $totalPrix = 0;
+        foreach ($produitsPanier as $produit) {
+            $prixProduit = $produit->prix * $produit->pivot->quantite;
+            $totalPrix += $prixProduit;
+            $listeProduit[] = [
+                'id' => $produit->id,
+                'nom_produit' => $produit->nom_produit,
+                'description' => $produit->description,
+                'prix' => $produit->prix,
+                'quantite' => $produit->pivot->quantite,
+            ];
+        }
     
-    //     // Récupérez la liste des produits dans le panier avec leurs quantités
-    //     $produitsPanier = $panier->produits()->withPivot('quantite')->get();
-    
-    //     // // Formatez la réponse JSON
-    //     // $data = [];
-    //     // foreach ($produitsPanier as $produit) {
-    //     //     $data[] = [
-    //     //         'id' => $produit->id,
-    //     //         'nom_produit' => $produit->nom_produit,
-    //     //         'description' => $produit->description,
-    //     //         'prix' => $produit->prix,
-    //     //         'quantite' => $produit->pivot->quantite,
-    //     //     ];
-    //     // }
-    
-    //     return response()->json([
-    //         'status_code' => 200,
-    //         'status_message' => 'Liste des produits dans le panier',
-    //         'data' => $produitsPanier,
-    //     ]);
-    // }
+        return response()->json([
+            'status_code' => 200,
+            'status_message' => 'Liste des produits dans le panier',
+            'data' => $listeProduit,
+            'montant'=>$totalPrix
+        ]);
+    }
     
 
     /**
