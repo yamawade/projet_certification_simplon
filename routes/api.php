@@ -2,8 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\ProduitController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\PanierController;
+use App\Http\Controllers\API\ProduitController;
 use App\Http\Controllers\API\CategorieController;
 
 /*
@@ -27,7 +28,8 @@ Route::post('registerClient',[AuthController::class,'registerClient']);
 
 Route::middleware(['auth:api','client'])->group(function(){
     Route::post('deconnexionClient',[AuthController::class,'logout']);
-
+    Route::post('ajoutProduitPanier/{produit}',[PanierController::class,'ajouterProduitPanier']);
+    Route::get('voirPanier',[PanierController::class,'voirPanier']);
 });
 
 //COMMERCANT

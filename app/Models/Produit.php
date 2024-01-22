@@ -30,4 +30,13 @@ class Produit extends Model
     {
         return $this->belongsTo(Categorie::class);
     }
+
+    public function paniers() {
+        return $this->belongsToMany(Panier::class, 'panier_produits')->withPivot('quantite');
+    }
+
+    public function decrementerQuantite($quantite) {
+        $this->quantite -= $quantite;
+        $this->save();
+    }
 }
