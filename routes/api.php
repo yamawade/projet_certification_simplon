@@ -30,7 +30,7 @@ Route::middleware(['auth:api','client'])->group(function(){
     Route::post('deconnexionClient',[AuthController::class,'logout']);
     Route::post('ajoutProduitPanier/{produit}',[PanierController::class,'ajouterProduitPanier']);
     Route::get('voirPanier',[PanierController::class,'voirPanier']);
-    Route::get('retirerProduitPanier',[PanierController::class,'voirPanier']);
+    Route::post('retirerProduit/{produit}',[PanierController::class,'retirerProduitPanier']);
 });
 
 //COMMERCANT

@@ -18,27 +18,32 @@ class PanierController extends Controller
        
         $panier = Panier::firstOrCreate(['user_id' => $user->id]);
 
-        
-        $quantite = $request->input('quantite', 1);
+       if($produit->quantite <= 0){
+            return response()->json([
+                'status_message' => 'Stock épuiser',
+            ]);
+       }else{
+            $quantite = $request->input('quantite', 1);
 
-        $produitExiste = $panier->produits()->where('produit_id', $produit->id)->exists();
+            $produitExiste = $panier->produits()->where('produit_id', $produit->id)->exists();
 
-        if ($produitExiste) {
-            $qte=$produitExiste = PanierProduit::where('produit_id', $produit->id)->first();
-            $qte->quantite += $request->input('quantite', 1);
-            $panier->produits()->updateExistingPivot($produit->id, ['quantite' => $qte->quantite]);
-        } else {
-            $panier->produits()->attach($produit->id, ['quantite' => $quantite]);
+            if ($produitExiste) {
+                $qte=$produitExiste = PanierProduit::where('produit_id', $produit->id)->first();
+                $qte->quantite += $request->input('quantite', 1);
+                $panier->produits()->updateExistingPivot($produit->id, ['quantite' => $qte->quantite]);
+            } else {
+                $panier->produits()->attach($produit->id, ['quantite' => $quantite]);
+            }
+
+            $produit->decrementerQuantite($quantite);
+
+            return response()->json([
+                'status_code' => 200,
+                'status_message' => 'Le Produit a été ajouté au panier',
+                'data' => $panier->produits,
+            ]);
         }
-
-        // Décrémentez la quantité du stock du produit
-        $produit->decrementerQuantite($quantite);
-
-        return response()->json([
-            'status_code' => 200,
-            'status_message' => 'Le Produit a été ajouté au panier',
-            'data' => $panier->produits,
-        ]);
+        
     }
 
     public function voirPanier() {
@@ -70,9 +75,40 @@ class PanierController extends Controller
             'status_code' => 200,
             'status_message' => 'Liste des produits dans le panier',
             'data' => $listeProduit,
-            'montant'=>$totalPrix
+            'montant'=>$totalPrix.' FCFA'
         ]);
     }
+    
+    public function retirerProduitPanier(Produit $produit) {
+        $user = Auth::user();
+    
+        $panier = Panier::where('user_id', $user->id)->first();
+    
+        if (!$panier) {
+            return response()->json(['status_code' => 404, 'status_message' => 'Le panier est vide ou n\'existe pas.']);
+        }
+    
+        $produitExiste = $panier->produits()->where('produit_id', $produit->id)->exists();
+    
+        if (!$produitExiste) {
+            return response()->json(['status_code' => 404, 'status_message' => 'Le produit n\'existe pas dans le panier.']);
+        }
+    
+        // Récupérer la quantité du produit dans le panier avant de le retirer
+        $quantiteDansPanier = $panier->produits()->where('produit_id', $produit->id)->first()->pivot->quantite;
+    
+        $panier->produits()->detach($produit->id);
+    
+        // Mettre à jour la quantité en stock du produit
+        $produit->increment('quantite', $quantiteDansPanier);
+    
+        return response()->json([
+            'status_code' => 200,
+            'status_message' => 'Le Produit a été retiré du panier',
+            'data' => $panier->produits,
+        ]);
+    }
+    
     
 
     /**

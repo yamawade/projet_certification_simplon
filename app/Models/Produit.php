@@ -39,4 +39,9 @@ class Produit extends Model
         $this->quantite -= $quantite;
         $this->save();
     }
+
+    // public function incrementerQuantite($quantite) {
+    //     $this->quantite += $quantite;
+    //     $this->save();
+    // }
 }
