@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\Client;
 use App\Models\Panier;
 use App\Models\Produit;
 use Illuminate\Http\Request;
@@ -47,8 +48,8 @@ class PanierController extends Controller
     }
 
     public function voirPanier() {
-        $user = Auth::user();
-
+        //$user = Auth::user();
+        $user =Client::where('user_id', Auth::user()->id)->first();
         $panier = Panier::where('user_id', $user->id)->first();
 
         if (!$panier) {

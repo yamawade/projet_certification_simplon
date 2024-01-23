@@ -106,7 +106,7 @@ class AuthController extends Controller
             ]);
         }else{
             return response()->json([
-                'message' => 'Salut Client',
+                'message' => 'Salut Admin',
                 'user' => $user,
                 'authorization' => [
                     'token' => $token,
