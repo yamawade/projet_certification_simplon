@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\PanierController;
 use App\Http\Controllers\API\ProduitController;
+use App\Http\Controllers\API\CommandeController;
 use App\Http\Controllers\API\CategorieController;
 
 /*
@@ -31,6 +32,7 @@ Route::middleware(['auth:api','client'])->group(function(){
     Route::post('ajoutProduitPanier/{produit}',[PanierController::class,'ajouterProduitPanier']);
     Route::get('voirPanier',[PanierController::class,'voirPanier']);
     Route::post('retirerProduit/{produit}',[PanierController::class,'retirerProduitPanier']);
+    Route::post('passerCommande',[CommandeController::class,'creerCommande']);
 });
 
 //COMMERCANT

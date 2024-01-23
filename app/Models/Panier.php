@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Client;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -18,8 +19,13 @@ class Panier extends Model
         return $this->belongsToMany(Produit::class, 'panier_produits')->withPivot('quantite');
     }
 
-    public function user()
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
+
+    public function client()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Client::class);
     }
 }

@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Commande extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'date_commande',
+        'client_id',
+        'etat_commande'
+    ];
 }

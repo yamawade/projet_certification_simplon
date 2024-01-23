@@ -14,9 +14,9 @@ class PanierController extends Controller
 {
 
     public function ajouterProduitPanier(Produit $produit, Request $request) {
-        $user = Auth::user();
+       // $user = Auth::user();
         //dd($user->id);
-       
+        $user =Client::where('user_id', Auth::user()->id)->first();
         $panier = Panier::firstOrCreate(['user_id' => $user->id]);
 
        if($produit->quantite <= 0){
@@ -81,8 +81,8 @@ class PanierController extends Controller
     }
     
     public function retirerProduitPanier(Produit $produit) {
-        $user = Auth::user();
-    
+       // $user = Auth::user();
+        $user =Client::where('user_id', Auth::user()->id)->first();
         $panier = Panier::where('user_id', $user->id)->first();
     
         if (!$panier) {
