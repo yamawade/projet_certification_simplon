@@ -54,6 +54,7 @@ Route::middleware(['auth:api','admin'])->group(function(){
     Route::put('categorie/update/{id}',[CategorieController::class,'update']);
     Route::delete('categorie/{id}',[CategorieController::class,'destroy']);
     Route::get('categories',[CategorieController::class,'index']);
+    Route::get('commandes',[CommandeController::class,'index']);
 
 });
 

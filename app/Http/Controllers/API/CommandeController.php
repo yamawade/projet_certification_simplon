@@ -47,12 +47,22 @@ class CommandeController extends Controller
         ]);
     }
     
+   
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
+    public function index(){
+        $commandes = Commande::where('etat_commande', 'en_attente')->get();
+        try {
+
+            return response()->json([
+                'status_code' => 200,
+                'status_message' => 'la liste des commandes',
+                'data' => $commandes
+            ]);
+        } catch (Exception $e) {
+            return response($e)->json($e);
+        }
     }
 
     /**

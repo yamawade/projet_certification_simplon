@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('commandes', function (Blueprint $table) {
             $table->id();
             $table->date('date_commande');
-            $table->enum('etat_commande',['en_cours','traitement'])->default('en_cours');
+            $table->enum('etat_commande',['en_cours','traitement','en_attente'])->default('en_attente');
             $table->foreignIdFor(Client::class)->constrained()->onDelete('cascade');
             $table->timestamps();
         });
