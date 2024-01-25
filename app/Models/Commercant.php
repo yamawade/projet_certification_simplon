@@ -13,7 +13,9 @@ class Commercant extends Model
     protected $fillable = [
         'ninea',
         'adresse',
-        'nin'
+        'nin',
+        'genre',
+        'date_naiss'
     ];
 
     public function user()

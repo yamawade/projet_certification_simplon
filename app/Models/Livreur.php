@@ -12,7 +12,8 @@ class Livreur extends Model
 
     protected $fillable = [
         'matricule',
-        'statut'
+        'statut',
+        'adresse'
     ];
 
     public function user()
