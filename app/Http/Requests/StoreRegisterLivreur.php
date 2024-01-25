@@ -29,6 +29,7 @@ class StoreRegisterLivreur extends FormRequest
             'matricule' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
+            'adresse' => 'required|string|max:255',
         ];
     }
 
@@ -50,6 +51,8 @@ class StoreRegisterLivreur extends FormRequest
             'email.required'=>'Un email doit etre fourni',
             'email.unique'=>'L\'adresse email existe deja',
             'password.required'=>'Un mot de passe doit etre fourni',
+            'adresse.required'=>'Une adresse doit etre fourni',
+            'password.min' => 'Le mot de passe doit avoir au moins 8 caractères',
         ];
     }
 }

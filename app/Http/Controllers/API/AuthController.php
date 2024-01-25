@@ -30,10 +30,14 @@ class AuthController extends Controller
         ]);
 
         $client = $user->client()->create([
-            'adresse'=>$request->adresse
+            'adresse'=>$request->adresse,
+            'genre'=>$request->genre,
+            'numero_tel'=>$request->numero_tel,
+            'date_naiss'=>$request->date_naiss,
         ]);
 
         return response()->json([
+            'status'=>200,
             'message' => 'Utilisateur créer avec succes',
             'user' => $user
         ]);
@@ -51,10 +55,14 @@ class AuthController extends Controller
         $client = $user->commercant()->create([
             'ninea'=>$request->ninea,
             'adresse'=>$request->adresse,
-            'nin'=>$request->nin
+            'nin'=>$request->nin,
+            'numero_tel'=>$request->numero_tel,
+            'genre'=>$request->genre,
+            'date_naiss'=>$request->date_naiss,
         ]);
 
         return response()->json([
+            'status'=>200,
             'message' => 'Utilisateur créer avec succes',
             'user' => $user
         ]);
@@ -78,6 +86,7 @@ class AuthController extends Controller
         $user = Auth::user();
         if($user->type ==='commercant'){
             return response()->json([
+                'status'=>200,
                 'message' => 'Salut Commercant',
                 'user' => $user,
                 'authorization' => [
@@ -88,6 +97,7 @@ class AuthController extends Controller
 
         }elseif($user->type ==='client'){
             return response()->json([
+                'status'=>200,
                 'message' => 'Salut Client',
                 'user' => $user,
                 'authorization' => [
@@ -97,6 +107,7 @@ class AuthController extends Controller
             ]);
         }elseif($user->type ==='livreur'){
             return response()->json([
+                'status'=>200,
                 'message' => 'Salut livreur',
                 'user' => $user,
                 'authorization' => [
@@ -106,6 +117,7 @@ class AuthController extends Controller
             ]);
         }else{
             return response()->json([
+                'status'=>200,
                 'message' => 'Salut Admin',
                 'user' => $user,
                 'authorization' => [
@@ -127,10 +139,12 @@ class AuthController extends Controller
         ]);
 
         $client = $user->livreur()->create([
-            'matricule' => $request->matricule
+            'matricule' => $request->matricule,
+            'adresse' => $request->adresse,
         ]);
 
         return response()->json([
+            'status'=>200,
             'message' => 'Utilisateur créer avec succes',
             'user' => $user
         ]);
@@ -140,6 +154,7 @@ class AuthController extends Controller
     {
         Auth::logout();
         return response()->json([
+            'status'=>200,
             'message' => 'Déconnexion réussi',
         ]);
     }

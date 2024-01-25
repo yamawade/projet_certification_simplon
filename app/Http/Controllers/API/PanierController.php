@@ -39,7 +39,7 @@ class PanierController extends Controller
             $produit->decrementerQuantite($quantite);
 
             return response()->json([
-                'status_code' => 200,
+                'status' => 200,
                 'status_message' => 'Le Produit a été ajouté au panier',
                 'data' => $panier->produits,
             ]);
@@ -53,7 +53,7 @@ class PanierController extends Controller
         $panier = Panier::where('user_id', $user->id)->first();
 
         if (!$panier) {
-            return response()->json(['status_code' => 404, 'status_message' => 'Le panier est vide ou n\'existe pas.']);
+            return response()->json(['status' => 404, 'status_message' => 'Le panier est vide ou n\'existe pas.']);
         }
 
         $produitsPanier = $panier->produits()->withPivot('quantite')->get();
@@ -73,7 +73,7 @@ class PanierController extends Controller
         }
     
         return response()->json([
-            'status_code' => 200,
+            'status' => 200,
             'status_message' => 'Liste des produits dans le panier',
             'data' => $listeProduit,
             'montant'=>$totalPrix.' FCFA'
@@ -86,13 +86,13 @@ class PanierController extends Controller
         $panier = Panier::where('user_id', $user->id)->first();
     
         if (!$panier) {
-            return response()->json(['status_code' => 404, 'status_message' => 'Le panier est vide ou n\'existe pas.']);
+            return response()->json(['status' => 404, 'status_message' => 'Le panier est vide ou n\'existe pas.']);
         }
     
         $produitExiste = $panier->produits()->where('produit_id', $produit->id)->exists();
     
         if (!$produitExiste) {
-            return response()->json(['status_code' => 404, 'status_message' => 'Le produit n\'existe pas dans le panier.']);
+            return response()->json(['status' => 404, 'status_message' => 'Le produit n\'existe pas dans le panier.']);
         }
     
         // Récupérer la quantité du produit dans le panier avant de le retirer
@@ -104,7 +104,7 @@ class PanierController extends Controller
         $produit->increment('quantite', $quantiteDansPanier);
     
         return response()->json([
-            'status_code' => 200,
+            'status' => 200,
             'status_message' => 'Le Produit a été retiré du panier',
             'data' => $panier->produits,
         ]);

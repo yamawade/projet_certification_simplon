@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
             $table->string('matricule');
+            $table->string('adresse');
             $table->enum('statut',['disponible','indisponible'])->default('disponible');
             $table->timestamps();
         });

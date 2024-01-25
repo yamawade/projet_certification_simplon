@@ -17,7 +17,7 @@ class CategorieController extends Controller
     {
         $categorie = Categorie::all();
         return response()->json([
-            'status_code'=>200,
+            'status'=>200,
             'status_message'=>'Liste des categories',
             'data'=>$categorie
         ]);
@@ -41,7 +41,7 @@ class CategorieController extends Controller
             $categorie->nom_categorie = $request->nom_categorie;
             if($categorie->save()){
                 return response()->json([
-                    'status_code'=>200,
+                    'status'=>200,
                     'status_message'=>'La categorie a ete ajouté',
                     'data'=>$categorie
                 ]);
@@ -78,7 +78,7 @@ class CategorieController extends Controller
             $categorie->nom_categorie=$request->nom_categorie;
             if($categorie->update()){
                 return response()->json([
-                    'status_code'=>200,
+                    'status'=>200,
                     'status_message'=>'La categorie a ete modifier',
                     'data'=>$categorie
                 ]);
@@ -98,7 +98,7 @@ class CategorieController extends Controller
             $categorie = Categorie::FindorFail($id);
             if($categorie->delete()){
                 return response()->json([
-                    'status_code'=>200,
+                    'status'=>200,
                     'status_message'=>'La categorie a ete supprimer',
                     'data'=>$categorie
                 ]);

@@ -19,7 +19,7 @@ class ProduitController extends Controller
     {
         $produit = Produit::all();
         return response()->json([
-            'status_code'=>200,
+            'status'=>200,
             'status_message'=>'Liste des produits',
             'data'=>$produit
         ]);
@@ -59,7 +59,7 @@ class ProduitController extends Controller
 
             if($produit->save()){
                 return response()->json([
-                    'status_code'=>200,
+                    'status'=>200,
                     'status_message'=>'Le produit a ete ajouté',
                     'data'=>$produit
                 ]);
@@ -111,7 +111,7 @@ class ProduitController extends Controller
 
                 if($produit->update()){
                     return response()->json([
-                        'status_code'=>200,
+                        'status'=>200,
                         'status_message'=>'Le produit a ete modifié',
                         'data'=>$produit
                     ]);
@@ -132,7 +132,7 @@ class ProduitController extends Controller
             if($produit->commercant_id == $commercant->id){
                 if($produit->delete()){
                     return response()->json([
-                        'status_code'=>200,
+                        'status'=>200,
                         'status_message'=>'La produit a ete supprimer',
                         'data'=>$produit
                     ]);

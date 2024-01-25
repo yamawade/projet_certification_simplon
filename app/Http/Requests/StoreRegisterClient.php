@@ -28,7 +28,10 @@ class StoreRegisterClient extends FormRequest
             'prenom' => 'required|string|max:255',
             'adresse' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
+            'date_naiss' => 'required|date|before_or_equal:2005-01-31',
             'password' => 'required|string|min:8',
+            'genre'=>'required|string|in:homme,femme',
+            'numero_tel' => ['required', 'string', 'regex:/^(77|76|75|78|33)[0-9]/'],
         ];
     }
     public function failedValidation(Validator $validator){
@@ -49,6 +52,14 @@ class StoreRegisterClient extends FormRequest
             'email.required'=>'Un email doit etre fourni',
             'email.unique'=>'L\'adresse email existe deja',
             'password.required'=>'Un mot de passe doit etre fourni',
+            'genre.required' => 'Le genre doit être fourni',
+            'genre.in' => 'Le genre doit être homme ou femme',
+            'numero_tel.required' => 'Un numéro de téléphone doit être fourni',
+            'numero_tel.regex' => 'Le numéro de téléphone doit être au format correct',
+            'password.min' => 'Le mot de passe doit avoir au moins 8 caractères',
+            'date_naiss.required' => 'Une date de naissance doit être fournie',
+            'date_naiss.date' => 'La date de naissance doit être une date valide',
+            'date_naiss.before_or_equal' => 'La date de naissance doit être avant ou égale à 2005-01-31',
         ];
     }
 }

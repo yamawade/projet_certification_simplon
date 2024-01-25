@@ -18,7 +18,7 @@ class CommandeController extends Controller
         $panier = Panier::where('user_id', $user->id)->first();
     
         if (!$panier) {
-            return response()->json(['status_code' => 404, 'status_message' => 'Le panier est vide ou n\'existe pas.']);
+            return response()->json(['status' => 404, 'status_message' => 'Le panier est vide ou n\'existe pas.']);
         }
     
         $commande = Commande::create([
@@ -41,7 +41,7 @@ class CommandeController extends Controller
         $panier->produits()->detach();
     
         return response()->json([
-            'status_code' => 200,
+            'status' => 200,
             'status_message' => 'Commande créée avec succès',
             'data' => $commande,
         ]);
@@ -56,7 +56,7 @@ class CommandeController extends Controller
         try {
 
             return response()->json([
-                'status_code' => 200,
+                'status' => 200,
                 'status_message' => 'la liste des commandes',
                 'data' => $commandes
             ]);
