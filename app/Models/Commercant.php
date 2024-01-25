@@ -15,7 +15,8 @@ class Commercant extends Model
         'adresse',
         'nin',
         'genre',
-        'date_naiss'
+        'date_naiss',
+        'numero_tel'
     ];
 
     public function user()
