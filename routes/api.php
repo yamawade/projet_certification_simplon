@@ -46,6 +46,7 @@ Route::middleware(['auth:api','commercant'])->group(function(){
 
 });
 
+Route::get('categories',[CategorieController::class,'index']);
 //ADMIN
 Route::middleware(['auth:api','admin'])->group(function(){
     Route::post('registerLivreur',[AuthController::class,'registerLivreur']);
@@ -53,7 +54,6 @@ Route::middleware(['auth:api','admin'])->group(function(){
     Route::post('categorie/create',[CategorieController::class,'store']);
     Route::put('categorie/update/{id}',[CategorieController::class,'update']);
     Route::delete('categorie/{id}',[CategorieController::class,'destroy']);
-    Route::get('categories',[CategorieController::class,'index']);
     Route::get('commandes',[CommandeController::class,'index']);
 
 });
