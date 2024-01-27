@@ -29,9 +29,9 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'password' =>Hash::make('passer1234'),
             'type' => 'admin',
-            //'type' => 'client',
-            //'type' => 'commercant',
-            // 'type' => 'livreur',
+            'type' => 'client',
+            'type' => 'commercant',
+            'type' => 'livreur',
         ];
     }
 
