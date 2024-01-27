@@ -185,4 +185,16 @@ class ProduitController extends Controller
             'data'=>$produits
         ]);
     }
+
+    public function getProduitsByCommercant(Commercant $commercant)
+    {
+        $commercant = Commercant::where('user_id', Auth::user()->id)->first();
+
+        $produits = Produit::where('commercant_id', $commercant->id)->get();
+        return response()->json([
+            'status'=>200,
+            'status_message'=>'Liste des produits',
+            'data'=>$produits
+        ]);
+    }
 }

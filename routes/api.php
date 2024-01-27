@@ -45,7 +45,7 @@ Route::middleware(['auth:api','commercant'])->group(function(){
     Route::post('produit/create',[ProduitController::class,'store']);
     Route::post('produit/update/{produit}',[ProduitController::class,'update']);
     Route::delete('produit/{produit}',[ProduitController::class,'destroy']);
-
+    Route::get('getProduitsByCommercant',[ProduitController::class,'getProduitsByCommercant']);
 });
 
 Route::get('categories',[CategorieController::class,'index']);
