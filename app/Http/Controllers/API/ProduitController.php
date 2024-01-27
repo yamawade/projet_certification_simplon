@@ -75,7 +75,26 @@ class ProduitController extends Controller
      */
     public function show(Produit $produit)
     {
-        //
+        try {
+            $detailProduit = $produit->load('categorie', 'commercant');
+
+            return response()->json([
+                'status' => 200,
+                'status_message' => 'Detail du produit',
+                'data' => [
+                    'nom_produit' => $detailProduit->nom_produit,
+                    'quantite' => $detailProduit->quantite,
+                    'prix' => $detailProduit->prix,
+                    'description' => $detailProduit->description,
+                    'image' => $detailProduit->image,
+                    'categorie' => $detailProduit->categorie->nom_categorie,
+                    'commercant' => $detailProduit->commercant->user->nom,
+                ],
+            ]);
+        
+        }catch(Exception $e){
+            return response()->json($e);
+        }
     }
 
     /**
