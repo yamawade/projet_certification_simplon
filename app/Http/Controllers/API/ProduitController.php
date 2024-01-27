@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Produit;
+use App\Models\Categorie;
 use App\Models\Commercant;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -152,7 +153,17 @@ class ProduitController extends Controller
             }
             
        }catch(Exception $e){
-        return response()->json($e);
+            return response()->json($e);
+     }
     }
+
+    public function getProduitsByCategorie(Categorie $categorie)
+    {
+        $produits = Produit::where('categorie_id', $categorie->id)->get();
+        return response()->json([
+            'status'=>200,
+            'status_message'=>'Liste des produits',
+            'data'=>$produits
+        ]);
     }
 }

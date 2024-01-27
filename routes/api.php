@@ -38,6 +38,7 @@ Route::middleware(['auth:api','client'])->group(function(){
 //COMMERCANT
 Route::post('registerCommercant',[AuthController::class,'registerCommercant']);
 Route::get('produits',[ProduitController::class,'index']);
+Route::get('produits/{categorie}',[ProduitController::class,'getProduitsByCategorie']);
 Route::middleware(['auth:api','commercant'])->group(function(){
     Route::post('deconnexionCommercant',[AuthController::class,'logout']);
     Route::post('produit/create',[ProduitController::class,'store']);
