@@ -92,8 +92,8 @@ class ProduitController extends Controller
     {
         try {
             $commercant = Commercant::where('user_id', Auth::user()->id)->first();
-            //dd($commercant->id);
-            //$user = Auth::user();
+            //dd($commercant);
+            // $user = Auth::user();
             //dd($user->commercant->id);
             if($produit->commercant_id == $commercant->id){
                 $produit->nom_produit = $request->nom_produit;
@@ -116,6 +116,12 @@ class ProduitController extends Controller
                         'data'=>$produit
                     ]);
                 }
+            }else{
+                return response()->json([
+                    'status'=>200,
+                    'status_message'=>'Vous n\'etes pas autorisé a modifier ce produit',
+                    'data'=>$produit
+                ]);
             }  
         }catch(Exception $e){
             return response()->json($e);
@@ -136,7 +142,13 @@ class ProduitController extends Controller
                         'status_message'=>'La produit a ete supprimer',
                         'data'=>$produit
                     ]);
-                }
+                }else{
+                    return response()->json([
+                        'status'=>200,
+                        'status_message'=>'Vous n\'etes pas autorisé a supprimer ce produit',
+                        'data'=>$produit
+                    ]);
+                }  
             }
             
        }catch(Exception $e){

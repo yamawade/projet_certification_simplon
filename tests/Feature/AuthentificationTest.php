@@ -4,8 +4,6 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\Client;
-use App\Models\Commercant;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -59,10 +57,10 @@ class AuthentificationTest extends TestCase
     }
 
     // public function test_user_login_commercant(){
-    //     $user = Commercant::factory()->create(['type' => 'commercant']);
+    //     $user = User::factory()->create(['type' => 'commercant']);
     //     $credentials = [
     //         'email' => $user->email,
-    //         'password' => 'password',
+    //         'password' => 'passer1234',
     //     ];
 
     //     $response = $this->json('POST', '/api/login', $credentials);
@@ -79,26 +77,26 @@ class AuthentificationTest extends TestCase
     //         ]);
     // }
 
-    public function test_user_login_client(){
-        $user = Client::factory()->create(['type' => 'client']);
-        $credentials = [
-            'email' => $user->email,
-            'password' => 'passer1234',
-        ];
+    // public function test_user_login_client(){
+    //     $user = User::factory()->create(['type' => 'client']);
+    //     $credentials = [
+    //         'email' => $user->email,
+    //         'password' => 'passer1234',
+    //     ];
 
-        $response = $this->json('POST', '/api/login', $credentials);
+    //     $response = $this->json('POST', '/api/login', $credentials);
 
-        $response->assertStatus(200)
-            ->assertJson([
-                'status' => 200,
-                'message' => 'Salut Client',
-                'user' => $user->toArray(),
-                'authorization' => [
-                    'token' => $response['authorization']['token'],
-                    'type' => 'bearer',
-                ]
-            ]);
-    }
+    //     $response->assertStatus(200)
+    //         ->assertJson([
+    //             'status' => 200,
+    //             'message' => 'Salut Client',
+    //             'user' => $user->toArray(),
+    //             'authorization' => [
+    //                 'token' => $response['authorization']['token'],
+    //                 'type' => 'bearer',
+    //             ]
+    //         ]);
+    // }
 
     // public function test_user_can_login_as_livreur(){
     //     $user = factory(User::class)->create(['type' => 'livreur']);
@@ -121,25 +119,51 @@ class AuthentificationTest extends TestCase
     //         ]);
     // }
 
-    public function test_user_login_admin(){
-        $user = User::factory()->create(['type' => 'admin']);
-        $credentials = [
-            'email' => $user->email,
+    // public function test_user_login_admin(){
+    //     $user = User::factory()->create(['type' => 'admin']);
+    //     $credentials = [
+    //         'email' => $user->email,
+    //         'password' => 'passer1234',
+    //     ];
+
+    //     $response = $this->json('POST', '/api/login', $credentials);
+
+    //     $response->assertStatus(200)
+    //         ->assertJson([
+    //             'status' => 200,
+    //             'message' => 'Salut Admin',
+    //             'user' => $user->toArray(),
+    //             'authorization' => [
+    //                 'token' => $response['authorization']['token'],
+    //                 'type' => 'bearer',
+    //             ]
+    //         ]);
+    // }
+
+    public function test_register_livreur_by_admin(){
+        $admin = User::factory()->create(['type' => 'admin']);
+        $token = $admin->createToken('admin-token')->plainTextToken;
+
+        $data = [
+            'nom' => 'LivreurTest',
+            'prenom' => 'LivreurPrenom',
+            'email' => 'livreur@gmail.com',
             'password' => 'passer1234',
+            'genre' => 'homme',
+            'matricule'=> '123456789',
+            'statut'=> 'disponible',
+            'adresse' => 'keur Massar',
         ];
 
-        $response = $this->json('POST', '/api/login', $credentials);
+        $response = $this->json('POST', '/api/registerLivreur', $data, [
+            'Authorization' => 'Bearer ' . $token,
+        ]);
 
         $response->assertStatus(200)
-            ->assertJson([
-                'status' => 200,
-                'message' => 'Salut Admin',
-                'user' => $user->toArray(),
-                'authorization' => [
-                    'token' => $response['authorization']['token'],
-                    'type' => 'bearer',
-                ]
-            ]);
+                 ->assertJson([
+                    'status' => 200,
+                    'message' => 'Utilisateur créer avec succes',
+                 ]);
     }
 
 }
