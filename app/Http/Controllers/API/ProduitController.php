@@ -88,7 +88,8 @@ class ProduitController extends Controller
                     'description' => $detailProduit->description,
                     'image' => $detailProduit->image,
                     'categorie' => $detailProduit->categorie->nom_categorie,
-                    'commercant' => $detailProduit->commercant->user->nom,
+                    'commercant' => $detailProduit->commercant->user->prenom .' '.$detailProduit->commercant->user->nom,
+                    'numero_tel' => $detailProduit->commercant->numero_tel,
                 ],
             ]);
         
