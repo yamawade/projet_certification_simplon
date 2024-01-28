@@ -82,6 +82,7 @@ class ProduitController extends Controller
                 'status' => 200,
                 'status_message' => 'Detail du produit',
                 'data' => [
+                    'id' => $detailProduit->id,
                     'nom_produit' => $detailProduit->nom_produit,
                     'quantite' => $detailProduit->quantite,
                     'prix' => $detailProduit->prix,
