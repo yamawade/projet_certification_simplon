@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\AvisController;
 use App\Http\Controllers\API\PanierController;
 use App\Http\Controllers\API\ProduitController;
 use App\Http\Controllers\API\CommandeController;
@@ -33,6 +34,9 @@ Route::middleware(['auth:api','client'])->group(function(){
     Route::get('voirPanier',[PanierController::class,'voirPanier']);
     Route::post('retirerProduit/{produit}',[PanierController::class,'retirerProduitPanier']);
     Route::post('passerCommande',[CommandeController::class,'creerCommande']);
+    Route::post('faireCommentaire/{produit}',[AvisController::class,'store']);
+    Route::post('Commentaire/update/{produit}',[AvisController::class,'update']);
+    Route::post('Commentaire/{produit}',[AvisController::class,'destroy']);
 });
 
 //COMMERCANT
