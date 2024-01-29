@@ -37,6 +37,7 @@ Route::middleware(['auth:api','client'])->group(function(){
     Route::post('faireCommentaire/{produit}',[AvisController::class,'store']);
     Route::post('Commentaire/update/{produit}',[AvisController::class,'update']);
     Route::post('Commentaire/{produit}',[AvisController::class,'destroy']);
+    Route::post('signalerProduit/{produit}',[AvisController::class,'signalerProduit']);
 });
 
 //COMMERCANT
@@ -61,6 +62,7 @@ Route::middleware(['auth:api','admin'])->group(function(){
     Route::post('categorie/update/{id}',[CategorieController::class,'update']);
     Route::post('categorie/{id}',[CategorieController::class,'destroy']);
     Route::get('commandes',[CommandeController::class,'index']);
+    Route::get('ListeProduitSignaler',[AvisController::class,'ListeProduitSignaler']);
 
 });
 

@@ -6,10 +6,12 @@ use App\Models\Avis;
 use App\Models\Client;
 use App\Models\Produit;
 use Illuminate\Http\Request;
+use App\Models\ProduitSignaler;
 use App\Http\Requests\StoreAvis;
 use App\Http\Requests\UpdateAvis;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreProduitSignaler;
 
 class AvisController extends Controller
 {
@@ -144,6 +146,44 @@ class AvisController extends Controller
         return response()->json([
             'status' => 200,
             'status_message' => 'Liste des avis pour le produit',
+            'data' => $data
+        ]);
+    }
+
+    public function signalerProduit(Produit $produit,StoreProduitSignaler $request){
+       try {
+            $client = Client::where('user_id', Auth::user()->id)->first();
+            $produitSignaler = new ProduitSignaler();
+            $produitSignaler->produit_id = $produit->id;
+            $produitSignaler->client_id = $client->id;
+            $produitSignaler->motif = $request->motif;
+            if($produitSignaler->save()){
+                return response()->json([
+                    'status'=>200,
+                    'status_message'=>'Le produit a ete signalé',
+                    'data'=>$produitSignaler
+                ]);
+            }
+       }catch(Exception $e){
+        return response()->json($e);
+    }
+    }
+
+    public function ListeProduitSignaler(){
+        $produitSignaler = ProduitSignaler::with('client','produit')->get();
+        $data = $produitSignaler->map(function ($produitSignaler) {
+            return [
+                'Id' => $produitSignaler->id,
+                'Motif' => $produitSignaler->motif,
+                'Client' => $produitSignaler->client->user->prenom.' '.$produitSignaler->client->user->nom,
+                'idProduit' => $produitSignaler->produit->id,
+                'Produit' => $produitSignaler->produit->nom_produit,
+                'Image' => $produitSignaler->produit->image
+            ];
+        });
+        return response()->json([
+            'status' => 200,
+            'status_message' => 'Liste des produit signale',
             'data' => $data
         ]);
     }
