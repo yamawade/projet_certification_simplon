@@ -44,7 +44,7 @@ Route::middleware(['auth:api','commercant'])->group(function(){
     Route::post('deconnexionCommercant',[AuthController::class,'logout']);
     Route::post('produit/create',[ProduitController::class,'store']);
     Route::post('produit/update/{produit}',[ProduitController::class,'update']);
-    Route::delete('produit/{produit}',[ProduitController::class,'destroy']);
+    Route::post('produit/{produit}',[ProduitController::class,'destroy']);
     Route::get('getProduitsByCommercant',[ProduitController::class,'getProduitsByCommercant']);
 });
 
@@ -54,8 +54,8 @@ Route::middleware(['auth:api','admin'])->group(function(){
     Route::post('registerLivreur',[AuthController::class,'registerLivreur']);
     Route::post('deconnexionAdmin',[AuthController::class,'logout']);
     Route::post('categorie/create',[CategorieController::class,'store']);
-    Route::put('categorie/update/{id}',[CategorieController::class,'update']);
-    Route::delete('categorie/{id}',[CategorieController::class,'destroy']);
+    Route::post('categorie/update/{id}',[CategorieController::class,'update']);
+    Route::post('categorie/{id}',[CategorieController::class,'destroy']);
     Route::get('commandes',[CommandeController::class,'index']);
 
 });
