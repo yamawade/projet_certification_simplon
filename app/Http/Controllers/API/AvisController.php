@@ -125,4 +125,27 @@ class AvisController extends Controller
             return response()->json($e);
         }
     }
+
+    public function getAvisByProduit(Produit $produit) {
+        $avis = Avis::where('produit_id', $produit->id)->with('client')->get();
+    
+        $data = $avis->map(function ($avis) {
+            return [
+                'Id' => $avis->id,
+                'Commentaires' => $avis->commentaire,
+                'Note' => $avis->note,
+                'Client' => $avis->client->user->prenom.' '.$avis->client->user->nom,
+                'idProduit' => $avis->produit->id,
+                'Produit' => $avis->produit->nom_produit,
+                'Image' => $avis->produit->image
+            ];
+        });
+    
+        return response()->json([
+            'status' => 200,
+            'status_message' => 'Liste des avis pour le produit',
+            'data' => $data
+        ]);
+    }
+    
 }

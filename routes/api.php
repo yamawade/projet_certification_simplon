@@ -27,7 +27,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('login',[AuthController::class,'login']);
 //CLIENT
 Route::post('registerClient',[AuthController::class,'registerClient']);
-
+Route::get('commentaires/{produit}',[AvisController::class,'getAvisByProduit']);
 Route::middleware(['auth:api','client'])->group(function(){
     Route::post('deconnexionClient',[AuthController::class,'logout']);
     Route::post('ajoutProduitPanier/{produit}',[PanierController::class,'ajouterProduitPanier']);
