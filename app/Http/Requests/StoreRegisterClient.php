@@ -31,7 +31,7 @@ class StoreRegisterClient extends FormRequest
             'date_naiss' => 'required|date|before_or_equal:2005-01-31',
             'password' => 'required|string|min:8',
             'genre'=>'required|string|in:homme,femme',
-            'numero_tel' => ['required', 'string', 'regex:/^(77|76|75|78|33)[0-9]/'],
+            'numero_tel' => ['required', 'string', 'regex:/^(77|76|75|78|33)[0-9]/','unique:users'],
         ];
     }
     public function failedValidation(Validator $validator){
@@ -56,6 +56,7 @@ class StoreRegisterClient extends FormRequest
             'genre.in' => 'Le genre doit être homme ou femme',
             'numero_tel.required' => 'Un numéro de téléphone doit être fourni',
             'numero_tel.regex' => 'Le numéro de téléphone doit être au format correct',
+            'numero_tel.unique' => 'Un numéro de téléphone existe deja',
             'password.min' => 'Le mot de passe doit avoir au moins 8 caractères',
             'date_naiss.required' => 'Une date de naissance doit être fournie',
             'date_naiss.date' => 'La date de naissance doit être une date valide',

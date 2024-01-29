@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('adresse');
             $table->string('ninea')->nullable();
             $table->string('nin');
-            $table->string('numero_tel');
+            $table->string('numero_tel')->unique();
             $table->date('date_naiss');
             $table->enum('genre',['homme','femme']);
             $table->timestamps();
