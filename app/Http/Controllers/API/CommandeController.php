@@ -52,7 +52,7 @@ class CommandeController extends Controller
      * Display a listing of the resource.
      */
     public function index(){
-        $commandes = Commande::where('etat_commande', 'en_attente')->get();
+        $commandes = Commande::where('etat_commande', 'en_attente')->orderBy('created_at', 'desc')->get();
         try {
 
             return response()->json([

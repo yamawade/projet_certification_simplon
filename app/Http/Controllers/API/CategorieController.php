@@ -15,7 +15,8 @@ class CategorieController extends Controller
      */
     public function index()
     {
-        $categorie = Categorie::all();
+        //$categorie = Categorie::all();
+        $categorie = Categorie::orderBy('created_at', 'desc')->get();
         return response()->json([
             'status'=>200,
             'status_message'=>'Liste des categories',

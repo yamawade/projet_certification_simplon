@@ -18,7 +18,8 @@ class ProduitController extends Controller
      */
     public function index()
     {
-        $produit = Produit::all();
+        //$produit = Produit::all();
+        $produit = Produit::orderBy('created_at', 'desc')->get();
         return response()->json([
             'status'=>200,
             'status_message'=>'Liste des produits',
@@ -181,7 +182,7 @@ class ProduitController extends Controller
 
     public function getProduitsByCategorie(Categorie $categorie)
     {
-        $produits = Produit::where('categorie_id', $categorie->id)->get();
+        $produits = Produit::where('categorie_id', $categorie->id)->orderBy('created_at', 'desc')->get();
         return response()->json([
             'status'=>200,
             'status_message'=>'Liste des produits',
@@ -193,7 +194,7 @@ class ProduitController extends Controller
     {
         $commercant = Commercant::where('user_id', Auth::user()->id)->first();
 
-        $produits = Produit::where('commercant_id', $commercant->id)->get();
+        $produits = Produit::where('commercant_id', $commercant->id)->orderBy('created_at', 'desc')->get();
         return response()->json([
             'status'=>200,
             'status_message'=>'Liste des produits',

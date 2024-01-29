@@ -129,7 +129,7 @@ class AvisController extends Controller
     }
 
     public function getAvisByProduit(Produit $produit) {
-        $avis = Avis::where('produit_id', $produit->id)->with('client')->get();
+        $avis = Avis::where('produit_id', $produit->id)->with('client')->orderBy('created_at', 'desc')->get();
     
         $data = $avis->map(function ($avis) {
             return [
@@ -139,7 +139,8 @@ class AvisController extends Controller
                 'Client' => $avis->client->user->prenom.' '.$avis->client->user->nom,
                 'idProduit' => $avis->produit->id,
                 'Produit' => $avis->produit->nom_produit,
-                'Image' => $avis->produit->image
+                'Image' => $avis->produit->image,
+                'Date' => $avis->created_at
             ];
         });
     
