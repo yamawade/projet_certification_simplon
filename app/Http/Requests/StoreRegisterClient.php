@@ -28,7 +28,7 @@ class StoreRegisterClient extends FormRequest
             'prenom' => 'required|string|max:255',
             'adresse' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'date_naiss' => 'required|date|before_or_equal:2005-01-31',
+            'date_naiss' => 'required|date|before: -18 years',
             'password' => 'required|string|min:8',
             'genre'=>'required|string|in:homme,femme',
             'numero_tel' => ['required', 'string', 'regex:/^(77|76|75|78|33)[0-9]/','unique:clients'],
@@ -60,7 +60,7 @@ class StoreRegisterClient extends FormRequest
             'password.min' => 'Le mot de passe doit avoir au moins 8 caractères',
             'date_naiss.required' => 'Une date de naissance doit être fournie',
             'date_naiss.date' => 'La date de naissance doit être une date valide',
-            'date_naiss.before_or_equal' => 'La date de naissance doit être avant ou égale à 2005-01-31',
+            'date_naiss.before' => 'Votre age doit être au moins 18 ans',
         ];
     }
 }
