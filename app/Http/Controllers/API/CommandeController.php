@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Models\Client;
 use App\Models\Panier;
+use App\Models\Livreur;
 use App\Models\Commande;
 use Illuminate\Http\Request;
 use App\Models\DetailCommande;
@@ -62,6 +63,45 @@ class CommandeController extends Controller
             ]);
         } catch (Exception $e) {
             return response($e)->json($e);
+        }
+    }
+
+    public function ListerLivreurDisponible(){
+
+        $livreurs = Livreur::where('statut', 'disponible')->get();
+        try {
+
+            return response()->json([
+                'status' => 200,
+                'status_message' => 'la liste des livreurs disponible',
+                'data' => $livreurs
+            ]);
+
+        } catch (Exception $e) {
+            return response($e)->json($e);
+        }
+    }
+
+    public function AffecterLivreur(Commande $commande,Request $request){
+
+        $livreur = Livreur::where('id', $request->livreur_id)->first();
+        if($livreur->statut === 'disponible') {
+            $commande->update([
+                'livreur_id' => $livreur->id,
+                'etat_commande' => 'en_cours',
+            ]);
+            $livreur->statut = 'indisponible';
+            $livreur->save();
+            return response()->json([
+                'status' => 200,
+                'status_message' => 'livreur affecté',
+                'data' => $commande
+            ]);
+        }else{
+            return response()->json([
+                'status' => 404,
+                'status_message' => 'livreur non disponible',
+            ]);
         }
     }
 

@@ -12,6 +12,7 @@ class Commande extends Model
     protected $fillable = [
         'date_commande',
         'client_id',
-        'etat_commande'
+        'etat_commande',
+        'livreur_id'
     ];
 }
