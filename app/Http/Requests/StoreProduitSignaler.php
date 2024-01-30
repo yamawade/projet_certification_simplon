@@ -24,7 +24,7 @@ class StoreProduitSignaler extends FormRequest
     public function rules(): array
     {
         return [
-            'motif' => 'required|string|max:255',
+            'motif' => 'required|string|max:510',
         ];
     }
 

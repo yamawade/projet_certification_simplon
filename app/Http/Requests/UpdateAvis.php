@@ -24,7 +24,7 @@ class UpdateAvis extends FormRequest
     public function rules(): array
     {
         return [
-            'commentaire' => 'required|string|max:255',
+            'commentaire' => 'required|string|max:510',
             'note' => 'required|integer|max:5|min:1',
         ];
     }
@@ -42,6 +42,7 @@ class UpdateAvis extends FormRequest
     public function messages(){
         return[
             'commentaire.required'=>'Un commentaire doit etre fourni',
+            'commentaire.max'=>'Le commentaire ne doit pas depasser 510 caractères',
             'note.required'=>'Une note doit etre fournie',
             'note.max'=>'La note ne doit pas depasser 5',
             'note.min'=>'La note doit etre superieure ou egale a 1',

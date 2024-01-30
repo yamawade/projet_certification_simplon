@@ -25,7 +25,7 @@ class UpdateProduitRequest extends FormRequest
     {
         return [
             'nom_produit' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
+            'description' => 'required|string|max:765',
             'image' => 'sometimes|image',
             'quantite' => 'required|integer',
             'prix' => 'required|numeric|min:0|max:99999.99',
@@ -46,6 +46,7 @@ class UpdateProduitRequest extends FormRequest
         return[
             'nom_produit.required'=>'Un nom doit etre fourni',
             'description.required'=>'Une description doit etre fourni',
+            'description.max' => 'La description ne doit pas depasser 765 caracteres',
             //'image.required' => 'Une image doit etre fourni',
             'quantite.required' => 'une quantite doit etre fourni',
             'prix.required' => 'Un prix doit etre fourni',
