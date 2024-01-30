@@ -71,5 +71,5 @@ Route::middleware(['auth:api','admin'])->group(function(){
 //LIVREUR
 Route::middleware(['auth:api','livreur'])->group(function(){
     Route::post('deconnexionLivreur',[AuthController::class,'logout']);
-
+    Route::post('ChangerStatut',[CommandeController::class,'ChangerStatut']);
 });
