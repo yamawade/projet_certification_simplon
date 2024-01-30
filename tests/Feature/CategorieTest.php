@@ -49,6 +49,7 @@ class CategorieTest extends TestCase
     public function test_DeleteCategorie()
     {
         $categorie = Categorie::factory()->create();
+        //dump('Category created:', $categorie);
         $admin = User::factory()->create(['type' => 'admin']);
         $response = $this->actingAs($admin)->postJson("/api/categorie/{$categorie->id}");
         $response->assertStatus(200)

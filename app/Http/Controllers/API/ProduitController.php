@@ -163,7 +163,7 @@ class ProduitController extends Controller
                 if($produit->delete()){
                     return response()->json([
                         'status'=>200,
-                        'status_message'=>'La produit a ete supprimer',
+                        'status_message'=>'Le produit a ete supprimer',
                         'data'=>$produit
                     ]);
                 }else{
