@@ -57,4 +57,21 @@ class CategorieTest extends TestCase
                 'status_message'=>'La categorie a ete supprimer',
             ]);
     }
+
+    public function test_IndexCategorie()
+    {
+        $categories = Categorie::factory()->create();
+        $response = $this->get('/api/categories');
+        // $response->assertStatus(200);
+        // $response->assertJsonStructure([
+        //     'status' => 200,
+        //     'status_message'=>'Liste des categories'
+        // ]);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'status' => 200,
+                'status_message'=>'Liste des categories',
+            ]);
+    }
 }
