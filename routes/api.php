@@ -52,6 +52,7 @@ Route::middleware(['auth:api','commercant'])->group(function(){
     Route::post('produit/update/{produit}',[ProduitController::class,'update']);
     Route::post('produit/{produit}',[ProduitController::class,'destroy']);
     Route::get('getProduitsByCommercant',[ProduitController::class,'getProduitsByCommercant']);
+    Route::post('modifierInfoCommercant',[AuthController::class,'modifierInfoCommercant']);
 });
 
 Route::get('categories',[CategorieController::class,'index']);

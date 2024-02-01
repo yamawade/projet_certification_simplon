@@ -12,6 +12,7 @@ use App\Http\Requests\StoreRegisterClient;
 use App\Http\Requests\StoreRegisterLivreur;
 use App\Http\Requests\UpdateRegisterClient;
 use App\Http\Requests\StoreRegisterCommercant;
+use App\Http\Requests\UpdateRegisterCommercant;
 
 class AuthController extends Controller
 {
@@ -162,7 +163,9 @@ class AuthController extends Controller
 
 
     public function modifierInfoClient(UpdateRegisterClient $request){
+        //$client = Client::where('user_id', Auth::user()->id)->first();
         $user = Auth::user();
+       // dd($user);
         $user->update([
             'nom' => $request->nom,
             'prenom' => $request->prenom,
@@ -170,12 +173,47 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'type' => 'client'
         ]);
+
+        $client = $user->client()->update([
+            'adresse'=>$request->adresse,
+            'genre'=>$request->genre,
+            'numero_tel'=>$request->numero_tel,
+            'date_naiss'=>$request->date_naiss,
+        ]);
+
         return response()->json([
             'status'=>200,
             'message' => 'Utilisateur mis à jour avec succes',
             'user' => $user
         ]);
 
+    }
+
+    public function modifierInfoCommercant(UpdateRegisterCommercant $request){
+        $user = Auth::user();
+        //dd($user);
+        $user->update([
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'type' => 'commercant'
+        ]);
+
+        $commercant = $user->commercant()->update([
+            'ninea'=>$request->ninea,
+            'adresse'=>$request->adresse,
+            'nin'=>$request->nin,
+            'numero_tel'=>$request->numero_tel,
+            'genre'=>$request->genre,
+            'date_naiss'=>$request->date_naiss,
+        ]);
+
+        return response()->json([
+            'status'=>200,
+            'message' => 'Utilisateur mis à jour avec succes',
+            'user' => $user
+        ]);
     }
     /**
      * Display a listing of the resource.
