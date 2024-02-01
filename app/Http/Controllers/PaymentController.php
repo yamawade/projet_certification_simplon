@@ -22,8 +22,9 @@ class PaymentController extends Controller
         return view('index');
     }
 
-    public function payment(Request $request)
+    public function payment(PaymentRequest $request)
     {
+         dd($request->all());
         # send info to api paytech
 
         //$validated = $request->validated();
@@ -37,6 +38,7 @@ class PaymentController extends Controller
         // $code = "47"; // This can be the product id
         $amount = $request->input('price');
         $commande = $request->input('commande_id');
+        // $code = "47";
 
         /*
             The success_url take two parameters, the first one can be product id and
@@ -48,10 +50,11 @@ class PaymentController extends Controller
             'commande_id' => $commande,
         ]);
 
-        $success_url = route('payment.success', ['code' => $code, 
-        'data' =>[
-            'amount'=>$request->price,
-            'commande_id'=>$commande
+        $success_url = route('payment.success', [
+            'code' => $code, 
+            'data' =>[
+                'amount'=>$request->price,
+                'commande_id'=>$commande
         ],
         ]);
         $cancel_url = route('payment.index');
@@ -79,9 +82,9 @@ class PaymentController extends Controller
             'cancel_url' =>  $cancel_url
         ])->send();
 
-
+            // dd($jsonResponse);
         if ($jsonResponse['success'] < 0) {
-           // return back()->withErrors($jsonResponse['errors'][0]);
+        //    return back()->withErrors($jsonResponse['errors'][0]);
            return 'error';
         } elseif ($jsonResponse['success'] == 1) {
             # Redirection to Paytech website for completing checkout

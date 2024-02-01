@@ -113,9 +113,8 @@ class CommandeController extends Controller
         $panier->produits()->detach();
     
         // Utilisez la redirection appropriée
-        //return redirect()->route('payment.index', compact('montantTotal', 'commande'));
+        //return redirect()->route('payment.index', compact('montantTotal', 'commande_id'));
         return view('index', compact('montantTotal','commande_id'));
-       
     }
     
     
