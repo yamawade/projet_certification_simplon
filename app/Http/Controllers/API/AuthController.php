@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreRegisterClient;
 use App\Http\Requests\StoreRegisterLivreur;
+use App\Http\Requests\UpdateRegisterClient;
 use App\Http\Requests\StoreRegisterCommercant;
 
 class AuthController extends Controller
@@ -159,6 +160,23 @@ class AuthController extends Controller
         ]);
     }
 
+
+    public function modifierInfoClient(UpdateRegisterClient $request){
+        $user = Auth::user();
+        $user->update([
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'type' => 'client'
+        ]);
+        return response()->json([
+            'status'=>200,
+            'message' => 'Utilisateur mis à jour avec succes',
+            'user' => $user
+        ]);
+
+    }
     /**
      * Display a listing of the resource.
      */
