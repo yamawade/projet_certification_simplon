@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\AvisController;
 use App\Http\Controllers\API\PanierController;
@@ -38,7 +39,19 @@ Route::middleware(['auth:api','client'])->group(function(){
     Route::post('Commentaire/update/{produit}',[AvisController::class,'update']);
     Route::post('Commentaire/{produit}',[AvisController::class,'destroy']);
     Route::post('signalerProduit/{produit}',[AvisController::class,'signalerProduit']);
+    //Route::post('effectuerPaiement/{commande}',[PaymentController::class,'testPayment']);
+    // Route::get('payment', [PaymentController::class, 'index'])->name('payment.index');
+    //Route::post('/checkout', [PaymentController::class, 'payment'])->name('payment.submit');
+    // Route::get('ipn', [PaymentController::class, 'ipn'])->name('paytech-ipn');
+    // Route::get('payment-cancel', [PaymentController::class, 'cancel'])->name('paytech.cancel');
 });
+
+// Route::get('payment', [PaymentController::class, 'index'])->name('payment.index');
+// Route::post('/checkout', [PaymentController::class, 'payment'])->name('payment.submit');
+// Route::get('ipn', [PaymentController::class, 'ipn'])->name('paytech-ipn');
+// Route::get('payment-cancel', [PaymentController::class, 'cancel'])->name('paytech.cancel');
+// Route::get('payment-success/{code}', [PaymentController::class, 'success'])->name('payment.success');
+// Route::get('payment/{code}/success', [PaymentController::class, 'paymentSuccessView'])->name('payment.success.view');
 
 //COMMERCANT
 Route::post('registerCommercant',[AuthController::class,'registerCommercant']);

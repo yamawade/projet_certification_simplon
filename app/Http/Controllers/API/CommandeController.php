@@ -10,11 +10,77 @@ use Illuminate\Http\Request;
 use App\Models\DetailCommande;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\PaymentController;
 
 class CommandeController extends Controller
 {
+    private $paymentController;
 
-    public function creerCommande(){
+    public function __construct(PaymentController $paymentController)
+    {
+        $this->paymentController = $paymentController;
+    }
+
+    // public function creerCommande(){
+    //     $user = Client::where('user_id', Auth::user()->id)->first();
+    //     $panier = Panier::where('user_id', $user->id)->first();
+    
+    //     if (!$panier) {
+    //         return response()->json(['status' => 404, 'status_message' => 'Le panier est vide ou n\'existe pas.']);
+    //     }
+    
+    //     $commande = Commande::create([
+    //         'date_commande' => now(),
+    //         'client_id' => $user->id,
+    //     ]);
+       
+    //     $produitsPanier = $panier->produits()->withPivot('quantite')->get();
+    
+    //     // foreach ($produitsPanier as $produit) {
+    //     //     DetailCommande::create([
+    //     //         'commande_id' => $commande->id,
+    //     //         'produit_id' => $produit->id,
+    //     //         'montant' => $produit->pivot->quantite * $produit->prix,
+    //     //         'nombre_produit' => $produit->pivot->quantite,
+    //     //     ]);
+    //     // }
+    //     $montantTotal = 0;
+
+    //     foreach ($produitsPanier as $produit) {
+    //         $montantProduit = $produit->pivot->quantite * $produit->prix;
+    //         $montantTotal += $montantProduit;
+
+    //         DetailCommande::create([
+    //             'commande_id' => $commande->id,
+    //             'produit_id' => $produit->id,
+    //             'montant' => $montantProduit,
+    //             'nombre_produit' => $produit->pivot->quantite,
+    //         ]);
+    //     }
+    
+    //     // Détachez les produits après les avoir ajoutés à la commande
+    //     $panier->produits()->detach();
+
+    //     // $paymentController = new PaymentController();
+    //     // $response = $paymentController->payment([
+    //     //     'price' => $montantTotal,
+    //     //     'commande_id' => $commande->id,
+    //     // ]);
+    //     // return redirect()->route('payment.index', ['montant' => $montantTotal]); 
+
+    //     return $this->paymentController->payment([
+    //         'price' => $montantTotal,
+    //         'commande_id' => $commande->id,
+    //     ]);    
+    //     return redirect()->route('payment.index', ['montant' => $montantTotal, 'commande' => $commande]);
+    //     // return response()->json([
+    //     //     'status' => 200,
+    //     //     'status_message' => 'Commande créée avec succès',
+    //     //     'data' => $commande,
+    //     // ]);
+    // }
+    public function creerCommande()
+    {
         $user = Client::where('user_id', Auth::user()->id)->first();
         $panier = Panier::where('user_id', $user->id)->first();
     
@@ -26,29 +92,33 @@ class CommandeController extends Controller
             'date_commande' => now(),
             'client_id' => $user->id,
         ]);
-       
+        $commande_id=$commande->id;
+       // dd($commande);
         $produitsPanier = $panier->produits()->withPivot('quantite')->get();
     
+        $montantTotal = 0;
+    
         foreach ($produitsPanier as $produit) {
+            $montantProduit = $produit->pivot->quantite * $produit->prix;
+            $montantTotal += $montantProduit;
+    
             DetailCommande::create([
                 'commande_id' => $commande->id,
                 'produit_id' => $produit->id,
-                'montant' => $produit->pivot->quantite * $produit->prix,
+                'montant' => $montantProduit,
                 'nombre_produit' => $produit->pivot->quantite,
             ]);
         }
     
-        // Détachez les produits après les avoir ajoutés à la commande
         $panier->produits()->detach();
     
-        return response()->json([
-            'status' => 200,
-            'status_message' => 'Commande créée avec succès',
-            'data' => $commande,
-        ]);
+        // Utilisez la redirection appropriée
+        //return redirect()->route('payment.index', compact('montantTotal', 'commande'));
+        return view('index', compact('montantTotal','commande_id'));
+       
     }
     
-   
+    
     /**
      * Display a listing of the resource.
      */
