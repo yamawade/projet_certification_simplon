@@ -96,8 +96,10 @@ class CommandeController extends Controller
                 'Nom' => $livreurs->nom,
                 'Prenom' => $livreurs->prenom,
                 'Email' => $livreurs->email,
-                'numero_tel' => $livreurs->numero_tel,
-                'statut' => $livreurs->livreur->statut
+                'Numero' => $livreurs->numero_tel,
+                'statut' => $livreurs->livreur->statut,
+                'Adresse' => $livreurs->livreur->adresse,
+                'Matricule'=> $livreurs->livreur->matricule
             ];
         });
         try {
