@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\User;
 use App\Models\Client;
 use App\Models\Panier;
 use App\Models\Livreur;
@@ -66,15 +67,26 @@ class CommandeController extends Controller
         }
     }
 
-    public function ListerLivreurDisponible(){
+    public function ListerLivreur(){
 
-        $livreurs = Livreur::where('statut', 'disponible')->get();
+        $livreurs = User::where('type', 'livreur')->get();
+
+        $data = $livreurs->map(function ($livreurs) {
+            return [
+                'Id' => $livreurs->id,
+                'Nom' => $livreurs->nom,
+                'Prenom' => $livreurs->prenom,
+                'Email' => $livreurs->email,
+                'numero_tel' => $livreurs->numero_tel,
+                'statut' => $livreurs->statut
+            ];
+        });
         try {
-
+           
             return response()->json([
                 'status' => 200,
-                'status_message' => 'la liste des livreurs disponible',
-                'data' => $livreurs
+                'status_message' => 'la liste des livreurs',
+                'data' =>$data
             ]);
 
         } catch (Exception $e) {

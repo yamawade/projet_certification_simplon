@@ -65,7 +65,7 @@ Route::middleware(['auth:api','admin'])->group(function(){
     Route::post('categorie/{id}',[CategorieController::class,'destroy']);
     Route::get('commandes',[CommandeController::class,'index']);
     Route::get('ListeProduitSignaler',[AvisController::class,'ListeProduitSignaler']);
-    Route::get('ListerLivreurDisponible',[CommandeController::class,'ListerLivreurDisponible']);
+    Route::get('ListerLivreur',[CommandeController::class,'ListerLivreur']);
     Route::post('AffecterLivreur/{commande}',[CommandeController::class,'AffecterLivreur']);
 
 });
