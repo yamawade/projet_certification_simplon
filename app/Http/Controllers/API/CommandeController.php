@@ -79,7 +79,7 @@ class CommandeController extends Controller
     //     //     'data' => $commande,
     //     // ]);
     // }
-    public function creerCommande()
+    public function creerCommande(Request $request)
     {
         $user = Client::where('user_id', Auth::user()->id)->first();
         $panier = Panier::where('user_id', $user->id)->first();
@@ -112,9 +112,17 @@ class CommandeController extends Controller
     
         $panier->produits()->detach();
     
-        // Utilisez la redirection appropriée
-        //return redirect()->route('payment.index', compact('montantTotal', 'commande_id'));
+        // if ($request->expectsJson()) {
+        //     // Si la requête provient d'Insomnia, retournez une réponse JSON
+        //     return response()->json(['montantTotal' => $montantTotal, 'commande_id' => $commande_id]);
+        // } else {
+        //     // Si la requête provient du navigateur, redirigez vers la vue
+        //     return view('index', compact('montantTotal', 'commande_id'));
+        // }
+    //     // Utilisez la redirection appropriée
+    //     //return redirect()->route('payment.index', compact('montantTotal', 'commande_id'));
         return view('index', compact('montantTotal','commande_id'));
+       //return redirect()->away(route('payment.index', ['montantTotal' => $montantTotal, 'commande_id' => $commande_id]));
     }
     
     

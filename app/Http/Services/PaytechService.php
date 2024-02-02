@@ -104,7 +104,7 @@ Class PaytechService{
          */
         $jsonResponse = json_decode($rawResponse, true);
 
-
+        //dd($jsonResponse);
         if (array_key_exists('token', $jsonResponse)) {
             $query = '';
 
