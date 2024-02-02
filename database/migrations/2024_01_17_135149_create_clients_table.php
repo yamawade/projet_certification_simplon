@@ -16,9 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
             $table->string('adresse');
-            $table->string('numero_tel')->unique();
             $table->date('date_naiss');
-            $table->enum('genre',['homme','femme']);
             $table->timestamps();
         });
     }

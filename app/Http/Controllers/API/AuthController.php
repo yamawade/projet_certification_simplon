@@ -28,13 +28,13 @@ class AuthController extends Controller
             'prenom' => $request->prenom,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'genre'=>$request->genre,
+            'numero_tel'=>$request->numero_tel,
             'type' => 'client'
         ]);
 
         $client = $user->client()->create([
             'adresse'=>$request->adresse,
-            'genre'=>$request->genre,
-            'numero_tel'=>$request->numero_tel,
             'date_naiss'=>$request->date_naiss,
         ]);
 
@@ -51,6 +51,8 @@ class AuthController extends Controller
             'prenom' => $request->prenom,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'numero_tel'=>$request->numero_tel,
+            'genre'=>$request->genre,
             'type' => 'commercant'
         ]);
 
@@ -58,8 +60,6 @@ class AuthController extends Controller
             'ninea'=>$request->ninea,
             'adresse'=>$request->adresse,
             'nin'=>$request->nin,
-            'numero_tel'=>$request->numero_tel,
-            'genre'=>$request->genre,
             'date_naiss'=>$request->date_naiss,
         ]);
 
@@ -81,54 +81,55 @@ class AuthController extends Controller
         
         if (!$token) {
             return response()->json([
-                'message' => 'Connexion echouer',
-            ], 401);
-        }
-
-        $user = Auth::user();
-        if($user->type ==='commercant'){
-            return response()->json([
-                'status'=>200,
-                'message' => 'Salut Commercant',
-                'user' => $user,
-                'authorization' => [
-                    'token' => $token,
-                    'type' => 'bearer',
-                ]
-            ]);
-
-        }elseif($user->type ==='client'){
-            return response()->json([
-                'status'=>200,
-                'message' => 'Salut Client',
-                'user' => $user,
-                'authorization' => [
-                    'token' => $token,
-                    'type' => 'bearer',
-                ]
-            ]);
-        }elseif($user->type ==='livreur'){
-            return response()->json([
-                'status'=>200,
-                'message' => 'Salut livreur',
-                'user' => $user,
-                'authorization' => [
-                    'token' => $token,
-                    'type' => 'bearer',
-                ]
+                'status'=>401,
+                'message' => 'Connexion échouée',
             ]);
         }else{
-            return response()->json([
-                'status'=>200,
-                'message' => 'Salut Admin',
-                'user' => $user,
-                'authorization' => [
-                    'token' => $token,
-                    'type' => 'bearer',
-                ]
-            ]);
+            $user = Auth::user();
+            if($user->type ==='commercant'){
+                return response()->json([
+                    'status'=>200,
+                    'message' => 'Salut Commercant',
+                    'user' => $user,
+                    'authorization' => [
+                        'token' => $token,
+                        'type' => 'bearer',
+                    ]
+                ]);
+    
+            }elseif($user->type ==='client'){
+                return response()->json([
+                    'status'=>200,
+                    'message' => 'Salut Client',
+                    'user' => $user,
+                    'authorization' => [
+                        'token' => $token,
+                        'type' => 'bearer',
+                    ]
+                ]);
+            }elseif($user->type ==='livreur'){
+                return response()->json([
+                    'status'=>200,
+                    'message' => 'Salut livreur',
+                    'user' => $user,
+                    'authorization' => [
+                        'token' => $token,
+                        'type' => 'bearer',
+                    ]
+                ]);
+            }else{
+                return response()->json([
+                    'status'=>200,
+                    'message' => 'Salut Admin',
+                    'user' => $user,
+                    'authorization' => [
+                        'token' => $token,
+                        'type' => 'bearer',
+                    ]
+                ]);
+            }    
         }
-       
+
     }
 
     public function registerLivreur(StoreRegisterLivreur $request){
@@ -137,6 +138,8 @@ class AuthController extends Controller
             'prenom' => $request->prenom,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'numero_tel'=>$request->numero_tel,
+            'genre'=>$request->genre,
             'type' => 'livreur'
         ]);
 
@@ -164,33 +167,38 @@ class AuthController extends Controller
 
     public function modifierInfoClient(UpdateRegisterClient $request){
         //$client = Client::where('user_id', Auth::user()->id)->first();
-        $user = Auth::user();
-       // dd($user);
-        $user->update([
-            'nom' => $request->nom,
-            'prenom' => $request->prenom,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'type' => 'client'
-        ]);
-
-        $client = $user->client()->update([
-            'adresse'=>$request->adresse,
-            'genre'=>$request->genre,
-            'numero_tel'=>$request->numero_tel,
-            'date_naiss'=>$request->date_naiss,
-        ]);
-
-        return response()->json([
-            'status'=>200,
-            'message' => 'Utilisateur mis à jour avec succes',
-            'user' => $user
-        ]);
+        try {
+            $user = Auth::user();
+            // dd($user);
+             $user->update([
+                 'nom' => $request->nom,
+                 'prenom' => $request->prenom,
+                 'email' => $request->email,
+                 'password' => Hash::make($request->password),
+                 'type' => 'client'
+             ]);
+     
+             $client = $user->client()->update([
+                 'adresse'=>$request->adresse,
+                 'genre'=>$request->genre,
+                 'numero_tel'=>$request->numero_tel,
+                 'date_naiss'=>$request->date_naiss,
+             ]);
+     
+             return response()->json([
+                 'status'=>200,
+                 'message' => 'Utilisateur mis à jour avec succes',
+                 'user' => $user
+             ]);
+        }catch(Exception $e){
+            return response()->json($e);
+        }
 
     }
 
     public function modifierInfoCommercant(UpdateRegisterCommercant $request){
-        $user = Auth::user();
+        try {
+            $user = Auth::user();
         //dd($user);
         $user->update([
             'nom' => $request->nom,
@@ -214,6 +222,10 @@ class AuthController extends Controller
             'message' => 'Utilisateur mis à jour avec succes',
             'user' => $user
         ]);
+    
+        }catch(Exception $e){
+            return response()->json($e);
+        }
     }
     /**
      * Display a listing of the resource.

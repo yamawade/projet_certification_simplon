@@ -28,6 +28,8 @@ class StoreRegisterLivreur extends FormRequest
             'prenom' => 'required|string|max:255',
             'matricule' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
+            'genre'=>'required|string|in:homme,femme',
+            'numero_tel' => ['required', 'string', 'regex:/^(77|76|75|78|33)[0-9]/','unique:users'],
             'password' => 'required|string|min:8',
             'adresse' => 'required|string|max:255',
         ];
@@ -53,6 +55,11 @@ class StoreRegisterLivreur extends FormRequest
             'password.required'=>'Un mot de passe doit etre fourni',
             'adresse.required'=>'Une adresse doit etre fourni',
             'password.min' => 'Le mot de passe doit avoir au moins 8 caractères',
+            'genre.required' => 'Le genre doit être fourni',
+            'genre.in' => 'Le genre doit être homme ou femme',
+            'numero_tel.required' => 'Un numéro de téléphone doit être fourni',
+            'numero_tel.regex' => 'Le numéro de téléphone doit être au format correct',
+            'numero_tel.unique' => 'Un numéro de téléphone existe deja',
         ];
     }
 }
