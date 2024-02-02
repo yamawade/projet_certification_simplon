@@ -78,7 +78,7 @@ class CommandeController extends Controller
                 'Prenom' => $livreurs->prenom,
                 'Email' => $livreurs->email,
                 'numero_tel' => $livreurs->numero_tel,
-                'statut' => $livreurs->statut
+                'statut' => $livreurs->livreur->statut
             ];
         });
         try {
