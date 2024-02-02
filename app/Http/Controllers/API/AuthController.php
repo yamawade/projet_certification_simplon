@@ -227,6 +227,15 @@ class AuthController extends Controller
             return response()->json($e);
         }
     }
+
+
+    public function ListeUtilisateur(){
+        $users = User::with('client','livreur','commercant')->get();
+        return response()->json([
+            'status'=>200,
+            'users' => $users
+        ]);
+    }
     /**
      * Display a listing of the resource.
      */
