@@ -10,11 +10,19 @@ use Illuminate\Http\Request;
 use App\Models\DetailCommande;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\PaymentController;
 
 class CommandeController extends Controller
 {
+    private $paymentController;
 
-    public function creerCommande(){
+    public function __construct(PaymentController $paymentController)
+    {
+        $this->paymentController = $paymentController;
+    }
+
+    public function creerCommande(Request $request)
+    {
         $user = Client::where('user_id', Auth::user()->id)->first();
         $panier = Panier::where('user_id', $user->id)->first();
     
@@ -26,29 +34,40 @@ class CommandeController extends Controller
             'date_commande' => now(),
             'client_id' => $user->id,
         ]);
-       
+        $commande_id=$commande->id;
+       // dd($commande);
         $produitsPanier = $panier->produits()->withPivot('quantite')->get();
     
+        $montantTotal = 0;
+    
         foreach ($produitsPanier as $produit) {
+            $montantProduit = $produit->pivot->quantite * $produit->prix;
+            $montantTotal += $montantProduit;
+    
             DetailCommande::create([
                 'commande_id' => $commande->id,
                 'produit_id' => $produit->id,
-                'montant' => $produit->pivot->quantite * $produit->prix,
+                'montant' => $montantProduit,
                 'nombre_produit' => $produit->pivot->quantite,
             ]);
         }
     
-        // Détachez les produits après les avoir ajoutés à la commande
         $panier->produits()->detach();
     
-        return response()->json([
-            'status' => 200,
-            'status_message' => 'Commande créée avec succès',
-            'data' => $commande,
-        ]);
+        // if ($request->expectsJson()) {
+        //     // Si la requête provient d'Insomnia, retournez une réponse JSON
+        //     return response()->json(['montantTotal' => $montantTotal, 'commande_id' => $commande_id]);
+        // } else {
+        //     // Si la requête provient du navigateur, redirigez vers la vue
+        //     return view('index', compact('montantTotal', 'commande_id'));
+        // }
+    //     // Utilisez la redirection appropriée
+    //     //return redirect()->route('payment.index', compact('montantTotal', 'commande_id'));
+        return view('index', compact('montantTotal','commande_id'));
+       //return redirect()->away(route('payment.index', ['montantTotal' => $montantTotal, 'commande_id' => $commande_id]));
     }
     
-   
+    
     /**
      * Display a listing of the resource.
      */
