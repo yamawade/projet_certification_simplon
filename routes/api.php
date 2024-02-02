@@ -39,6 +39,7 @@ Route::middleware(['auth:api','client'])->group(function(){
     Route::post('Commentaire/update/{produit}',[AvisController::class,'update']);
     Route::post('Commentaire/{produit}',[AvisController::class,'destroy']);
     Route::post('signalerProduit/{produit}',[AvisController::class,'signalerProduit']);
+    Route::post('modifierInfoClient',[AuthController::class,'modifierInfoClient']);
 });
 
 Route::get('payment', [PaymentController::class, 'index'])->name('payment.index');
