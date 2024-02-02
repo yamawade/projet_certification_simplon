@@ -19,7 +19,9 @@ class AdminSeeder extends Seeder
             'prenom' => 'Mariam',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('passer1234'),
-            'type' => 'admin'
+            'type' => 'admin',
+            'numero_tel' => '778909876',
+            'genre' => 'femme'
         ];
         $user = User::create($userData);
 
