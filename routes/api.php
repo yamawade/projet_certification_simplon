@@ -31,10 +31,10 @@ Route::post('registerClient',[AuthController::class,'registerClient']);
 Route::get('commentaires/{produit}',[AvisController::class,'getAvisByProduit']);
 Route::middleware(['auth:api','client'])->group(function(){
     Route::post('deconnexionClient',[AuthController::class,'logout']);
-    Route::post('ajoutProduitPanier/{produit}',[PanierController::class,'ajouterProduitPanier']);
-    Route::get('voirPanier',[PanierController::class,'voirPanier']);
-    Route::post('retirerProduit/{produit}',[PanierController::class,'retirerProduitPanier']);
-    Route::post('passerCommande',[CommandeController::class,'creerCommande']);
+    // Route::post('ajoutProduitPanier/{produit}',[PanierController::class,'ajouterProduitPanier']);
+    // Route::get('voirPanier',[PanierController::class,'voirPanier']);
+    // Route::post('retirerProduit/{produit}',[PanierController::class,'retirerProduitPanier']);
+    // Route::post('passerCommande',[CommandeController::class,'creerCommande']);
     Route::post('faireCommentaire/{produit}',[AvisController::class,'store']);
     Route::post('Commentaire/update/{produit}',[AvisController::class,'update']);
     Route::post('Commentaire/{produit}',[AvisController::class,'destroy']);
@@ -42,6 +42,7 @@ Route::middleware(['auth:api','client'])->group(function(){
     Route::post('modifierInfoClient',[AuthController::class,'modifierInfoClient']);
 });
 
+Route::post('passerCommande',[CommandeController::class,'creerCommande']);
 Route::get('payment', [PaymentController::class, 'index'])->name('payment.index');
 Route::post('/checkout', [PaymentController::class, 'payment'])->name('payment.submit');
 Route::get('ipn', [PaymentController::class, 'ipn'])->name('paytech-ipn');

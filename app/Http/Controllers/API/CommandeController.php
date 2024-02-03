@@ -25,11 +25,12 @@ class CommandeController extends Controller
     public function creerCommande(Request $request)
     {
         $user = Client::where('user_id', Auth::user()->id)->first();
-        $panier = Panier::where('user_id', $user->id)->first();
+        //dd($user->id);
+        //$panier = Panier::where('user_id', $user->id)->first();
     
-        if (!$panier) {
-            return response()->json(['status' => 404, 'status_message' => 'Le panier est vide ou n\'existe pas.']);
-        }
+        // if (!$panier) {
+        //     return response()->json(['status' => 404, 'status_message' => 'Le panier est vide ou n\'existe pas.']);
+        // }
     
         $commande = Commande::create([
             'date_commande' => now(),
@@ -37,23 +38,33 @@ class CommandeController extends Controller
         ]);
         $commande_id=$commande->id;
        // dd($commande);
-        $produitsPanier = $panier->produits()->withPivot('quantite')->get();
+        //$produitsPanier = $panier->produits()->withPivot('quantite')->get();
     
-        $montantTotal = 0;
-    
-        foreach ($produitsPanier as $produit) {
-            $montantProduit = $produit->pivot->quantite * $produit->prix;
-            $montantTotal += $montantProduit;
-    
+        //$montantTotal = 0;
+
+        foreach ($request->input('panier') as $produit) {
             DetailCommande::create([
                 'commande_id' => $commande->id,
-                'produit_id' => $produit->id,
+                'produit_id' => $produit['id'],
+                'quantite' => $produit['quantite'],
                 'montant' => $montantProduit,
                 'nombre_produit' => $produit->pivot->quantite,
             ]);
         }
     
-        $panier->produits()->detach();
+        // foreach ($produitsPanier as $produit) {
+        //     $montantProduit = $produit->pivot->quantite * $produit->prix;
+        //     $montantTotal += $montantProduit;
+    
+        //     DetailCommande::create([
+        //         'commande_id' => $commande->id,
+        //         'produit_id' => $produit->id,
+        //         'montant' => $montantProduit,
+        //         'nombre_produit' => $produit->pivot->quantite,
+        //     ]);
+        // }
+    
+       // $panier->produits()->detach();
     
         // if ($request->expectsJson()) {
         //     // Si la requête provient d'Insomnia, retournez une réponse JSON
