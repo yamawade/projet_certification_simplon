@@ -171,18 +171,17 @@ class AuthController extends Controller
             $user = Auth::user();
             // dd($user);
              $user->update([
-                 'nom' => $request->nom,
-                 'prenom' => $request->prenom,
-                 'email' => $request->email,
-                 'password' => Hash::make($request->password),
-                 'type' => 'client'
+                'nom' => $request->nom,
+                'prenom' => $request->prenom,
+                'email' => $request->email,
+                'genre'=>$request->genre,
+                'numero_tel'=>$request->numero_tel,
+                'type' => 'client'
              ]);
      
              $client = $user->client()->update([
-                 'adresse'=>$request->adresse,
-                 'genre'=>$request->genre,
-                 'numero_tel'=>$request->numero_tel,
-                 'date_naiss'=>$request->date_naiss,
+                'adresse'=>$request->adresse,
+                'date_naiss'=>$request->date_naiss,
              ]);
      
              return response()->json([
@@ -204,7 +203,8 @@ class AuthController extends Controller
             'nom' => $request->nom,
             'prenom' => $request->prenom,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'numero_tel'=>$request->numero_tel,
+            'genre'=>$request->genre,
             'type' => 'commercant'
         ]);
 
@@ -212,8 +212,6 @@ class AuthController extends Controller
             'ninea'=>$request->ninea,
             'adresse'=>$request->adresse,
             'nin'=>$request->nin,
-            'numero_tel'=>$request->numero_tel,
-            'genre'=>$request->genre,
             'date_naiss'=>$request->date_naiss,
         ]);
 
