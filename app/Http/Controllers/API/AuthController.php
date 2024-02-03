@@ -236,6 +236,40 @@ class AuthController extends Controller
             'users' => $users
         ]);
     }
+
+    public function showClient(){
+        $client = Auth::user()->client;
+        return response()->json([
+            'status'=>200,
+            'client' => [
+                'nom'=>$client->user->nom,
+                'prenom'=>$client->user->prenom,
+                'email'=>$client->user->email,
+                'genre'=>$client->user->genre,
+                'adresse'=>$client->adresse,
+                'date_naiss'=>$client->date_naiss,
+                'numero_tel'=>$client->user->numero_tel
+            ]
+        ]);
+    }
+
+    public function showCommercant(){
+        $commercant = Auth::user()->commercant;
+        return response()->json([
+            'status'=>200,
+            'commercant' => [
+                'nom'=>$commercant->user->nom,
+                'prenom'=>$commercant->user->prenom,
+                'email'=>$commercant->user->email,
+                'genre'=>$commercant->user->genre,
+                'ninea'=>$commercant->ninea,
+                'adresse'=>$commercant->adresse,
+                'nin'=>$commercant->nin,
+                'date_naiss'=>$commercant->date_naiss,
+                'numero_tel'=>$commercant->user->numero_tel
+            ]
+        ]);
+    }
     /**
      * Display a listing of the resource.
      */

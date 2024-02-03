@@ -40,6 +40,7 @@ Route::middleware(['auth:api','client'])->group(function(){
     Route::post('Commentaire/{produit}',[AvisController::class,'destroy']);
     Route::post('signalerProduit/{produit}',[AvisController::class,'signalerProduit']);
     Route::post('modifierInfoClient',[AuthController::class,'modifierInfoClient']);
+    Route::post('showClient',[AuthController::class,'showClient']);
 });
 
 Route::get('payment', [PaymentController::class, 'index'])->name('payment.index');
@@ -61,6 +62,7 @@ Route::middleware(['auth:api','commercant'])->group(function(){
     Route::post('produit/{produit}',[ProduitController::class,'destroy']);
     Route::get('getProduitsByCommercant',[ProduitController::class,'getProduitsByCommercant']);
     Route::post('modifierInfoCommercant',[AuthController::class,'modifierInfoCommercant']);
+    Route::post('showCommercant',[AuthController::class,'showCommercant']);
 });
 
 Route::get('categories',[CategorieController::class,'index']);
