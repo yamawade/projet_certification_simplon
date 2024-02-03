@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -27,11 +28,11 @@ class UpdateRegisterClient extends FormRequest
             'nom' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
             'adresse' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => ['required','string', 'email','max:255',Rule::unique('users')->ignore(auth()->user()->id)],
             'date_naiss' => 'required|date|before: -18 years',
             'password' => 'required|string|min:8',
             'genre'=>'required|string|in:homme,femme',
-            'numero_tel' => ['required', 'string', 'regex:/^(77|76|75|78|33)[0-9]/','unique:clients'],
+            'numero_tel' => ['required', 'string', 'regex:/^(77|76|75|78|33)[0-9]/',Rule::unique('users')->ignore(auth()->user()->id)],
         ];
     }
 
