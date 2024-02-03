@@ -59,7 +59,7 @@ Route::middleware(['auth:api','commercant'])->group(function(){
     Route::post('deconnexionCommercant',[AuthController::class,'logout']);
     Route::post('produit/create',[ProduitController::class,'store']);
     Route::post('produit/update/{produit}',[ProduitController::class,'update']);
-    Route::post('produit/{produit}',[ProduitController::class,'destroy']);
+    Route::delete('produit/{produit}',[ProduitController::class,'destroy']);
     Route::get('getProduitsByCommercant',[ProduitController::class,'getProduitsByCommercant']);
     Route::post('modifierInfoCommercant',[AuthController::class,'modifierInfoCommercant']);
     Route::get('showCommercant',[AuthController::class,'showCommercant']);
@@ -72,7 +72,7 @@ Route::middleware(['auth:api','admin'])->group(function(){
     Route::post('deconnexionAdmin',[AuthController::class,'logout']);
     Route::post('categorie/create',[CategorieController::class,'store']);
     Route::post('categorie/update/{id}',[CategorieController::class,'update']);
-    Route::post('categorie/{id}',[CategorieController::class,'destroy']);
+    Route::delete('categorie/{id}',[CategorieController::class,'destroy']);
     Route::get('commandes',[CommandeController::class,'index']);
     Route::get('ListeProduitSignaler',[AvisController::class,'ListeProduitSignaler']);
     Route::get('ListerLivreur',[CommandeController::class,'ListerLivreur']);
