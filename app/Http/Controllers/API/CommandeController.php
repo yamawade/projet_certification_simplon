@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Client;
 use App\Models\Panier;
 use App\Models\Livreur;
+use App\Models\Produit;
 use App\Models\Commande;
 use Illuminate\Http\Request;
 use App\Models\DetailCommande;
@@ -25,47 +26,40 @@ class CommandeController extends Controller
     public function creerCommande(Request $request)
     {
         $user = Client::where('user_id', Auth::user()->id)->first();
-        $panier = Panier::where('user_id', $user->id)->first();
-    
-        if (!$panier) {
-            return response()->json(['status' => 404, 'status_message' => 'Le panier est vide ou n\'existe pas.']);
+        //dd($user->id);
+        
+        foreach ($request->input('panier') as $produit) {
+            $produitExist = Produit::where('id', $produit['produit_id'])->where('quantite', '>', 0)->first();
+
+            if (!$produitExist || $produit['nombre_produit'] > $produitExist->quantite) {
+                return response()->json(['status' => 400, 'status_message' => 'Quantité de produit insuffisante.']);
+            }
+
         }
-    
+
         $commande = Commande::create([
             'date_commande' => now(),
             'client_id' => $user->id,
         ]);
-        $commande_id=$commande->id;
-       // dd($commande);
-        $produitsPanier = $panier->produits()->withPivot('quantite')->get();
-    
+
+        $commande_id = $commande->id;
         $montantTotal = 0;
-    
-        foreach ($produitsPanier as $produit) {
-            $montantProduit = $produit->pivot->quantite * $produit->prix;
-            $montantTotal += $montantProduit;
-    
+        //dd($request->input('panier'));
+        foreach ($request->input('panier') as $produit) {
             DetailCommande::create([
                 'commande_id' => $commande->id,
-                'produit_id' => $produit->id,
-                'montant' => $montantProduit,
-                'nombre_produit' => $produit->pivot->quantite,
+                'produit_id' => $produit['produit_id'],
+                'nombre_produit' => $produit['nombre_produit'],
+                'montant' => $produit['montant'],
             ]);
+            
+            Produit::where('id', $produit['produit_id'])->decrement('quantite', $produit['nombre_produit']);
+    
+            // Ajouter le montant du produit au montant total
+            $montantTotal += $produit['montant'];
         }
-    
-        $panier->produits()->detach();
-    
-        // if ($request->expectsJson()) {
-        //     // Si la requête provient d'Insomnia, retournez une réponse JSON
-        //     return response()->json(['montantTotal' => $montantTotal, 'commande_id' => $commande_id]);
-        // } else {
-        //     // Si la requête provient du navigateur, redirigez vers la vue
-        //     return view('index', compact('montantTotal', 'commande_id'));
-        // }
-    //     // Utilisez la redirection appropriée
-    //     //return redirect()->route('payment.index', compact('montantTotal', 'commande_id'));
+        
         return view('index', compact('montantTotal','commande_id'));
-       //return redirect()->away(route('payment.index', ['montantTotal' => $montantTotal, 'commande_id' => $commande_id]));
     }
     
     
