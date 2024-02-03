@@ -158,7 +158,7 @@ class ProduitController extends Controller
     public function destroy(Produit $produit)
     {
        //dd($produit->commercant_id);
-      // try {
+        try {
             $commercant = Commercant::where('user_id', Auth::user()->id)->first();
            // dd($commercant->id);
             if($produit->commercant_id == $commercant->id){
@@ -175,11 +175,10 @@ class ProduitController extends Controller
                     'status_message'=>'Vous n\'etes pas autorisé a supprimer ce produit',
                     // 'data'=>$produit
                 ]);
-            }  
-            
-    //    }catch(Exception $e){
-    //         return response()->json($e);
-    //  }
+            }    
+       }catch(Exception $e){
+            return response()->json($e);
+        }
     }
 
     public function getProduitsByCategorie(Categorie $categorie)
