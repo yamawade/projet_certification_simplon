@@ -46,9 +46,8 @@ class CommandeController extends Controller
             DetailCommande::create([
                 'commande_id' => $commande->id,
                 'produit_id' => $produit['id'],
-                'quantite' => $produit['quantite'],
-                'montant' => $montantProduit,
-                'nombre_produit' => $produit->pivot->quantite,
+                'nombre_produit' => $produit['quantite'],
+                'montant' => $produit['quantite']
             ]);
         }
     
