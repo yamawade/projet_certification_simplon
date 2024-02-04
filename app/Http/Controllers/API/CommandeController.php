@@ -59,7 +59,14 @@ class CommandeController extends Controller
             $montantTotal += $produit['montant'];
         }
         
-        return view('index', compact('montantTotal','commande_id'));
+        $montantTotal+=$montantTotal*0.1;
+
+        return response()->json([
+            'status' => 200,
+            'payment_url' => "http://localhost:8000/api/payment?montantTotal={$montantTotal}&commande_id={$commande_id}"
+        ]);
+        
+        //return view('index', compact('montantTotal','commande_id'));
     }
     
     
