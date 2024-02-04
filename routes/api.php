@@ -77,6 +77,7 @@ Route::middleware(['auth:api','admin'])->group(function(){
     Route::post('AffecterLivreur/{commande}',[CommandeController::class,'AffecterLivreur']);
     Route::get('ListeUtilisateur',[AuthController::class,'ListeUtilisateur']);
     Route::get('ListeNewsletter',[NewsletterController::class,'index']);
+    Route::post('envoyerMail',[NewsletterController::class,'envoyerMail']);
 });
 
 //LIVREUR

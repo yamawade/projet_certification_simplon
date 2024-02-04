@@ -6,6 +6,7 @@ use App\Models\Newsletter;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreNewsletter;
+use App\Notifications\EnvoieNewsletter;
 
 class NewsletterController extends Controller
 {
@@ -36,6 +37,23 @@ class NewsletterController extends Controller
         }catch(Exception $e){
             return response()->json($e);
         }
+    }
+
+    public function envoyerMail(){
+        $newsletters = Newsletter::all();
+        $emails = $newsletters->pluck('email');
+        //dd($emails);
+        foreach($emails as $email) {
+            $inscrit = Newsletter::where('email', $email)->first();
+            if ($inscrit) {
+                $inscrit->notify(new EnvoieNewsletter());
+                return response()->json([
+                    'status'=>200,
+                    'status_message'=>'Mail envoye',
+                ]);
+            }
+        }
+        
     }
 
     /**
