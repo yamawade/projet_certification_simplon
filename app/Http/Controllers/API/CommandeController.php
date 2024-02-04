@@ -117,8 +117,15 @@ class CommandeController extends Controller
     }
 
     public function AffecterLivreur(Commande $commande,Request $request){
-
+       // dd($request->livreur_id);
         $livreur = Livreur::where('id', $request->livreur_id)->first();
+        if(!$livreur) {
+            return response()->json([
+                'status' => 404,
+                'status_message' => 'livreur introuvable',
+            ]);
+        }
+        //dd($livreur);
         if($livreur->statut === 'disponible') {
             $commande->update([
                 'livreur_id' => $livreur->id,

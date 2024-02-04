@@ -228,7 +228,7 @@ class AuthController extends Controller
 
 
     public function ListeUtilisateur(){
-        $users = User::with('client','livreur','commercant')->get();
+        $users = User::where('type', 'client')->orWhere('type', 'livreur')->orWhere('type', 'commercant')->get();
         return response()->json([
             'status'=>200,
             'users' => $users

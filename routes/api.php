@@ -34,7 +34,7 @@ Route::middleware(['auth:api','client'])->group(function(){
     Route::post('passerCommande',[CommandeController::class,'creerCommande']);
     Route::post('faireCommentaire/{produit}',[AvisController::class,'store']);
     Route::post('Commentaire/update/{produit}',[AvisController::class,'update']);
-    Route::post('Commentaire/{produit}',[AvisController::class,'destroy']);
+    Route::delete('Commentaire/{produit}',[AvisController::class,'destroy']);
     Route::post('signalerProduit/{produit}',[AvisController::class,'signalerProduit']);
     Route::post('modifierInfoClient',[AuthController::class,'modifierInfoClient']);
     Route::get('showClient',[AuthController::class,'showClient']);
