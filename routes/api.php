@@ -9,6 +9,7 @@ use App\Http\Controllers\API\PanierController;
 use App\Http\Controllers\API\ProduitController;
 use App\Http\Controllers\API\CommandeController;
 use App\Http\Controllers\API\CategorieController;
+use App\Http\Controllers\API\NewsletterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,6 +76,7 @@ Route::middleware(['auth:api','admin'])->group(function(){
     Route::get('ListerLivreur',[CommandeController::class,'ListerLivreur']);
     Route::post('AffecterLivreur/{commande}',[CommandeController::class,'AffecterLivreur']);
     Route::get('ListeUtilisateur',[AuthController::class,'ListeUtilisateur']);
+    Route::get('ListeNewsletter',[NewsletterController::class,'index']);
 });
 
 //LIVREUR
@@ -82,3 +84,6 @@ Route::middleware(['auth:api','livreur'])->group(function(){
     Route::post('deconnexionLivreur',[AuthController::class,'logout']);
     Route::post('ChangerStatut',[CommandeController::class,'ChangerStatut']);
 });
+
+//NEWSLETTER
+Route::post('inscriptionNewsletter',[NewsletterController::class,'inscriptionNewsletter']);
