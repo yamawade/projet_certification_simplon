@@ -11,12 +11,13 @@ class EnvoieNewsletter extends Notification
 {
     use Queueable;
 
+    protected $data;
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(array $data)
     {
-        //
+        $this->data = $data;
     }
 
     /**
@@ -36,6 +37,7 @@ class EnvoieNewsletter extends Notification
     {
         return (new MailMessage)
                     ->line('Panier Local.')
+                    ->line($this->data['messageContent'])
                     ->action('cliquez ici', url('http://localhost:4200/#/accueil'))
                     ->line('Merci pour votre inscription!');
     }
