@@ -8,6 +8,7 @@ use App\Http\Controllers\API\AvisController;
 use App\Http\Controllers\API\PanierController;
 use App\Http\Controllers\API\ProduitController;
 use App\Http\Controllers\API\CommandeController;
+use App\Http\Controllers\API\FeedbackController;
 use App\Http\Controllers\API\CategorieController;
 use App\Http\Controllers\API\NewsletterController;
 
@@ -78,6 +79,7 @@ Route::middleware(['auth:api','admin'])->group(function(){
     Route::get('ListeUtilisateur',[AuthController::class,'ListeUtilisateur']);
     Route::get('ListeNewsletter',[NewsletterController::class,'index']);
     Route::post('envoyerMail',[NewsletterController::class,'envoyerMail']);
+    Route::get('ListeFeedback',[FeedbackController::class,'index']);
 });
 
 //LIVREUR
@@ -88,3 +90,7 @@ Route::middleware(['auth:api','livreur'])->group(function(){
 
 //NEWSLETTER
 Route::post('inscriptionNewsletter',[NewsletterController::class,'inscriptionNewsletter']);
+
+//FEEDBACK
+Route::post('faireFeedback',[FeedbackController::class,'store']);
+

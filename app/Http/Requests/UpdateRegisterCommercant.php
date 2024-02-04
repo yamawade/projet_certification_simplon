@@ -30,7 +30,7 @@ class UpdateRegisterCommercant extends FormRequest
             'adresse' => 'required|string|max:255',
             'date_naiss' => 'required|date|before: -18 years',
             'genre'=>'required|string|in:homme,femme',
-            'numero_tel' => ['required', 'string', 'regex:/^(77|76|75|78|33)[0-9]/',Rule::unique('users')->ignore(auth()->user()->id)],           
+            'numero_tel' => ['required', 'string', 'regex:/^(77|76|75|78|33)[0-9]{7}$/',Rule::unique('users')->ignore(auth()->user()->id)],           
             'nin' => 'required|string|max:255',
             'email' => ['required','string', 'email','max:255',Rule::unique('users')->ignore(auth()->user()->id)],
         ];
