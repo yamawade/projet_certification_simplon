@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\User;
+use App\Models\Livreur;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreLogin;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreRegisterClient;
+use App\Http\Requests\StorePasswordLivreur;
 use App\Http\Requests\StoreRegisterLivreur;
 use App\Http\Requests\UpdateRegisterClient;
 use App\Http\Requests\StoreRegisterCommercant;
@@ -137,7 +139,8 @@ class AuthController extends Controller
             'nom' => $request->nom,
             'prenom' => $request->prenom,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            //'password' => Hash::make($request->password),
+            'password' => Hash::make('passer1234'),
             'numero_tel'=>$request->numero_tel,
             'genre'=>$request->genre,
             'type' => 'livreur'
@@ -266,6 +269,20 @@ class AuthController extends Controller
                 'date_naiss'=>$commercant->date_naiss,
                 'numero_tel'=>$commercant->user->numero_tel
             ]
+        ]);
+    }
+
+
+    public function modifierPasswordLivreur(StorePasswordLivreur $request){
+
+        $user = Auth::user();
+        //dd($user->password);
+        $user->password = Hash::make($request->password);
+        $user->update();
+        return response()->json([
+            'status'=>200,
+            'message' => 'Mot de passe mis à jour avec succes',
+            'user' => $user
         ]);
     }
     /**
