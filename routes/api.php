@@ -80,6 +80,8 @@ Route::middleware(['auth:api','admin'])->group(function(){
     Route::get('ListeNewsletter',[NewsletterController::class,'index']);
     Route::post('envoyerMail',[NewsletterController::class,'envoyerMail']);
     Route::get('ListeFeedback',[FeedbackController::class,'index']);
+    Route::get('voirFeedback/{feedback}',[FeedbackController::class,'show']);
+    
 });
 
 //LIVREUR
