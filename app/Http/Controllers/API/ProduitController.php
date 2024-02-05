@@ -92,7 +92,7 @@ class ProduitController extends Controller
                     'id_categorie'=> $detailProduit->categorie_id,
                     'categorie' => $detailProduit->categorie->nom_categorie,
                     'commercant' => $detailProduit->commercant->user->prenom .' '.$detailProduit->commercant->user->nom,
-                    'numero_tel' => $detailProduit->commercant->numero_tel,
+                    'numero_tel' => $detailProduit->commercant->user->numero_tel,
                 ],
             ]);
         
