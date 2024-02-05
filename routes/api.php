@@ -80,12 +80,15 @@ Route::middleware(['auth:api','admin'])->group(function(){
     Route::get('ListeNewsletter',[NewsletterController::class,'index']);
     Route::post('envoyerMail',[NewsletterController::class,'envoyerMail']);
     Route::get('ListeFeedback',[FeedbackController::class,'index']);
+    Route::get('voirFeedback/{feedback}',[FeedbackController::class,'show']);
+    
 });
 
 //LIVREUR
 Route::middleware(['auth:api','livreur'])->group(function(){
     Route::post('deconnexionLivreur',[AuthController::class,'logout']);
     Route::post('ChangerStatut',[CommandeController::class,'ChangerStatut']);
+    Route::post('modifierPasswordLivreur',[AuthController::class,'modifierPasswordLivreur']);
 });
 
 //NEWSLETTER
