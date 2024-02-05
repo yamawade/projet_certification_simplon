@@ -55,9 +55,24 @@ class FeedbackController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Feddback $feedback)
     {
-        //
+        try {
+            return response()->json([
+                'status' => 200,
+                'status_message' => 'Detail du produit',
+                'data' => [
+                    'id' => $feedback->id,
+                    'Nom' => $feedback->nom,
+                    'Numero' => $feedback->numero_tel,
+                    'Email' => $feedback->email,
+                    'Message' => $feedback->message
+                ],
+            ]);
+        
+        }catch(Exception $e){
+            return response()->json($e);
+        }
     }
 
     /**
