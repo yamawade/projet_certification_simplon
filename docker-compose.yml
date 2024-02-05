@@ -1,0 +1,48 @@
+version: "3.8"
+services:
+    # Mysql database container
+    db:
+        image: mysql
+        container_name: mysql_panierlocal
+        restart: always
+        volumes:
+            - db-data:/var/lib/mysql
+        environment:
+            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+        ports:
+            - "3309:3306"
+        networks:
+            - panierlocal
+
+    # phpmyadmin container
+    phpmyadmin:
+        image: phpmyadmin
+        container_name: phpmyadmin_panierlocal
+        restart: always
+        depends_on:
+            - db
+        ports:
+            - 8010:80
+        environment:
+            PMA_HOST: db
+        networks:
+            - panierlocal
+
+    www:
+        build: docker/php
+        container_name: panierlocal_certif
+        ports:
+            - "8002:80"
+        volumes:
+            - ./docker/php/vhosts:/etc/apache2/sites-enabled
+            - ./:/var/www/html
+        restart: always
+        networks:
+            - panierlocal
+
+networks:
+    panierlocal:
+
+
+volumes:
+    db-data:
