@@ -214,18 +214,35 @@ class CommandeController extends Controller
             'etat_commande' => $commande->etat_commande,
             'details_commande' => [],
         ];
+
+        $vendeurs = [];
+
         foreach ($detailsCommande as $detail) {
             $produit = $detail->produit;
             $commercant = $produit->commercant;
 
-            $data['details_commande'][] = [
-                // 'produit_id' => $produit->id,
-                // 'nom_produit' => $produit->nom_produit,
-                // 'prix_produit' => $produit->prix,
-                'adresse_vendeur' => $commercant->adresse, 
-                // 'quantite' => $detail->nombre_produit,
-            ];
+            if (!in_array($commercant->adresse, $vendeurs)) {
+            
+                $vendeurs[] = $commercant->adresse;
+
+                $data['details_commande'][] = [
+                    'adresse_vendeur' => $commercant->adresse,
+                ];
+            }
         }
+
+        // foreach ($detailsCommande as $detail) {
+        //     $produit = $detail->produit;
+        //     $commercant = $produit->commercant;
+
+        //     $data['details_commande'][] = [
+        //         // 'produit_id' => $produit->id,
+        //         // 'nom_produit' => $produit->nom_produit,
+        //         // 'prix_produit' => $produit->prix,
+        //         'adresse_vendeur' => $commercant->adresse, 
+        //         // 'quantite' => $detail->nombre_produit,
+        //     ];
+        // }
         
         //dd($data);
         return response()->json([
