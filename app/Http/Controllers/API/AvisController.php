@@ -82,6 +82,29 @@ class AvisController extends Controller
         //dd($produitSignaler->produit->nom_produit);
     }
 
+    public function bloquerProduitSignaler(ProduitSignaler $produitSignaler){
+        if($produitSignaler->statut === 'pas_bloquer'){
+            $produitSignaler->statut = 'bloquer';
+            if($produitSignaler->update()){
+                return response()->json([
+                    'status'=>200,
+                    'status_message'=>'Le produit a ete bloquer',
+                    'data'=>$produitSignaler
+                ]);
+            }
+        }else{
+            $produitSignaler->statut = 'pas_bloquer';
+            if($produitSignaler->update()){
+                return response()->json([
+                    'status'=>200,
+                    'status_message'=>'Le produit a ete debloquer',
+                    'data'=>$produitSignaler
+                ]);
+            }
+        }
+        
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
