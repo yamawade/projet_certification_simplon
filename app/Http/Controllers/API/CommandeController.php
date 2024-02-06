@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\DetailCommande;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\AffecterLivreur;
 use App\Http\Controllers\PaymentController;
 
 class CommandeController extends Controller
@@ -142,6 +143,7 @@ class CommandeController extends Controller
             ]);
             $livreur->statut = 'indisponible';
             $livreur->save();
+            $livreur->user->notify(new AffecterLivreur($commande));
             return response()->json([
                 'status' => 200,
                 'status_message' => 'livreur affecté',
