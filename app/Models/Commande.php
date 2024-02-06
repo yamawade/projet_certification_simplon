@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Client;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Commande extends Model
 {
@@ -15,4 +16,9 @@ class Commande extends Model
         'etat_commande',
         'livreur_id'
     ];
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
 }

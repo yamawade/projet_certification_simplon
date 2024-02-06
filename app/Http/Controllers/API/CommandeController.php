@@ -74,13 +74,21 @@ class CommandeController extends Controller
      * Display a listing of the resource.
      */
     public function index(){
-        $commandes = Commande::where('etat_commande', 'en_attente')->orderBy('created_at', 'desc')->get();
+        $commandes = Commande::with('client')->orderBy('created_at', 'desc')->get();
         try {
+            $data = $commandes->map(function ($commande) {
+                return [
+                    'Adresse Client' => $commande->client->adresse, 
+                    'Date-commande' => $commande->created_at,
+                    'Etat' => $commande->etat_commande,
+                ];
+            });
+            //dd($data);
 
             return response()->json([
                 'status' => 200,
                 'status_message' => 'la liste des commandes',
-                'data' => $commandes
+                'data' => $data
             ]);
         } catch (Exception $e) {
             return response($e)->json($e);
