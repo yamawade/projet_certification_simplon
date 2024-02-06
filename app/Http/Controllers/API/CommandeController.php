@@ -74,13 +74,21 @@ class CommandeController extends Controller
      * Display a listing of the resource.
      */
     public function index(){
-        $commandes = Commande::where('etat_commande', 'en_attente')->orderBy('created_at', 'desc')->get();
+        $commandes = Commande::with('client')->orderBy('created_at', 'desc')->get();
         try {
+            $data = $commandes->map(function ($commande) {
+                return [
+                    'Adresse Client' => $commande->client->adresse, 
+                    'Date-commande' => $commande->created_at,
+                    'Etat' => $commande->etat_commande,
+                ];
+            });
+            //dd($data);
 
             return response()->json([
                 'status' => 200,
                 'status_message' => 'la liste des commandes',
-                'data' => $commandes
+                'data' => $data
             ]);
         } catch (Exception $e) {
             return response($e)->json($e);
@@ -188,9 +196,43 @@ class CommandeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Commande $commande)
     {
-        //
+        //dd($commande);
+        $client = $commande->client;
+       // dd($client);
+
+       $detailsCommande = $commande->detailsCommande()->with('produit.commercant')->get();
+       //dd($detailsCommande);
+       $data = [
+            'commande_id' => $commande->id,
+            'adresse_client' => $client->adresse,
+            'nom_client' => $client->user->prenom.' '.$client->user->nom,
+            'numero_tel' => $client->user->numero_tel,
+            'date_commande' => $commande->created_at->format('Y-m-d H:i:s'),
+            'etat_commande' => $commande->etat_commande,
+            'details_commande' => [],
+        ];
+        foreach ($detailsCommande as $detail) {
+            $produit = $detail->produit;
+            $commercant = $produit->commercant;
+
+            $data['details_commande'][] = [
+                // 'produit_id' => $produit->id,
+                // 'nom_produit' => $produit->nom_produit,
+                // 'prix_produit' => $produit->prix,
+                'adresse_vendeur' => $commercant->adresse, 
+                // 'quantite' => $detail->nombre_produit,
+            ];
+        }
+        
+        //dd($data);
+        return response()->json([
+            'status' => 200,
+            'status_message' => 'Détails de la commande',
+            'data' => $data,
+        ]);
+        
     }
 
     /**
