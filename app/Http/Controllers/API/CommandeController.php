@@ -209,7 +209,7 @@ class CommandeController extends Controller
             'adresse_client' => $client->adresse,
             'nom_client' => $client->user->prenom.' '.$client->user->nom,
             'numero_tel' => $client->user->numero_tel,
-            'date_commande' => $commande->created_at->format('Y-m-d H:i:s'),
+            'date_commande' => $commande->created_at,
             'etat_commande' => $commande->etat_commande,
             'details_commande' => [],
         ];
