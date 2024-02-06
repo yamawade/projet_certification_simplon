@@ -79,7 +79,7 @@ class CommandeController extends Controller
             $data = $commandes->map(function ($commande) {
                 return [
                     'Adresse_Client' => $commande->client->adresse, 
-                    'Date-commande' => $commande->created_at,
+                    'Date_commande' => $commande->created_at,
                     'Etat' => $commande->etat_commande,
                 ];
             });
