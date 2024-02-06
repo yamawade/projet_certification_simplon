@@ -82,7 +82,7 @@ Route::middleware(['auth:api','admin'])->group(function(){
     Route::get('ListeFeedback',[FeedbackController::class,'index']);
     Route::get('voirFeedback/{feedback}',[FeedbackController::class,'show']);
     Route::get('Detailscommandes/{commande}',[CommandeController::class,'show']);
-    
+    Route::get('voirProduitSignaler/{produitSignaler}',[AvisController::class,'show']);
 });
 
 //LIVREUR

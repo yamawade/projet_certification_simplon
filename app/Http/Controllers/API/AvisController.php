@@ -58,9 +58,28 @@ class AvisController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(ProduitSignaler $produitSignaler)
     {
-        //
+        $data =[
+            'Id' => $produitSignaler->id,
+            'Motif' => $produitSignaler->motif,
+            'email_commercant' => $produitSignaler->produit->commercant->user->email,
+            'nom_commercant' => $produitSignaler->produit->commercant->user->nom,
+            'prenom_commercant' => $produitSignaler->produit->commercant->user->prenom,
+            'numero_commercant' => $produitSignaler->produit->commercant->user->numero_tel,
+            'Client' => $produitSignaler->client->user->prenom.' '.$produitSignaler->client->user->nom,
+            'idProduit' => $produitSignaler->produit->id,
+            'Produit' => $produitSignaler->produit->nom_produit,
+            'Prix' => $produitSignaler->produit->prix,
+            'Image' => $produitSignaler->produit->image,
+            'Etat' => $produitSignaler->statut
+        ];
+        return response()->json([
+            'status' => 200,
+            'status_message' => 'Produit signale',
+            'data' => $data
+        ]);
+        //dd($produitSignaler->produit->nom_produit);
     }
 
     /**
@@ -166,8 +185,8 @@ class AvisController extends Controller
                 ]);
             }
        }catch(Exception $e){
-        return response()->json($e);
-    }
+            return response()->json($e);
+        }
     }
 
     public function ListeProduitSignaler(){
@@ -176,10 +195,12 @@ class AvisController extends Controller
             return [
                 'Id' => $produitSignaler->id,
                 'Motif' => $produitSignaler->motif,
+                'email_commercant' => $produitSignaler->produit->commercant->user->email,
                 'Client' => $produitSignaler->client->user->prenom.' '.$produitSignaler->client->user->nom,
                 'idProduit' => $produitSignaler->produit->id,
                 'Produit' => $produitSignaler->produit->nom_produit,
-                'Image' => $produitSignaler->produit->image
+                'Image' => $produitSignaler->produit->image,
+                'Etat' => $produitSignaler->statut
             ];
         });
         return response()->json([
