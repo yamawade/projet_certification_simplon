@@ -6,6 +6,7 @@ use App\Models\Produit;
 use App\Models\Categorie;
 use App\Models\Commercant;
 use Illuminate\Http\Request;
+use App\Models\ProduitSignaler;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreProduitRequest;
@@ -16,17 +17,39 @@ class ProduitController extends Controller
    /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //$produit = Produit::all();
-        $produit = Produit::orderBy('created_at', 'desc')->get();
-        return response()->json([
-            'status'=>200,
-            'status_message'=>'Liste des produits',
-            'data'=>$produit
-        ]);
-    }
+    // public function index()
+    // {
+    //     //$produit = Produit::all();
+    //     $produit = Produit::orderBy('created_at', 'desc')->get();
+    //     return response()->json([
+    //         'status'=>200,
+    //         'status_message'=>'Liste des produits',
+    //         'data'=>$produit
+    //     ]);
+    // }
 
+    public function index()
+{
+    // Récupérer tous les produits
+    $produits = Produit::orderBy('created_at', 'desc')->get();
+
+    
+    $produitsNonBloques = $produits->filter(function ($produit) {
+        
+        $produitSignaler = ProduitSignaler::where('produit_id', $produit->id)->first();
+       
+        return !$produitSignaler || $produitSignaler->statut !== 'bloquer';
+    });
+
+    // Convertir la collection filtrée en tableau
+    $produitsNonBloques = $produitsNonBloques->values()->all();
+
+    return response()->json([
+        'status' => 200,
+        'status_message' => 'Liste des produits non bloqués',
+        'data' => $produitsNonBloques
+    ]);
+}
     /**
      * Show the form for creating a new resource.
      */
