@@ -78,7 +78,7 @@ class CommandeController extends Controller
         try {
             $data = $commandes->map(function ($commande) {
                 return [
-                    'Adresse Client' => $commande->client->adresse, 
+                    'Adresse_Client' => $commande->client->adresse, 
                     'Date-commande' => $commande->created_at,
                     'Etat' => $commande->etat_commande,
                 ];
