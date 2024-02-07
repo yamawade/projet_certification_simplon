@@ -99,18 +99,18 @@ class CommandeController extends Controller
 
     public function ListerLivreur(){
 
-        $livreurs = User::where('type', 'livreur')->get();
+        $livreurs = Livreur::all();
 
         $data = $livreurs->map(function ($livreurs) {
             return [
                 'Id' => $livreurs->id,
-                'Nom' => $livreurs->nom,
-                'Prenom' => $livreurs->prenom,
-                'Email' => $livreurs->email,
-                'Numero' => $livreurs->numero_tel,
-                'statut' => $livreurs->livreur->statut,
-                'Adresse' => $livreurs->livreur->adresse,
-                'Matricule'=> $livreurs->livreur->matricule
+                'Nom' => $livreurs->user->nom,
+                'Prenom' => $livreurs->user->prenom,
+                'Email' => $livreurs->user->email,
+                'Numero' => $livreurs->user->numero_tel,
+                'statut' => $livreurs->statut,
+                'Adresse' => $livreurs->adresse,
+                'Matricule'=> $livreurs->matricule
             ];
         });
         try {
