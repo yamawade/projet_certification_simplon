@@ -41,6 +41,7 @@ Route::middleware(['auth:api','client'])->group(function(){
     Route::post('modifierInfoClient',[AuthController::class,'modifierInfoClient']);
     Route::get('showClient',[AuthController::class,'showClient']);
     Route::get('listeCommande',[CommandeController::class,'listerCommandeClient']);
+    Route::get('showCommande/{commande}',[CommandeController::class,'showCommandeClient']);
 });
 
 Route::get('payment', [PaymentController::class, 'index'])->name('payment.index');
