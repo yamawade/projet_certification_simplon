@@ -180,6 +180,19 @@ class CommandeController extends Controller
         }
     }
 
+
+    public function listerCommandeClient(){
+        $client=Client::where('user_id', Auth::user()->id)->first();
+       // dd($client);
+        $commandes = Commande::where('client_id', $client->id)->orderBy('created_at', 'desc')->get();
+        //dd($commandes);
+        return response()->json([
+            'status' => 200,
+            'status_message' => 'la liste des commandes',
+            'data' => $commandes
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */

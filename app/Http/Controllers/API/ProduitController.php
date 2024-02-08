@@ -28,28 +28,26 @@ class ProduitController extends Controller
     //     ]);
     // }
 
-    public function index()
-{
-    // Récupérer tous les produits
-    $produits = Produit::orderBy('created_at', 'desc')->get();
+    public function index(){
+        $produits = Produit::orderBy('created_at', 'desc')->get();
 
-    
-    $produitsNonBloques = $produits->filter(function ($produit) {
         
-        $produitSignaler = ProduitSignaler::where('produit_id', $produit->id)->first();
-       
-        return !$produitSignaler || $produitSignaler->statut !== 'bloquer';
-    });
+        $produitsNonBloques = $produits->filter(function ($produit) {
+            
+            $produitSignaler = ProduitSignaler::where('produit_id', $produit->id)->first();
+        
+            return !$produitSignaler || $produitSignaler->statut !== 'bloquer';
+        });
 
-    // Convertir la collection filtrée en tableau
-    $produitsNonBloques = $produitsNonBloques->values()->all();
+        // Convertir la collection filtrée en tableau
+        $produitsNonBloques = $produitsNonBloques->values()->all();
 
-    return response()->json([
-        'status' => 200,
-        'status_message' => 'Liste des produits non bloqués',
-        'data' => $produitsNonBloques
-    ]);
-}
+        return response()->json([
+            'status' => 200,
+            'status_message' => 'Liste des produits non bloqués',
+            'data' => $produitsNonBloques
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      */
