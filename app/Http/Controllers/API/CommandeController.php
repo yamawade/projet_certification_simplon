@@ -222,6 +222,37 @@ class CommandeController extends Controller
         ]);
     }
 
+
+    public function listerCommandeAffecterLivreur(){
+        $livreur=Livreur::where('user_id', Auth::user()->id)->first();
+        $commandeAffecter = Commande::where('livreur_id', $livreur->id)->orderBy('created_at', 'desc')->get();
+        //dd($commandeAffecter);
+        foreach ($commandeAffecter as $commande) {
+            $detailsCommande=DetailCommande::where('commande_id', $commande->id)->get();
+            $nombreProduit = 0;
+            //dd($detailsCommande);
+
+            foreach ($detailsCommande as $detail) {
+                $nombreProduit += $detail->nombre_produit;
+            }
+
+            $ListecommandeAffecter[] = [
+                'Id' => $commande->id,
+                'nom_client'=>$commande->client->user->nom,
+                'numero_tel_client'=>$commande->client->user->numero_tel,
+                'Adresse_Client' => $commande->client->adresse, 
+                'Date_commande' => $commande->created_at,
+                'Etat' => $commande->etat_commande,
+                'nombre_produit' => $nombreProduit,
+                //'montant' => $detailsCommande->montant
+            ];
+        }
+        return response()->json([
+            'status' => 200,
+            'status_message' => 'la liste des commandes',
+            'data' => $ListecommandeAffecter
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      */
