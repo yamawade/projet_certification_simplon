@@ -8,6 +8,7 @@ use App\Models\Panier;
 use App\Models\Livreur;
 use App\Models\Produit;
 use App\Models\Commande;
+use App\Models\Commercant;
 use Illuminate\Http\Request;
 use App\Models\DetailCommande;
 use App\Http\Controllers\Controller;
@@ -190,6 +191,34 @@ class CommandeController extends Controller
             'status' => 200,
             'status_message' => 'la liste des commandes',
             'data' => $commandes
+        ]);
+    }
+
+
+    public function listerVentesCommercant(){
+        $commercant=Commercant::where('user_id', Auth::user()->id)->first();
+        $produits=Produit::where('commercant_id', $commercant->id)->get();
+        //dd($produits);
+
+        foreach ($produits as $produit) {
+            $detailsCommande=DetailCommande::where('produit_id', $produit->id)->get();
+
+            foreach($detailsCommande as $vente){
+                $listesVentes[] = [
+                    'produit_id'=>$vente->produit_id,
+                    'nombre_produit'=>$vente->nombre_produit,
+                    'nom_produit'=>$vente->produit->nom_produit,
+                    'montant'=>$vente->montant,
+                    'date_commande'=>$vente->commande->created_at
+                ];
+    
+            }
+        }
+        //dd($listesVentes);
+        return response()->json([
+            'status' => 200,
+            'status_message' => 'la liste des ventes',
+            'data' => $listesVentes
         ]);
     }
 
