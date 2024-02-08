@@ -273,6 +273,33 @@ class CommandeController extends Controller
             'data' => $ListecommandeAffecter
         ]);
     }
+
+
+    public function showCommandeClient(Commande $commande){
+        $detailsCommande = DetailCommande::where('commande_id', $commande->id)->get();
+        $montantTotal = 0;
+        $listeArticles = [];
+        foreach ($detailsCommande as $detail) {
+            $produit = $detail->produit;
+          //  dd($produit);
+    
+            $listeArticles[] = [
+                'produit_id' => $produit->id,
+                'nom_produit' => $produit->nom_produit,
+                'image'=> $produit->image,
+                'prix_produit' => $produit->prix,
+                // 'quantite' => $detail->nombre_produit,
+                // 'montant' => $detail->montant
+            ];
+        }
+    
+        return response()->json([
+            'status' => 200,
+            'status_message' => 'Détails de la commande',
+            'data' => $listeArticles
+        ]);
+
+    }
     /**
      * Show the form for creating a new resource.
      */
