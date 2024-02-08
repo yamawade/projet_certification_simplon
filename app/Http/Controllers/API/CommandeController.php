@@ -220,31 +220,7 @@ class CommandeController extends Controller
         $produits=Produit::where('commercant_id', $commercant->id)->get();
         //dd($produits);
 
-        // foreach ($produits as $produit) {
-        //     $detailsCommande=DetailCommande::where('produit_id', $produit->id)->get();
-
-        //     $nombreArticles = 0;
-        //     $montantTotal = 0;
-
-        //     foreach ($detailsCommande as $detail) {
-        //         $nombreArticles += $detail->nombre_produit;
-        //         $montantTotal += $detail->montant;
-        //     }
-
-        //     foreach($detailsCommande as $vente){
-        //         $listesVentes[] = [
-        //             'Id'=>$vente->commande->id,
-        //             'produit_id'=>$vente->produit_id,
-        //             'nombre_produit'=>$nombreArticles,
-        //             // 'nom_produit'=>$vente->produit->nom_produit,
-        //             'montant'=>$montantTotal,
-        //             'date_commande'=>$vente->commande->created_at,
-        //             'etat_commande'=>$vente->commande->etat_commande
-        //         ];
-    
-        //     }
-        // }
-      
+        $listesVentes = [];
         foreach ($produits as $produit) {
             $detailsCommande = DetailCommande::where('produit_id', $produit->id)->get();
     
