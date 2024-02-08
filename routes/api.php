@@ -63,6 +63,7 @@ Route::middleware(['auth:api','commercant'])->group(function(){
     Route::get('getProduitsByCommercant',[ProduitController::class,'getProduitsByCommercant']);
     Route::post('modifierInfoCommercant',[AuthController::class,'modifierInfoCommercant']);
     Route::get('showCommercant',[AuthController::class,'showCommercant']);
+    Route::get('listeVentes',[CommandeController::class,'listerVentesCommercant']);
 });
 
 Route::get('categories',[CategorieController::class,'index']);
