@@ -220,21 +220,55 @@ class CommandeController extends Controller
         $produits=Produit::where('commercant_id', $commercant->id)->get();
         //dd($produits);
 
-        foreach ($produits as $produit) {
-            $detailsCommande=DetailCommande::where('produit_id', $produit->id)->get();
+        // foreach ($produits as $produit) {
+        //     $detailsCommande=DetailCommande::where('produit_id', $produit->id)->get();
 
-            foreach($detailsCommande as $vente){
-                $listesVentes[] = [
-                    'produit_id'=>$vente->produit_id,
-                    'nombre_produit'=>$vente->nombre_produit,
-                    'nom_produit'=>$vente->produit->nom_produit,
-                    'montant'=>$vente->montant,
-                    'date_commande'=>$vente->commande->created_at
-                ];
+        //     $nombreArticles = 0;
+        //     $montantTotal = 0;
+
+        //     foreach ($detailsCommande as $detail) {
+        //         $nombreArticles += $detail->nombre_produit;
+        //         $montantTotal += $detail->montant;
+        //     }
+
+        //     foreach($detailsCommande as $vente){
+        //         $listesVentes[] = [
+        //             'Id'=>$vente->commande->id,
+        //             'produit_id'=>$vente->produit_id,
+        //             'nombre_produit'=>$nombreArticles,
+        //             // 'nom_produit'=>$vente->produit->nom_produit,
+        //             'montant'=>$montantTotal,
+        //             'date_commande'=>$vente->commande->created_at,
+        //             'etat_commande'=>$vente->commande->etat_commande
+        //         ];
     
+        //     }
+        // }
+      
+        foreach ($produits as $produit) {
+            $detailsCommande = DetailCommande::where('produit_id', $produit->id)->get();
+    
+            $nombreArticles = 0;
+            $montantTotal = 0;
+            $commandeIds = [];
+    
+            foreach ($detailsCommande as $detail) {
+                $nombreArticles += $detail->nombre_produit;
+                $montantTotal += $detail->montant;
+                // Verifier si le ID de commande n'est pas dans la liste
+                if (!in_array($detail->commande_id, $commandeIds)) {
+                    $commandeIds[] = $detail->commande_id;
+                    $listesVentes[] = [
+                        'Id' => $detail->commande_id,
+                        'produit_id' => $detail->produit_id,
+                        'nombre_produit' => $detail->nombre_produit,
+                        'montant' => $detail->montant,
+                        'date_commande' => $detail->commande->created_at,
+                        'etat_commande' => $detail->commande->etat_commande
+                    ];
+                }
             }
         }
-        //dd($listesVentes);
         return response()->json([
             'status' => 200,
             'status_message' => 'la liste des ventes',
