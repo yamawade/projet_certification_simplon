@@ -187,10 +187,29 @@ class CommandeController extends Controller
        // dd($client);
         $commandes = Commande::where('client_id', $client->id)->orderBy('created_at', 'desc')->get();
         //dd($commandes);
+        foreach ($commandes as $commande) {
+            $detailsCommande = DetailCommande::where('commande_id', $commande->id)->get();
+            $nombreArticles = 0;
+            $montantTotal = 0;
+
+            foreach ($detailsCommande as $detail) {
+                $nombreArticles += $detail->nombre_produit;
+                $montantTotal += $detail->montant;
+            }
+
+            $listeCommandes[] = [
+                'Id' => $commande->id,
+                'date_commande' => $commande->created_at,
+                'nombre_articles' => $nombreArticles,
+                'etat_commande' => $commande->etat_commande,
+                'montant_total' => $montantTotal,
+            ];
+        }
+
         return response()->json([
             'status' => 200,
-            'status_message' => 'la liste des commandes',
-            'data' => $commandes
+            'status_message' => 'Liste des commandes du client',
+            'data' => $listeCommandes
         ]);
     }
 
