@@ -93,6 +93,7 @@ Route::middleware(['auth:api','livreur'])->group(function(){
     Route::post('deconnexionLivreur',[AuthController::class,'logout']);
     Route::post('ChangerStatut',[CommandeController::class,'ChangerStatut']);
     Route::post('modifierPasswordLivreur',[AuthController::class,'modifierPasswordLivreur']);
+    Route::get('listeCommandeAffecter',[CommandeController::class,'listerCommandeAffecterLivreur']);
 });
 
 //NEWSLETTER
