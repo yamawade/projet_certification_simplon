@@ -187,6 +187,7 @@ class CommandeController extends Controller
        // dd($client);
         $commandes = Commande::where('client_id', $client->id)->orderBy('created_at', 'desc')->get();
         //dd($commandes);
+        $listeCommandes = [];
         foreach ($commandes as $commande) {
             $detailsCommande = DetailCommande::where('commande_id', $commande->id)->get();
             $nombreArticles = 0;
