@@ -308,6 +308,11 @@ class CommandeController extends Controller
         ]);
 
     }
+
+
+    public function showVenteCommercant(Commande $commande){
+
+    }
     /**
      * Show the form for creating a new resource.
      */
