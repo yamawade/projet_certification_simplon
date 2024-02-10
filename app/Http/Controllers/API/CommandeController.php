@@ -245,7 +245,7 @@ class CommandeController extends Controller
         return response()->json([
             'status' => 200,
             'status_message' => 'la liste des ventes',
-            'data' => $listesVentes
+            'data' => array_values($listesVentes)
         ]);
     }
     
