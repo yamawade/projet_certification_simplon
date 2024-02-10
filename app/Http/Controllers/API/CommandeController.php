@@ -226,13 +226,11 @@ class CommandeController extends Controller
             // dd($detailsCommande);
             
             foreach ($detailsCommande as $detail) {
-                //dd($detail->produit->commercant_id === $commercant->id);
                 $commandeId = $detail->commande_id;
                 //dd($commandeId);
-                //dd($produit->commercant_id === $commercant->id);
                 //$payment = Payment::where('commande_id', $commandeId)->first();
                 // $payment && 
-                if($detail->produit->commercant_id === $commercant->id) {
+                //if($payment) {
                     //on verifie si la commande n'existe dans le tableau
                     if (!isset($listesVentes[$commandeId])) {
 
@@ -247,7 +245,7 @@ class CommandeController extends Controller
         
                     $listesVentes[$commandeId]['nombre_produit'] += $detail->nombre_produit;
                     $listesVentes[$commandeId]['montant_total'] += $detail->montant;
-                }
+                //}
             }
         }
     
@@ -325,21 +323,23 @@ class CommandeController extends Controller
 
 
     public function showVenteCommercant(Commande $commande){
+        $commercant = Commercant::where('user_id', Auth::user()->id)->first();
         $detailsCommande = DetailCommande::where('commande_id', $commande->id)->get();
         $montantTotal = 0;
         $listeArticles = [];
         foreach ($detailsCommande as $detail) {
             $produit = $detail->produit;
-          //  dd($produit);
-    
-            $listeArticles[] = [
-                'produit_id' => $produit->id,
-                'nom_produit' => $produit->nom_produit,
-                'image'=> $produit->image,
-                //'prix_produit' => $produit->prix,
-                'quantite' => $detail->nombre_produit,
-                // 'montant' => $detail->montant
-            ];
+            //dd($produit->commercant_id);
+            if ($produit->commercant_id === $commercant->id) {
+                $listeArticles[] = [
+                    'produit_id' => $produit->id,
+                    'nom_produit' => $produit->nom_produit,
+                    'image'=> $produit->image,
+                    //'prix_produit' => $produit->prix,
+                    'quantite' => $detail->nombre_produit,
+                    // 'montant' => $detail->montant
+                ];
+            }
         }
     
         return response()->json([
