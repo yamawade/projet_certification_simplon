@@ -214,54 +214,41 @@ class CommandeController extends Controller
         ]);
     }
 
-
+    
     public function listerVentesCommercant(){
-        $commercant=Commercant::where('user_id', Auth::user()->id)->first();
-        $produits=Produit::where('commercant_id', $commercant->id)->get();
-        //dd($produits);
-
+        $commercant = Commercant::where('user_id', Auth::user()->id)->first();
+        $produits = Produit::where('commercant_id', $commercant->id)->get();
         $listesVentes = [];
+    
         foreach ($produits as $produit) {
             $detailsCommande = DetailCommande::where('produit_id', $produit->id)->get();
-    
-            // $nombreArticles = 0;
-            // $montantTotal = 0;
-            // $commandeIds = [];
-    
-            // foreach ($detailsCommande as $detail) {
-            //     $nombreArticles += $detail->nombre_produit;
-            //     $montantTotal += $detail->montant;
-            //     // Verifier si le ID de commande n'est pas dans la liste
-            //     if (!in_array($detail->commande_id, $commandeIds)) {
-            //         $commandeIds[] = $detail->commande_id;
-            //         $listesVentes[] = [
-            //             'Id' => $detail->commande_id,
-            //             'produit_id' => $detail->produit_id,
-            //             'nombre_produit' => $detail->nombre_produit,
-            //             'montant' => $detail->montant,
-            //             'date_commande' => $detail->commande->created_at,
-            //             'etat_commande' => $detail->commande->etat_commande
-            //         ];
-            //     }
-            // }
-
+            
             foreach ($detailsCommande as $detail) {
-                $listesVentes[$detail->commande_id][] = [
-                    'Id' => $detail->commande_id,
-                    'produit_id' => $detail->produit_id,
-                    'nombre_produit' => $detail->nombre_produit,
-                    'montant' => $detail->montant,
-                    'date_commande' => $detail->commande->created_at,
-                    'etat_commande' => $detail->commande->etat_commande
-                ];
+                $commandeId = $detail->commande_id;
+                //on verifie si la commande n'existe dans le tableau
+                if (!isset($listesVentes[$commandeId])) {
+
+                    $listesVentes[$commandeId] = [
+                        'Id' => $commandeId,
+                        'nombre_produit' => 0,
+                        'montant_total' => 0,
+                        'date_commande' => $detail->commande->created_at,
+                        'etat_commande' => $detail->commande->etat_commande
+                    ];
+                }
+    
+                $listesVentes[$commandeId]['nombre_produit'] += $detail->nombre_produit;
+                $listesVentes[$commandeId]['montant_total'] += $detail->montant;
             }
         }
+    
         return response()->json([
             'status' => 200,
             'status_message' => 'la liste des ventes',
             'data' => $listesVentes
         ]);
     }
+    
 
 
     public function listerCommandeAffecterLivreur(){
