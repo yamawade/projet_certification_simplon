@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Client;
 use App\Models\Panier;
 use App\Models\Livreur;
+use App\Models\Payment;
 use App\Models\Produit;
 use App\Models\Commande;
 use App\Models\Commercant;
@@ -217,7 +218,7 @@ class CommandeController extends Controller
     
     public function listerVentesCommercant(){
         $commercant = Commercant::where('user_id', Auth::user()->id)->first();
-        $produits = Produit::where('commercant_id', $commercant->id)->get();
+        $produits = Produit::where('commercant_id', $commercant->id)->orderBy('created_at', 'desc')->get();
         $listesVentes = [];
     
         foreach ($produits as $produit) {
@@ -225,20 +226,23 @@ class CommandeController extends Controller
             
             foreach ($detailsCommande as $detail) {
                 $commandeId = $detail->commande_id;
-                //on verifie si la commande n'existe dans le tableau
-                if (!isset($listesVentes[$commandeId])) {
+                $payment = Payment::where('commande_id', $commandeId)->first();
+                if($payment && $produit->commercant_id === $commercant->id) {
+                    //on verifie si la commande n'existe dans le tableau
+                    if (!isset($listesVentes[$commandeId])) {
 
-                    $listesVentes[$commandeId] = [
-                        'Id' => $commandeId,
-                        'nombre_produit' => 0,
-                        'montant_total' => 0,
-                        'date_commande' => $detail->commande->created_at,
-                        'etat_commande' => $detail->commande->etat_commande
-                    ];
+                        $listesVentes[$commandeId] = [
+                            'Id' => $commandeId,
+                            'nombre_produit' => 0,
+                            'montant_total' => 0,
+                            'date_commande' => $detail->commande->created_at,
+                            'etat_commande' => $detail->commande->etat_commande
+                        ];
+                    }
+        
+                    $listesVentes[$commandeId]['nombre_produit'] += $detail->nombre_produit;
+                    $listesVentes[$commandeId]['montant_total'] += $detail->montant;
                 }
-    
-                $listesVentes[$commandeId]['nombre_produit'] += $detail->nombre_produit;
-                $listesVentes[$commandeId]['montant_total'] += $detail->montant;
             }
         }
     
