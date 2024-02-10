@@ -224,25 +224,36 @@ class CommandeController extends Controller
         foreach ($produits as $produit) {
             $detailsCommande = DetailCommande::where('produit_id', $produit->id)->get();
     
-            $nombreArticles = 0;
-            $montantTotal = 0;
-            $commandeIds = [];
+            // $nombreArticles = 0;
+            // $montantTotal = 0;
+            // $commandeIds = [];
     
+            // foreach ($detailsCommande as $detail) {
+            //     $nombreArticles += $detail->nombre_produit;
+            //     $montantTotal += $detail->montant;
+            //     // Verifier si le ID de commande n'est pas dans la liste
+            //     if (!in_array($detail->commande_id, $commandeIds)) {
+            //         $commandeIds[] = $detail->commande_id;
+            //         $listesVentes[] = [
+            //             'Id' => $detail->commande_id,
+            //             'produit_id' => $detail->produit_id,
+            //             'nombre_produit' => $detail->nombre_produit,
+            //             'montant' => $detail->montant,
+            //             'date_commande' => $detail->commande->created_at,
+            //             'etat_commande' => $detail->commande->etat_commande
+            //         ];
+            //     }
+            // }
+
             foreach ($detailsCommande as $detail) {
-                $nombreArticles += $detail->nombre_produit;
-                $montantTotal += $detail->montant;
-                // Verifier si le ID de commande n'est pas dans la liste
-                if (!in_array($detail->commande_id, $commandeIds)) {
-                    $commandeIds[] = $detail->commande_id;
-                    $listesVentes[] = [
-                        'Id' => $detail->commande_id,
-                        'produit_id' => $detail->produit_id,
-                        'nombre_produit' => $detail->nombre_produit,
-                        'montant' => $detail->montant,
-                        'date_commande' => $detail->commande->created_at,
-                        'etat_commande' => $detail->commande->etat_commande
-                    ];
-                }
+                $listesVentes[$detail->commande_id][] = [
+                    'Id' => $detail->commande_id,
+                    'produit_id' => $detail->produit_id,
+                    'nombre_produit' => $detail->nombre_produit,
+                    'montant' => $detail->montant,
+                    'date_commande' => $detail->commande->created_at,
+                    'etat_commande' => $detail->commande->etat_commande
+                ];
             }
         }
         return response()->json([
