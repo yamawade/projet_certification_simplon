@@ -254,25 +254,30 @@ class CommandeController extends Controller
     public function listerCommandeAffecterLivreur(){
         $livreur=Livreur::where('user_id', Auth::user()->id)->first();
         $commandeAffecter = Commande::where('livreur_id', $livreur->id)->orderBy('created_at', 'desc')->get();
+        $ListecommandeAffecter = [];
         //dd($commandeAffecter);
-        foreach ($commandeAffecter as $commande) {
-            $detailsCommande=DetailCommande::where('commande_id', $commande->id)->get();
+        foreach ($commandeAffecter  as $commande) {
+            $detailsCommande = DetailCommande::where('commande_id', $commande->id)->get();
             $nombreProduit = 0;
-            //dd($detailsCommande);
-
+            $adresseCommercants = [];
+            $numeroTelCommercants = [];
+    
             foreach ($detailsCommande as $detail) {
-                $nombreProduit += $detail->nombre_produit;
+               // $nombreProduit += $detail->nombre_produit;
+                $commercant = $detail->produit->commercant;
+                $adresseCommercants[] = $commercant->adresse;
+                $numeroTelCommercants[] = $commercant->user->numero_tel;
             }
-
+    
             $ListecommandeAffecter[] = [
                 'Id' => $commande->id,
-                'nom_client'=>$commande->client->user->nom,
-                'numero_tel_client'=>$commande->client->user->numero_tel,
+                'numero_tel_client' => $commande->client->user->numero_tel,
                 'Adresse_Client' => $commande->client->adresse, 
                 'Date_commande' => $commande->created_at,
                 'Etat' => $commande->etat_commande,
-                'nombre_produit' => $nombreProduit,
-                //'montant' => $detailsCommande->montant
+                //'nombre_produit' => $nombreProduit,
+                'adresses_commercants' => $adresseCommercants,
+                'numeros_tel_commercants' => $numeroTelCommercants
             ];
         }
         return response()->json([
