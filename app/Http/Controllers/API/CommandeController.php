@@ -223,12 +223,16 @@ class CommandeController extends Controller
     
         foreach ($produits as $produit) {
             $detailsCommande = DetailCommande::where('produit_id', $produit->id)->get();
+            // dd($detailsCommande);
             
             foreach ($detailsCommande as $detail) {
+                //dd($detail->produit->commercant_id === $commercant->id);
                 $commandeId = $detail->commande_id;
+                //dd($commandeId);
+                //dd($produit->commercant_id === $commercant->id);
                 //$payment = Payment::where('commande_id', $commandeId)->first();
                 // $payment && 
-                if($produit->commercant_id === $commercant->id) {
+                if($detail->produit->commercant_id === $commercant->id) {
                     //on verifie si la commande n'existe dans le tableau
                     if (!isset($listesVentes[$commandeId])) {
 
