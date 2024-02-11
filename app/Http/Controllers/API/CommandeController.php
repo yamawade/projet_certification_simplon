@@ -47,7 +47,6 @@ class CommandeController extends Controller
 
         $commande_id = $commande->id;
         $montantTotal = 0;
-        $montantLivraison=0;
         //dd($request->input('panier'));
         foreach ($request->input('panier') as $produit) {
             DetailCommande::create([
@@ -62,9 +61,10 @@ class CommandeController extends Controller
             // Ajouter le montant du produit au montant total
             $montantTotal += $produit['montant'];
         }
-        $montantLivraison +=$montantTotal+2000;
         
-        $montantTotal+=$montantLivraison*0.1;
+        $montantTotal+=$montantTotal*0.1;
+
+        $montantTotal +=2000;
 
         return response()->json([
             'status' => 200,
