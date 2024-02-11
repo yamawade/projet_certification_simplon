@@ -47,6 +47,7 @@ class CommandeController extends Controller
 
         $commande_id = $commande->id;
         $montantTotal = 0;
+        $montantLivraison=0;
         //dd($request->input('panier'));
         foreach ($request->input('panier') as $produit) {
             DetailCommande::create([
