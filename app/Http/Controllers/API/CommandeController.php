@@ -162,24 +162,37 @@ class CommandeController extends Controller
     public function ChangerStatut(){
         $user = Livreur::where('user_id', Auth::user()->id)->first();
         $commande = Commande::where('livreur_id', $user->id)->where('etat_commande', 'en_cours')->first();
-        if($user->statut === 'indisponible') {
-            $user->statut = 'disponible';
-            $user->save();
-            $commande->update([
-                'livreur_id' => $user->id,
-                'etat_commande' => 'terminer',
+        if($commande->etat_commande === 'en_cours'){
+            $commande->etat_commande = 'terminer';
+            $commande->save();
+            $user->update([
+                'statut' => 'disponible'
             ]);
             return response()->json([
                 'status' => 200,
-                'status_message' => 'livreur disponible',
-                'data' => $user
-            ]);
-        }else{
-            return response()->json([
-                'status' => 404,
-                'status_message' => 'livreur non disponible',
+                'status_message' => 'Commande terminer',
+                'data' => $commande
             ]);
         }
+
+        // if($user->statut === 'indisponible') {
+        //     $user->statut = 'disponible';
+        //     $user->save();
+        //     $commande->update([
+        //         'livreur_id' => $user->id,
+        //         'etat_commande' => 'terminer',
+        //     ]);
+        //     return response()->json([
+        //         'status' => 200,
+        //         'status_message' => 'livreur disponible',
+        //         'data' => $user
+        //     ]);
+        // }else{
+        //     return response()->json([
+        //         'status' => 404,
+        //         'status_message' => 'livreur non disponible',
+        //     ]);
+        // }
     }
 
 
