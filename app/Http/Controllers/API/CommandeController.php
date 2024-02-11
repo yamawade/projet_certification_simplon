@@ -61,10 +61,10 @@ class CommandeController extends Controller
             // Ajouter le montant du produit au montant total
             $montantTotal += $produit['montant'];
         }
+        $montantTotal +=2000;
         
         $montantTotal+=$montantTotal*0.1;
 
-        $montantTotal +=2000;
 
         return response()->json([
             'status' => 200,
