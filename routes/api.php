@@ -40,6 +40,8 @@ Route::middleware(['auth:api','client'])->group(function(){
     Route::post('signalerProduit/{produit}',[AvisController::class,'signalerProduit']);
     Route::post('modifierInfoClient',[AuthController::class,'modifierInfoClient']);
     Route::get('showClient',[AuthController::class,'showClient']);
+    Route::get('listeCommande',[CommandeController::class,'listerCommandeClient']);
+    Route::get('showCommande/{commande}',[CommandeController::class,'showCommandeClient']);
 });
 
 Route::get('payment', [PaymentController::class, 'index'])->name('payment.index');
@@ -62,6 +64,8 @@ Route::middleware(['auth:api','commercant'])->group(function(){
     Route::get('getProduitsByCommercant',[ProduitController::class,'getProduitsByCommercant']);
     Route::post('modifierInfoCommercant',[AuthController::class,'modifierInfoCommercant']);
     Route::get('showCommercant',[AuthController::class,'showCommercant']);
+    Route::get('listeVentes',[CommandeController::class,'listerVentesCommercant']);
+    Route::get('showVente/{commande}',[CommandeController::class,'showVenteCommercant']);
 });
 
 Route::get('categories',[CategorieController::class,'index']);
@@ -81,14 +85,17 @@ Route::middleware(['auth:api','admin'])->group(function(){
     Route::post('envoyerMail',[NewsletterController::class,'envoyerMail']);
     Route::get('ListeFeedback',[FeedbackController::class,'index']);
     Route::get('voirFeedback/{feedback}',[FeedbackController::class,'show']);
-    
+    Route::get('Detailscommandes/{commande}',[CommandeController::class,'show']);
+    Route::get('voirProduitSignaler/{produitSignaler}',[AvisController::class,'show']);
+    Route::get('bloquerProduitSignaler/{produitSignaler}',[AvisController::class,'bloquerProduitSignaler']);
 });
 
 //LIVREUR
 Route::middleware(['auth:api','livreur'])->group(function(){
     Route::post('deconnexionLivreur',[AuthController::class,'logout']);
-    Route::post('ChangerStatut',[CommandeController::class,'ChangerStatut']);
+    Route::get('ChangerStatut',[CommandeController::class,'ChangerStatut']);
     Route::post('modifierPasswordLivreur',[AuthController::class,'modifierPasswordLivreur']);
+    Route::get('listeCommandeAffecter',[CommandeController::class,'listerCommandeAffecterLivreur']);
 });
 
 //NEWSLETTER

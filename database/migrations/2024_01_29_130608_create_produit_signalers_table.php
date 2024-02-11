@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('motif');
             $table->foreignIdFor(Produit::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(Client::class)->constrained()->onDelete('cascade');
+            $table->enum('statut', ['bloquer', 'pas_bloquer'])->default('pas_bloquer');
             $table->timestamps();
         });
     }
