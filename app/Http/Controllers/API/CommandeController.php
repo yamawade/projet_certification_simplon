@@ -6,12 +6,15 @@ use App\Models\User;
 use App\Models\Client;
 use App\Models\Panier;
 use App\Models\Livreur;
+use App\Models\Payment;
 use App\Models\Produit;
 use App\Models\Commande;
+use App\Models\Commercant;
 use Illuminate\Http\Request;
 use App\Models\DetailCommande;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\AffecterLivreur;
 use App\Http\Controllers\PaymentController;
 
 class CommandeController extends Controller
@@ -58,8 +61,10 @@ class CommandeController extends Controller
             // Ajouter le montant du produit au montant total
             $montantTotal += $produit['montant'];
         }
+        $montantTotal +=2000;
         
         $montantTotal+=$montantTotal*0.1;
+
 
         return response()->json([
             'status' => 200,
@@ -74,13 +79,22 @@ class CommandeController extends Controller
      * Display a listing of the resource.
      */
     public function index(){
-        $commandes = Commande::where('etat_commande', 'en_attente')->orderBy('created_at', 'desc')->get();
+        $commandes = Commande::with('client')->orderBy('created_at', 'desc')->get();
         try {
+            $data = $commandes->map(function ($commande) {
+                return [
+                    'Id' => $commande->id,
+                    'Adresse_Client' => $commande->client->adresse, 
+                    'Date_commande' => $commande->created_at,
+                    'Etat' => $commande->etat_commande,
+                ];
+            });
+            //dd($data);
 
             return response()->json([
                 'status' => 200,
                 'status_message' => 'la liste des commandes',
-                'data' => $commandes
+                'data' => $data
             ]);
         } catch (Exception $e) {
             return response($e)->json($e);
@@ -89,18 +103,18 @@ class CommandeController extends Controller
 
     public function ListerLivreur(){
 
-        $livreurs = User::where('type', 'livreur')->get();
+        $livreurs = Livreur::all();
 
         $data = $livreurs->map(function ($livreurs) {
             return [
                 'Id' => $livreurs->id,
-                'Nom' => $livreurs->nom,
-                'Prenom' => $livreurs->prenom,
-                'Email' => $livreurs->email,
-                'Numero' => $livreurs->numero_tel,
-                'statut' => $livreurs->livreur->statut,
-                'Adresse' => $livreurs->livreur->adresse,
-                'Matricule'=> $livreurs->livreur->matricule
+                'Nom' => $livreurs->user->nom,
+                'Prenom' => $livreurs->user->prenom,
+                'Email' => $livreurs->user->email,
+                'Numero' => $livreurs->user->numero_tel,
+                'statut' => $livreurs->statut,
+                'Adresse' => $livreurs->adresse,
+                'Matricule'=> $livreurs->matricule
             ];
         });
         try {
@@ -133,6 +147,7 @@ class CommandeController extends Controller
             ]);
             $livreur->statut = 'indisponible';
             $livreur->save();
+            $livreur->user->notify(new AffecterLivreur($commande));
             return response()->json([
                 'status' => 200,
                 'status_message' => 'livreur affecté',
@@ -149,26 +164,217 @@ class CommandeController extends Controller
     public function ChangerStatut(){
         $user = Livreur::where('user_id', Auth::user()->id)->first();
         $commande = Commande::where('livreur_id', $user->id)->where('etat_commande', 'en_cours')->first();
-        if($user->statut === 'indisponible') {
-            $user->statut = 'disponible';
-            $user->save();
-            $commande->update([
-                'livreur_id' => $user->id,
-                'etat_commande' => 'terminer',
+        if($commande->etat_commande === 'en_cours'){
+            $commande->etat_commande = 'terminer';
+            $commande->save();
+            $user->update([
+                'statut' => 'disponible'
             ]);
             return response()->json([
                 'status' => 200,
-                'status_message' => 'livreur disponible',
-                'data' => $user
-            ]);
-        }else{
-            return response()->json([
-                'status' => 404,
-                'status_message' => 'livreur non disponible',
+                'status_message' => 'Commande terminer',
+                'data' => $commande
             ]);
         }
+
+        // if($user->statut === 'indisponible') {
+        //     $user->statut = 'disponible';
+        //     $user->save();
+        //     $commande->update([
+        //         'livreur_id' => $user->id,
+        //         'etat_commande' => 'terminer',
+        //     ]);
+        //     return response()->json([
+        //         'status' => 200,
+        //         'status_message' => 'livreur disponible',
+        //         'data' => $user
+        //     ]);
+        // }else{
+        //     return response()->json([
+        //         'status' => 404,
+        //         'status_message' => 'livreur non disponible',
+        //     ]);
+        // }
     }
 
+
+    public function listerCommandeClient(){
+        $client=Client::where('user_id', Auth::user()->id)->first();
+       // dd($client);
+        $commandes = Commande::where('client_id', $client->id)->orderBy('created_at', 'desc')->get();
+        //dd($commandes);
+        $listeCommandes = [];
+        foreach ($commandes as $commande) {
+            $detailsCommande = DetailCommande::where('commande_id', $commande->id)->get();
+            $nombreArticles = 0;
+            $montantTotal = 0;
+
+            foreach ($detailsCommande as $detail) {
+                $nombreArticles += $detail->nombre_produit;
+                $montantTotal += $detail->montant;
+            }
+
+            $listeCommandes[] = [
+                'Id' => $commande->id,
+                'date_commande' => $commande->created_at,
+                'nombre_articles' => $nombreArticles,
+                'etat_commande' => $commande->etat_commande,
+                'montant_total' => $montantTotal,
+            ];
+        }
+
+        return response()->json([
+            'status' => 200,
+            'status_message' => 'Liste des commandes du client',
+            'data' => $listeCommandes
+        ]);
+    }
+
+    
+    public function listerVentesCommercant(){
+        $commercant = Commercant::where('user_id', Auth::user()->id)->first();
+        $produits = Produit::where('commercant_id', $commercant->id)->orderBy('created_at', 'desc')->get();
+        $listesVentes = [];
+    
+        foreach ($produits as $produit) {
+            $detailsCommande = DetailCommande::where('produit_id', $produit->id)->get();
+            // dd($detailsCommande);
+            
+            foreach ($detailsCommande as $detail) {
+                $commandeId = $detail->commande_id;
+                //dd($commandeId);
+                //$payment = Payment::where('commande_id', $commandeId)->first();
+                // $payment && 
+                //if($payment) {
+                    //on verifie si la commande n'existe dans le tableau
+                    if (!isset($listesVentes[$commandeId])) {
+
+                        $listesVentes[$commandeId] = [
+                            'Id' => $commandeId,
+                            'nombre_produit' => 0,
+                            'montant_total' => 0,
+                            'date_commande' => $detail->commande->created_at,
+                            'etat_commande' => $detail->commande->etat_commande
+                        ];
+                    }
+        
+                    $listesVentes[$commandeId]['nombre_produit'] += $detail->nombre_produit;
+                    $listesVentes[$commandeId]['montant_total'] += $detail->montant;
+                //}
+            }
+        }
+    
+        return response()->json([
+            'status' => 200,
+            'status_message' => 'la liste des ventes',
+            'data' => array_values($listesVentes)
+        ]);
+    }
+    
+
+
+    public function listerCommandeAffecterLivreur(){
+        $livreur=Livreur::where('user_id', Auth::user()->id)->first();
+        $commandeAffecter = Commande::where('livreur_id', $livreur->id)->orderBy('created_at', 'desc')->get();
+        $ListecommandeAffecter = [];
+        //dd($commandeAffecter);
+        foreach ($commandeAffecter  as $commande) {
+            $detailsCommande = DetailCommande::where('commande_id', $commande->id)->get();
+            $nombreProduit = 0;
+            $adresseCommercants = [];
+            $numeroTelCommercants = [];
+            $commandeDetails = [];
+    
+            foreach ($detailsCommande as $detail) {
+               // $nombreProduit += $detail->nombre_produit;
+                $commercant = $detail->produit->commercant;
+                $commercantDetails = [
+                    'adresse_commercant' => $commercant->adresse,
+                    'numero_tel_commercant' => $commercant->user->numero_tel
+                ];
+    
+                if (!in_array($commercantDetails, $commandeDetails)) {
+                    $commandeDetails[] = $commercantDetails;
+                }
+
+            }
+    
+            $ListecommandeAffecter[] = [
+                'Id' => $commande->id,
+                'client'=>[
+                    'numero_tel_client' => $commande->client->user->numero_tel,
+                    'Adresse_Client' => $commande->client->adresse,
+                ],
+                'Date_commande' => $commande->created_at,
+                'Etat' => $commande->etat_commande,
+                //'nombre_produit' => $nombreProduit,
+                // 'adresses_commercants' => $adresseCommercants,
+                // 'numeros_tel_commercants' => $numeroTelCommercants
+                'commercants' => $commandeDetails
+                
+            ];
+        }
+        return response()->json([
+            'status' => 200,
+            'status_message' => 'la liste des commandes',
+            'data' => $ListecommandeAffecter
+        ]);
+    }
+
+
+    public function showCommandeClient(Commande $commande){
+        $detailsCommande = DetailCommande::where('commande_id', $commande->id)->get();
+        $montantTotal = 0;
+        $listeArticles = [];
+        foreach ($detailsCommande as $detail) {
+            $produit = $detail->produit;
+          //  dd($produit);
+    
+            $listeArticles[] = [
+                'produit_id' => $produit->id,
+                'nom_produit' => $produit->nom_produit,
+                'image'=> $produit->image,
+                'prix_produit' => $produit->prix,
+                // 'quantite' => $detail->nombre_produit,
+                // 'montant' => $detail->montant
+            ];
+        }
+    
+        return response()->json([
+            'status' => 200,
+            'status_message' => 'Détails de la commande',
+            'data' => $listeArticles
+        ]);
+
+    }
+
+
+    public function showVenteCommercant(Commande $commande){
+        $commercant = Commercant::where('user_id', Auth::user()->id)->first();
+        $detailsCommande = DetailCommande::where('commande_id', $commande->id)->get();
+        $montantTotal = 0;
+        $listeArticles = [];
+        foreach ($detailsCommande as $detail) {
+            $produit = $detail->produit;
+            //dd($produit->commercant_id);
+            if ($produit->commercant_id === $commercant->id) {
+                $listeArticles[] = [
+                    'produit_id' => $produit->id,
+                    'nom_produit' => $produit->nom_produit,
+                    'image'=> $produit->image,
+                    //'prix_produit' => $produit->prix,
+                    'quantite' => $detail->nombre_produit,
+                    // 'montant' => $detail->montant
+                ];
+            }
+        }
+    
+        return response()->json([
+            'status' => 200,
+            'status_message' => 'Détails de la commande',
+            'data' => $listeArticles
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -188,9 +394,60 @@ class CommandeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Commande $commande)
     {
-        //
+        //dd($commande);
+        $client = $commande->client;
+       // dd($client);
+
+       $detailsCommande = $commande->detailsCommande()->with('produit.commercant')->get();
+       //dd($detailsCommande);
+       $data = [
+            'commande_id' => $commande->id,
+            'adresse_client' => $client->adresse,
+            'nom_client' => $client->user->prenom.' '.$client->user->nom,
+            'numero_tel' => $client->user->numero_tel,
+            'date_commande' => $commande->created_at,
+            'etat_commande' => $commande->etat_commande,
+            'details_commande' => [],
+        ];
+
+        $vendeurs = [];
+
+        foreach ($detailsCommande as $detail) {
+            $produit = $detail->produit;
+            $commercant = $produit->commercant;
+
+            if (!in_array($commercant->adresse, $vendeurs)) {
+            
+                $vendeurs[] = $commercant->adresse;
+
+                $data['details_commande'][] = [
+                    'adresse_vendeur' => $commercant->adresse,
+                ];
+            }
+        }
+
+        // foreach ($detailsCommande as $detail) {
+        //     $produit = $detail->produit;
+        //     $commercant = $produit->commercant;
+
+        //     $data['details_commande'][] = [
+        //         // 'produit_id' => $produit->id,
+        //         // 'nom_produit' => $produit->nom_produit,
+        //         // 'prix_produit' => $produit->prix,
+        //         'adresse_vendeur' => $commercant->adresse, 
+        //         // 'quantite' => $detail->nombre_produit,
+        //     ];
+        // }
+        
+        //dd($data);
+        return response()->json([
+            'status' => 200,
+            'status_message' => 'Détails de la commande',
+            'data' => $data,
+        ]);
+        
     }
 
     /**

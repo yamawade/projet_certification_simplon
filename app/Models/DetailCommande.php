@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Produit;
+use App\Models\Commande;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DetailCommande extends Model
 {
@@ -15,4 +17,13 @@ class DetailCommande extends Model
         'nombre_produit',
         'montant'
     ];
+
+    public function produit() {
+        return $this->belongsTo(Produit::class);
+    }
+
+    public function commande() {
+        return $this->belongsTo(Commande::class);
+    }
+
 }

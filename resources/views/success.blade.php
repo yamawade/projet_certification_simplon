@@ -88,7 +88,7 @@
                     <h1>Paiement Réussie !</h1>
                     <p>Votre paiement vient d'être éffectuer avec succès. </p>
                     <!-- <a href="{{ route('payment.index') }}">Aller à la page d'accueil</a> -->
-                    <a href="http://localhost:4200/#/accueil">Aller à la page d'accueil</a>
+                    <a href="http://localhost:4200/#/commande">Aller à la page d'accueil</a>
                  </div>
 
               </div>
