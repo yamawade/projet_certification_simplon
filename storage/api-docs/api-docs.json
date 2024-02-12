@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Your API Title",
-        "description": "Your API Description",
+        "title": "Panier Local",
+        "description": "Description de l'api Panier Local",
         "version": "1.0.0"
     },
     "security": [
