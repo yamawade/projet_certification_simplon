@@ -81,7 +81,6 @@ class FeedbackController extends Controller
        // dd($feedback);
         $repondreFeedback= $request->input('message');
         //dd($repondreFeedback);
-        // $userEmail= $feedback->email;
         $feedback->notify(new RepondreFeedback(['repondreFeedback' => $repondreFeedback]));
 
         return view('envoieMailFeedback', compact('repondreFeedback')); 
