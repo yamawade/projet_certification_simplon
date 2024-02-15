@@ -89,6 +89,7 @@ Route::middleware(['auth:api','admin'])->group(function(){
     Route::get('voirProduitSignaler/{produitSignaler}',[AvisController::class,'show']);
     Route::get('bloquerProduitSignaler/{produitSignaler}',[AvisController::class,'bloquerProduitSignaler']);
     Route::get('Nombreproduits/{categorie}',[ProduitController::class,'getNombreProduitsByCategorie']);
+    Route::post('RepondreFeedback/{feedback}',[FeedbackController::class,'repondreFeedback']);
 });
 
 //LIVREUR
