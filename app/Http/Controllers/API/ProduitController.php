@@ -223,4 +223,15 @@ class ProduitController extends Controller
             'data'=>$produits
         ]);
     }
+
+    public function getNombreProduitsByCategorie(Categorie $categorie){
+        //dd($categorie);
+
+        $produits = Produit::where('categorie_id', $categorie->id)->count();
+        return response()->json([
+            'status'=>200,
+            'status_message'=>'Nombre produits par categorie',
+            'nombre_produits'=>$produits
+        ]);
+    }
 }
