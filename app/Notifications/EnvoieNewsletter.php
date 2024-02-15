@@ -35,11 +35,15 @@ class EnvoieNewsletter extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
+        // return (new MailMessage)
+        //             ->line('Panier Local.')
+        //             ->line($this->data['messageContent'])
+        //             ->action('cliquez ici', url('http://localhost:4200/#/accueil'))
+        //             ->line('Merci pour votre inscription!');
         return (new MailMessage)
-                    ->line('Panier Local.')
-                    ->line($this->data['messageContent'])
-                    ->action('cliquez ici', url('http://localhost:4200/#/accueil'))
-                    ->line('Merci pour votre inscription!');
+                ->view('envoieMail', ['messageContent' => $this->data['messageContent']])
+                ->subject('Sujet de la newsletter')
+                ->action('Cliquez ici', url('http://localhost:4200/#/accueil'));
     }
 
     /**
