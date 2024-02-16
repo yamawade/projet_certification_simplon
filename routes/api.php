@@ -90,6 +90,7 @@ Route::middleware(['auth:api','admin'])->group(function(){
     Route::get('bloquerProduitSignaler/{produitSignaler}',[AvisController::class,'bloquerProduitSignaler']);
     Route::get('Nombreproduits/{categorie}',[ProduitController::class,'getNombreProduitsByCategorie']);
     Route::post('RepondreFeedback/{feedback}',[FeedbackController::class,'repondreFeedback']);
+    Route::post('bloquerUtilisateur/{user}',[AuthController::class,'bloquerUtilisateur']);
 });
 
 //LIVREUR
