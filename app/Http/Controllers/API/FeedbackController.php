@@ -6,6 +6,7 @@ use App\Models\Feddback;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreFeedBack;
+use App\Notifications\RepondreFeedback;
 
 class FeedbackController extends Controller
 {
@@ -60,7 +61,7 @@ class FeedbackController extends Controller
         try {
             return response()->json([
                 'status' => 200,
-                'status_message' => 'Detail du produit',
+                'status_message' => 'Detail du feedback',
                 'data' => [
                     'id' => $feedback->id,
                     'Nom' => $feedback->nom,
@@ -73,6 +74,17 @@ class FeedbackController extends Controller
         }catch(Exception $e){
             return response()->json($e);
         }
+    }
+
+
+    public function repondreFeedback(Feddback $feedback,Request $request){
+       // dd($feedback);
+        $repondreFeedback= $request->input('message');
+        //dd($repondreFeedback);
+        $feedback->notify(new RepondreFeedback(['repondreFeedback' => $repondreFeedback]));
+
+        return view('envoieMailFeedback', compact('repondreFeedback')); 
+
     }
 
     /**

@@ -43,18 +43,19 @@ class NewsletterController extends Controller
         $newsletters = Newsletter::all();
         $emails = $newsletters->pluck('email');
         $messageContent = $request->input('letter');
+        //dd($messageContent);
         //dd($emails);
         foreach($emails as $email) {
-            $inscrit = Newsletter::where('email', $email)->first();
+           $inscrit = Newsletter::where('email', $email)->first();
             if ($inscrit) {
                 $inscrit->notify(new EnvoieNewsletter(['messageContent' => $messageContent]));
-            }
+           }
         }
-        return response()->json([
-            'status'=>200,
-            'status_message'=>'Mail envoye',
-        ]);
-        
+        // return response()->json([
+        //     'status'=>200,
+        //     'status_message'=>'Mail envoye',
+        // ]);
+        return view('envoieMail', compact('messageContent')); 
     }
 
     /**
