@@ -82,8 +82,11 @@ class FeedbackController extends Controller
         $repondreFeedback= $request->input('message');
         //dd($repondreFeedback);
         $feedback->notify(new RepondreFeedback(['repondreFeedback' => $repondreFeedback]));
-
-        return view('envoieMailFeedback', compact('repondreFeedback')); 
+        return response()->json([
+            'status'=>200,
+            'status_message'=>'Feedback envoyé avec succès',
+        ]);
+        //return view('envoieMailFeedback', compact('repondreFeedback')); 
 
     }
 
