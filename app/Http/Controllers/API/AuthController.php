@@ -88,7 +88,13 @@ class AuthController extends Controller
             ]);
         }else{
             $user = Auth::user();
-            if($user->type ==='commercant'){
+            if($user->etat_compte ==='inactif'){
+                return response()->json([
+                    'status'=>401,
+                    'message' => 'Compte n\'existe pas',
+                ]);
+            }
+            if($user->type ==='commercant' && $user->etat_compte ==='actif'){
                 return response()->json([
                     'status'=>200,
                     'message' => 'Salut Commercant',
@@ -99,7 +105,7 @@ class AuthController extends Controller
                     ]
                 ]);
     
-            }elseif($user->type ==='client'){
+            }elseif($user->type ==='client' && $user->etat_compte ==='actif'){
                 return response()->json([
                     'status'=>200,
                     'message' => 'Salut Client',
@@ -109,7 +115,7 @@ class AuthController extends Controller
                         'type' => 'bearer',
                     ]
                 ]);
-            }elseif($user->type ==='livreur'){
+            }elseif($user->type ==='livreur' && $user->etat_compte ==='actif'){
                 return response()->json([
                     'status'=>200,
                     'message' => 'Salut livreur',
@@ -284,6 +290,32 @@ class AuthController extends Controller
             'message' => 'Mot de passe mis à jour avec succes',
             'user' => $user
         ]);
+    }
+
+    public function bloquerUtilisateur(User $user){
+        if($user->type === 'admin'){
+            return response()->json([
+                'status'=>401,
+                'message' => 'Vous n\'etes pas autorisé'
+            ]);
+        }
+        if($user->etat_compte === 'actif'){
+            $user->etat_compte = 'inactif';
+            $user->save();
+            return response()->json([
+                'status'=>200,
+                'message' => 'Compte bloquer',
+                'user' => $user
+            ]);
+        }else{
+            $user->etat_compte = 'actif';
+            $user->save();
+            return response()->json([
+                'status'=>200,
+                'message' => 'Compte activer',
+                'user' => $user
+            ]);
+        }
     }
     /**
      * Display a listing of the resource.
