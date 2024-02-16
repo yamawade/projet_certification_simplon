@@ -24,8 +24,17 @@
         font-family: Verdana, Geneva, Tahoma, sans-serif;
       "
     >
-        <p>{{ $repondreFeedback }}</p>
-        <p>Merci de nous avoir contacter!</p>
+        <h1>Commande affectée</h1>
+        <p>Adresse du client: {{ $adresseClient }}</p>
+        <p>Nom du client: {{ $nomClient }}</p>
+        <p>Numéro du client: {{ $numeroClient }}</p>
+
+        <h2>Informations vendeurs:</h2>
+        <ul>
+            @foreach($informationsVendeurs as $informations)
+                <li>{{ $informations }}</li>
+            @endforeach
+        </ul>
     </div>
     <div
       class="text-footer"
@@ -60,5 +69,3 @@
     </div>
   </body>
 </html>
-
-
