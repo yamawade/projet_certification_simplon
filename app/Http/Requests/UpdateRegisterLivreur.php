@@ -2,11 +2,12 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class StoreRegisterLivreur extends FormRequest
+class UpdateRegisterLivreur extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,9 +29,9 @@ class StoreRegisterLivreur extends FormRequest
             'prenom' => 'required|string|min:2|max:255',
             'matricule' => 'required|string|max:255',
             //'email' => 'required|string|email|max:255|unique:users',
-            'email' => ['required', 'string', 'regex:/^[a-zA-Z_][\w\.-]*@[a-zA-Z][a-zA-Z.-]+\.[a-zA-Z]{2,4}$/','unique:users'],
+            'email' => ['required','string', 'email','max:255',Rule::unique('users')->ignore(auth()->user()->id),'regex:/^[a-zA-Z_][\w\.-]*@[a-zA-Z][a-zA-Z.-]+\.[a-zA-Z]{2,4}$/'],
             'genre'=>'required|string|in:homme,femme',
-            'numero_tel' => ['required', 'string', 'regex:/^(77|76|75|78|33)[0-9]{7}$/','unique:users'],
+            'numero_tel' => ['required', 'string', 'regex:/^(77|76|75|78|33)[0-9]{7}$/',Rule::unique('users')->ignore(auth()->user()->id)],
             // 'password' => 'required|string|min:8',
             'adresse' => 'required|string|max:255',
         ];

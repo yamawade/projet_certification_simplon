@@ -13,6 +13,7 @@ use App\Http\Requests\StoreRegisterClient;
 use App\Http\Requests\StorePasswordLivreur;
 use App\Http\Requests\StoreRegisterLivreur;
 use App\Http\Requests\UpdateRegisterClient;
+use App\Http\Requests\UpdateRegisterLivreur;
 use App\Http\Requests\StoreRegisterCommercant;
 use App\Http\Requests\UpdateRegisterCommercant;
 
@@ -316,6 +317,45 @@ class AuthController extends Controller
                 'user' => $user
             ]);
         }
+    }
+
+
+    public function showLivreur(){
+        $livreur = Auth::user()->livreur;
+        return response()->json([
+            'status'=>200,
+            'livreur' => [
+                'nom'=>$livreur->user->nom,
+                'prenom'=>$livreur->user->prenom,
+                'email'=>$livreur->user->email,
+                'genre'=>$livreur->user->genre,
+                'numero_tel'=>$livreur->user->numero_tel,
+                'matricule'=>$livreur->matricule,
+                'adresse'=>$livreur->adresse
+            ]
+        ]);
+    }
+
+    public function modifierInfoLivreur(UpdateRegisterLivreur $request){
+        $user = Auth::user();
+        $user->update([
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'email' => $request->email,
+            'numero_tel'=>$request->numero_tel,
+            'genre'=>$request->genre,
+            'type' => 'client'
+        ]);
+        $livreur = $user->livreur()->update([
+            'matricule' => $request->matricule,
+            'adresse' => $request->adresse,
+        ]);
+        return response()->json([
+            'status'=>200,
+            'message' => 'Utilisateur mis à jour avec succes',
+            'user' => $user
+        ]);
+
     }
     /**
      * Display a listing of the resource.
