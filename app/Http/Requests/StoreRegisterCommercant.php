@@ -24,14 +24,17 @@ class StoreRegisterCommercant extends FormRequest
     public function rules(): array
     {
         return [
-            'nom' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
+            'nom' => 'required|string|min:2|max:255',
+            'prenom' => 'required|string|min:2|max:255',
             'adresse' => 'required|string|max:255',
             'date_naiss' => 'required|date|before: -18 years',
             'genre'=>'required|string|in:homme,femme',
             'numero_tel' => ['required', 'string', 'regex:/^(77|76|75|78|33)[0-9]{7}$/','unique:users'],           
-            'nin' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            //'nin' => 'required|string|max:255',
+            //'nin' => ['required', 'string', 'regex:/^(1\d|2\d)\d{11}$/','unique:commercants'],
+            'nin' => ['required', 'string', 'regex:/^\d{10,13}$/','unique:commercants'],
+            //'email' => 'required|string|email|max:255|unique:users',
+            'email' => ['required', 'string', 'regex:/^[a-zA-Z_][\w\.-]*@[a-zA-Z][a-zA-Z.-]+\.[a-zA-Z]{2,4}$/','unique:users'],
             'password' => 'required|string|min:8',
         ];
     }
@@ -53,6 +56,8 @@ class StoreRegisterCommercant extends FormRequest
             'adresse.required'=>'Une adresse doit etre fourni',
             'numero_tel.required'=>'Un numero de telephone doit etre fourni',
             'nin.required'=>'Un NIN doit etre fourni',
+            'nin.unique'=>'Le NIN existe deja',
+            'nin.regex'=>'Le NIN doit etre au format correct',
             'email.required'=>'Un email doit etre fourni',
             'email.unique'=>'L\'adresse email existe deja',
             'password.required'=>'Un mot de passe doit etre fourni',
@@ -65,6 +70,11 @@ class StoreRegisterCommercant extends FormRequest
             'numero_tel.unique' => 'Un numéro de téléphone existe deja',
             'numero_tel.regex' => 'Le numéro de téléphone doit être au format correct',
             'password.min' => 'Le mot de passe doit avoir au moins 8 caractères',
+            'email.regex' => 'L\'adresse email doit être au format correct',
+            'nom.min' => 'Le nom doit avoir au moins 2 caractères',
+            'nom.max' => 'Le nom doit avoir au plus 255 caractères',
+            'prenom.min' => 'Le prenom doit avoir au moins 2 caractères',
+            'prenom.max' => 'Le prenom doit avoir au plus 255 caractères',
         ];
     }
 }

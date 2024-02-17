@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
             $table->string('adresse');
             $table->string('ninea')->nullable();
-            $table->string('nin');
+            $table->string('nin')->unique();
             $table->date('date_naiss');
             $table->timestamps();
         });

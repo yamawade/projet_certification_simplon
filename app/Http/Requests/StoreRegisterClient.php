@@ -24,10 +24,11 @@ class StoreRegisterClient extends FormRequest
     public function rules(): array
     {
         return [
-            'nom' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
+            'nom' => 'required|string|min:2|max:255',
+            'prenom' => 'required|string|min:2|max:255',
             'adresse' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            // 'email' => 'required|string|email|max:255|unique:users',
+            'email' => ['required', 'string', 'regex:/^[a-zA-Z_][\w\.-]*@[a-zA-Z][a-zA-Z.-]+\.[a-zA-Z]{2,4}$/','unique:users'],
             'date_naiss' => 'required|date|before: -18 years',
             'password' => 'required|string|min:8',
             'genre'=>'required|string|in:homme,femme',
@@ -61,6 +62,11 @@ class StoreRegisterClient extends FormRequest
             'date_naiss.required' => 'Une date de naissance doit être fournie',
             'date_naiss.date' => 'La date de naissance doit être une date valide',
             'date_naiss.before' => 'Votre age doit être au moins 18 ans',
+            'email.regex' => 'L\'adresse email doit être au format correct',
+            'nom.min' => 'Le nom doit avoir au moins 2 caractères',
+            'nom.max' => 'Le nom doit avoir au plus 255 caractères',
+            'prenom.min' => 'Le prenom doit avoir au moins 2 caractères',
+            'prenom.max' => 'Le prenom doit avoir au plus 255 caractères',
         ];
     }
 }
