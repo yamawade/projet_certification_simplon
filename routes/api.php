@@ -99,6 +99,8 @@ Route::middleware(['auth:api','livreur'])->group(function(){
     Route::get('ChangerStatut',[CommandeController::class,'ChangerStatut']);
     Route::post('modifierPasswordLivreur',[AuthController::class,'modifierPasswordLivreur']);
     Route::get('listeCommandeAffecter',[CommandeController::class,'listerCommandeAffecterLivreur']);
+    Route::get('showLivreur',[AuthController::class,'showLivreur']);
+    Route::post('modifierInfoLivreur',[AuthController::class,'modifierInfoLivreur']);
 });
 
 //NEWSLETTER
