@@ -109,3 +109,6 @@ Route::post('inscriptionNewsletter',[NewsletterController::class,'inscriptionNew
 //FEEDBACK
 Route::post('faireFeedback',[FeedbackController::class,'store']);
 
+//PRODUITSIMILAIRES
+Route::get('produitsSimilaire/{produit}',[ProduitController::class,'getProduitsSimilaire']);
+

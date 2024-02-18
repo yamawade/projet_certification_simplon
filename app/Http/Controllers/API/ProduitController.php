@@ -234,4 +234,14 @@ class ProduitController extends Controller
             'nombre_produits'=>$produits
         ]);
     }
+
+    public function getProduitsSimilaire(Produit $produit){
+        $produits = Produit::where('categorie_id', $produit->categorie_id)->where('id', '!=', $produit->id)->get();
+        return response()->json([
+            'status'=>200,
+            'status_message'=>'Liste des produits similaires',
+            'data'=>$produits
+        ]);
+
+    }
 }
