@@ -231,7 +231,12 @@ class ProduitController extends Controller
         return response()->json([
             'status'=>200,
             'status_message'=>'Nombre produits par categorie',
-            'nombre_produits'=>$produits
+            'data'=>[
+                'id_categorie'=> $categorie->id,
+                'nom_categorie'=>$categorie->nom_categorie,
+                'nombre_produits'=>$produits
+            ]
+            
         ]);
     }
 
