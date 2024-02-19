@@ -9,11 +9,13 @@ use App\Http\Requests\StoreLogin;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\StorePasswordClient;
 use App\Http\Requests\StoreRegisterClient;
 use App\Http\Requests\StorePasswordLivreur;
 use App\Http\Requests\StoreRegisterLivreur;
 use App\Http\Requests\UpdateRegisterClient;
 use App\Http\Requests\UpdateRegisterLivreur;
+use App\Http\Requests\StorePasswordCommercant;
 use App\Http\Requests\StoreRegisterCommercant;
 use App\Http\Requests\UpdateRegisterCommercant;
 
@@ -356,6 +358,31 @@ class AuthController extends Controller
             'user' => $user
         ]);
 
+    }
+    public function modifierPasswordClient(StorePasswordClient $request){
+
+        $user = Auth::user();
+        //dd($user->password);
+        $user->password = Hash::make($request->password);
+        $user->update();
+        return response()->json([
+            'status'=>200,
+            'message' => 'Mot de passe mis à jour avec succes',
+            'user' => $user
+        ]);
+    }
+
+    public function modifierPasswordCommercant(StorePasswordCommercant $request){
+
+        $user = Auth::user();
+        //dd($user->password);
+        $user->password = Hash::make($request->password);
+        $user->update();
+        return response()->json([
+            'status'=>200,
+            'message' => 'Mot de passe mis à jour avec succes',
+            'user' => $user
+        ]);
     }
     /**
      * Display a listing of the resource.
