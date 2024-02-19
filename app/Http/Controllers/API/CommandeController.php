@@ -450,6 +450,14 @@ class CommandeController extends Controller
         
     }
 
+    public function getNombreVente(){
+        $ventes = Payment::count();
+        return response()->json([
+            'status' => 200,
+            'status_message' => 'Nombre de ventes',
+            'data' => $ventes
+        ]);
+    }
     /**
      * Show the form for editing the specified resource.
      */
