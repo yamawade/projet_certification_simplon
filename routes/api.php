@@ -91,6 +91,7 @@ Route::middleware(['auth:api','admin'])->group(function(){
     Route::get('NombreproduitsByCategorie',[ProduitController::class,'getNombreProduitsByCategorie']);
     Route::post('RepondreFeedback/{feedback}',[FeedbackController::class,'repondreFeedback']);
     Route::post('bloquerUtilisateur/{user}',[AuthController::class,'bloquerUtilisateur']);
+    Route::get('NombreVente',[CommandeController::class,'getNombreVente']);
 });
 
 //LIVREUR
