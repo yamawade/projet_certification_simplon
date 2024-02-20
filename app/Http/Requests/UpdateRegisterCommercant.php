@@ -30,7 +30,7 @@ class UpdateRegisterCommercant extends FormRequest
             'adresse' => 'required|string|max:255',
             'date_naiss' => 'required|date|before: -18 years',
             'genre'=>'required|string|in:homme,femme',
-            'numero_tel' => ['required', 'string', 'regex:/^(77|76|75|78|33)[0-9]{7}$/',Rule::unique('users')->ignore(auth()->user()->id)],           
+            'numero_tel' => ['required', 'string', 'regex:/^(77|76|75|78|33)[0-9]{7}$/',Rule::unique('users')->ignore(auth()->user()->id),'regex:/^[a-zA-Z_][\w\.-]*@[a-zA-Z][a-zA-Z.-]+\.[a-zA-Z]{2,4}$/'],           
             'nin' => 'required|string|max:255',
             'email' => ['required','string', 'email','max:255',Rule::unique('users')->ignore(auth()->user()->id)],
         ];
@@ -63,6 +63,11 @@ class UpdateRegisterCommercant extends FormRequest
             'numero_tel.required' => 'Un numéro de téléphone doit être fourni',
             'numero_tel.unique' => 'Un numéro de téléphone existe deja',
             'numero_tel.regex' => 'Le numéro de téléphone doit être au format correct',
+            'email.regex' => 'L\'adresse email doit être au format correct',
+            'nom.min' => 'Le nom doit avoir au moins 2 caractères',
+            'nom.max' => 'Le nom doit avoir au plus 255 caractères',
+            'prenom.min' => 'Le prenom doit avoir au moins 2 caractères',
+            'prenom.max' => 'Le prenom doit avoir au plus 255 caractères',
         ];
     }
 }

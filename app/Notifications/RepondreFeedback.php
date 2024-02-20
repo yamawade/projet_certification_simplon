@@ -7,11 +7,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class EnvoieNewsletter extends Notification
+class RepondreFeedback extends Notification
 {
     use Queueable;
-
     protected $data;
+
     /**
      * Create a new notification instance.
      */
@@ -36,13 +36,12 @@ class EnvoieNewsletter extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         // return (new MailMessage)
-        //             ->line('Panier Local.')
-        //             ->line($this->data['messageContent'])
-        //             ->action('cliquez ici', url('http://localhost:4200/#/accueil'))
-        //             ->line('Merci pour votre inscription!');
+        //             ->line('The introduction to the notification.')
+        //             ->action('Notification Action', url('/'))
+        //             ->line('Thank you for using our application!');
         return (new MailMessage)
-                ->view('envoieMail', ['messageContent' => $this->data['messageContent']])
-                ->subject('Sujet de la newsletter')
+                ->view('envoieMailFeedback', ['repondreFeedback' => $this->data['repondreFeedback']])
+                ->subject('Feedback')
                 ->action('Cliquez ici', url('http://localhost:4200/#/accueil'));
     }
 
