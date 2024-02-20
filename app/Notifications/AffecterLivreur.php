@@ -37,14 +37,48 @@ class AffecterLivreur extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $affectation = $this->commande->detailsCommande()->with('produit.commercant')->get()->pluck('produit.commercant.adresse')->unique()->toArray();
+        $affectation = $this->commande->detailsCommande()->with('produit.commercant')->get();
+
+        $informationsVendeurs = [];
+        $informationsUniques = collect();
+
+        foreach ($affectation as $detail) {
+            $vendeur = $detail->produit->commercant;
+            $informations = "Adresse Commercant: {$vendeur->adresse}, Numéro téléphone commercant: {$vendeur->user->numero_tel}";
+
+            // Vérifier si les informations sont déjà présentes
+            if (!$informationsUniques->contains($informations)) {
+                $informationsVendeurs[] = $informations;
+                $informationsUniques->push($informations);
+            }
+        }
+
+        // return (new MailMessage)
+        //     ->line('Bonjour, Cette commande vous est affectée')
+        //     ->line('Adresse du client: ' . $this->commande->client->adresse)
+        //     ->line('Nom du client: ' . $this->commande->client->user->prenom.' '.$this->commande->client->user->nom)
+        //     ->line('Numéro du client: ' . $this->commande->client->user->numero_tel)
+        //     ->line('Informations vendeurs:')
+        //     ->line(implode(PHP_EOL, $informationsVendeurs));
+
+        // $affectation = $this->commande->detailsCommande()->with('produit.commercant')->get()->pluck('produit.commercant.adresse')->unique()->toArray();
+        // return (new MailMessage)
+        //             ->line('Bonjour, Cette commande vous étes affecté')
+        //             ->line('Adresse du client: ' . $this->commande->client->adresse)
+        //             ->line('Nom du client: ' . $this->commande->client->user->prenom.' '.$this->commande->client->user->nom)
+        //             ->line('Numéro du client: ' . $this->commande->client->user->numero_tel) 
+        //             //->line('Adresses des vendeurs:')
+        //             //->line(implode(PHP_EOL, $affectation));
+                    //->line('Informations vendeurs:'.$affectation);
         return (new MailMessage)
-                    ->line('Bonjour, Cette commande vous étes affecté')
-                    ->line('Adresse du client: ' . $this->commande->client->adresse)
-                    ->line('Nom du client: ' . $this->commande->client->user->prenom.' '.$this->commande->client->user->nom)
-                    ->line('Numéro du client: ' . $this->commande->client->user->numero_tel) 
-                    ->line('Adresses des vendeurs:')
-                    ->line(implode(PHP_EOL, $affectation));
+                ->view('envoieMailLivreur', 
+                [
+                    'adresseClient' => $this->commande->client->adresse,
+                    'nomClient' => $this->commande->client->user->prenom.' '.$this->commande->client->user->nom,
+                    'numeroClient' => $this->commande->client->user->numero_tel,
+                    'informationsVendeurs' => $informationsVendeurs
+                ])
+                ->subject('Commande affecté');
     }
 
     /**

@@ -223,4 +223,47 @@ class ProduitController extends Controller
             'data'=>$produits
         ]);
     }
+
+    public function getNombreProduitsByCategorie(){
+        //dd($categorie);
+        $categories = Categorie::all();
+       // dd($categories);
+       $data=[];
+        foreach($categories as $categorie){
+            $produits = Produit::where('categorie_id', $categorie->id)->count();
+
+            $data[] = [
+                'id_categorie'=> $categorie->id,
+                'nom_categorie'=>$categorie->nom_categorie,
+                'nombre_produits'=>$produits
+            ];
+        }
+        return response()->json([
+            'status'=>200,
+            'status_message'=>'Nombre produits par categorie',
+            'data'=>$data
+            
+        ]);
+        // $produits = Produit::where('categorie_id', $categorie->id)->count();
+        // return response()->json([
+        //     'status'=>200,
+        //     'status_message'=>'Nombre produits par categorie',
+        //     'data'=>[
+        //         'id_categorie'=> $categorie->id,
+        //         'nom_categorie'=>$categorie->nom_categorie,
+        //         'nombre_produits'=>$produits
+        //     ]
+            
+        // ]);
+    }
+
+    public function getProduitsSimilaire(Produit $produit){
+        $produits = Produit::where('categorie_id', $produit->categorie_id)->where('id', '!=', $produit->id)->get();
+        return response()->json([
+            'status'=>200,
+            'status_message'=>'Liste des produits similaires',
+            'data'=>$produits
+        ]);
+
+    }
 }

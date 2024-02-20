@@ -2,11 +2,12 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class StoreRegisterCommercant extends FormRequest
+class UpdateRegisterLivreur extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,16 +27,13 @@ class StoreRegisterCommercant extends FormRequest
         return [
             'nom' => 'required|string|min:2|max:255',
             'prenom' => 'required|string|min:2|max:255',
-            'adresse' => 'required|string|max:255',
-            'date_naiss' => 'required|date|before: -18 years',
-            'genre'=>'required|string|in:homme,femme',
-            'numero_tel' => ['required', 'string', 'regex:/^(77|76|75|78|33)[0-9]{7}$/','unique:users'],           
-            //'nin' => 'required|string|max:255',
-            //'nin' => ['required', 'string', 'regex:/^(1\d|2\d)\d{11}$/','unique:commercants'],
-            'nin' => ['required', 'string', 'regex:/^\d{10,13}$/','unique:commercants'],
+            'matricule' => 'required|string|max:255',
             //'email' => 'required|string|email|max:255|unique:users',
-            'email' => ['required', 'string', 'regex:/^[a-zA-Z_][\w\.-]*@[a-zA-Z][a-zA-Z.-]+\.[a-zA-Z]{2,4}$/','unique:users'],
-            'password' => 'required|string|min:8',
+            'email' => ['required','string', 'email','max:255',Rule::unique('users')->ignore(auth()->user()->id),'regex:/^[a-zA-Z_][\w\.-]*@[a-zA-Z][a-zA-Z.-]+\.[a-zA-Z]{2,4}$/'],
+            'genre'=>'required|string|in:homme,femme',
+            'numero_tel' => ['required', 'string', 'regex:/^(77|76|75|78|33)[0-9]{7}$/',Rule::unique('users')->ignore(auth()->user()->id)],
+            // 'password' => 'required|string|min:8',
+            'adresse' => 'required|string|max:255',
         ];
     }
 
@@ -53,23 +51,17 @@ class StoreRegisterCommercant extends FormRequest
         return[
             'nom.required'=>'Un nom doit etre fourni',
             'prenom.required'=>'Un prenom doit etre fourni',
-            'adresse.required'=>'Une adresse doit etre fourni',
-            'numero_tel.required'=>'Un numero de telephone doit etre fourni',
-            'nin.required'=>'Un NIN doit etre fourni',
-            'nin.unique'=>'Le NIN existe deja',
-            'nin.regex'=>'Le NIN doit etre au format correct',
+            'matricule.required'=>'Une matricule doit etre fourni',
             'email.required'=>'Un email doit etre fourni',
             'email.unique'=>'L\'adresse email existe deja',
-            'password.required'=>'Un mot de passe doit etre fourni',
-            'date_naiss.required' => 'Une date de naissance doit être fournie',
-            'date_naiss.date' => 'La date de naissance doit être une date valide',
-            'date_naiss.before' => 'Votre age doit être au moins 18 ans',
+            // 'password.required'=>'Un mot de passe doit etre fourni',
+            'adresse.required'=>'Une adresse doit etre fourni',
+            // 'password.min' => 'Le mot de passe doit avoir au moins 8 caractères',
             'genre.required' => 'Le genre doit être fourni',
             'genre.in' => 'Le genre doit être homme ou femme',
             'numero_tel.required' => 'Un numéro de téléphone doit être fourni',
-            'numero_tel.unique' => 'Un numéro de téléphone existe deja',
             'numero_tel.regex' => 'Le numéro de téléphone doit être au format correct',
-            'password.min' => 'Le mot de passe doit avoir au moins 8 caractères',
+            'numero_tel.unique' => 'Un numéro de téléphone existe deja',
             'email.regex' => 'L\'adresse email doit être au format correct',
             'nom.min' => 'Le nom doit avoir au moins 2 caractères',
             'nom.max' => 'Le nom doit avoir au plus 255 caractères',

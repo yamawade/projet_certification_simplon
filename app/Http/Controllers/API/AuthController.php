@@ -9,10 +9,13 @@ use App\Http\Requests\StoreLogin;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\StorePasswordClient;
 use App\Http\Requests\StoreRegisterClient;
 use App\Http\Requests\StorePasswordLivreur;
 use App\Http\Requests\StoreRegisterLivreur;
 use App\Http\Requests\UpdateRegisterClient;
+use App\Http\Requests\UpdateRegisterLivreur;
+use App\Http\Requests\StorePasswordCommercant;
 use App\Http\Requests\StoreRegisterCommercant;
 use App\Http\Requests\UpdateRegisterCommercant;
 
@@ -88,7 +91,13 @@ class AuthController extends Controller
             ]);
         }else{
             $user = Auth::user();
-            if($user->type ==='commercant'){
+            if($user->etat_compte ==='inactif'){
+                return response()->json([
+                    'status'=>401,
+                    'message' => 'Compte n\'existe pas',
+                ]);
+            }
+            if($user->type ==='commercant' && $user->etat_compte ==='actif'){
                 return response()->json([
                     'status'=>200,
                     'message' => 'Salut Commercant',
@@ -99,7 +108,7 @@ class AuthController extends Controller
                     ]
                 ]);
     
-            }elseif($user->type ==='client'){
+            }elseif($user->type ==='client' && $user->etat_compte ==='actif'){
                 return response()->json([
                     'status'=>200,
                     'message' => 'Salut Client',
@@ -109,7 +118,7 @@ class AuthController extends Controller
                         'type' => 'bearer',
                     ]
                 ]);
-            }elseif($user->type ==='livreur'){
+            }elseif($user->type ==='livreur' && $user->etat_compte ==='actif'){
                 return response()->json([
                     'status'=>200,
                     'message' => 'Salut livreur',
@@ -274,6 +283,96 @@ class AuthController extends Controller
 
 
     public function modifierPasswordLivreur(StorePasswordLivreur $request){
+
+        $user = Auth::user();
+        //dd($user->password);
+        $user->password = Hash::make($request->password);
+        $user->update();
+        return response()->json([
+            'status'=>200,
+            'message' => 'Mot de passe mis à jour avec succes',
+            'user' => $user
+        ]);
+    }
+
+    public function bloquerUtilisateur(User $user){
+        if($user->type === 'admin'){
+            return response()->json([
+                'status'=>401,
+                'message' => 'Vous n\'etes pas autorisé'
+            ]);
+        }
+        if($user->etat_compte === 'actif'){
+            $user->etat_compte = 'inactif';
+            $user->save();
+            return response()->json([
+                'status'=>200,
+                'message' => 'Compte bloquer',
+                'user' => $user
+            ]);
+        }else{
+            $user->etat_compte = 'actif';
+            $user->save();
+            return response()->json([
+                'status'=>200,
+                'message' => 'Compte activer',
+                'user' => $user
+            ]);
+        }
+    }
+
+
+    public function showLivreur(){
+        $livreur = Auth::user()->livreur;
+        return response()->json([
+            'status'=>200,
+            'livreur' => [
+                'nom'=>$livreur->user->nom,
+                'prenom'=>$livreur->user->prenom,
+                'email'=>$livreur->user->email,
+                'genre'=>$livreur->user->genre,
+                'numero_tel'=>$livreur->user->numero_tel,
+                'matricule'=>$livreur->matricule,
+                'adresse'=>$livreur->adresse
+            ]
+        ]);
+    }
+
+    public function modifierInfoLivreur(UpdateRegisterLivreur $request){
+        $user = Auth::user();
+        $user->update([
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'email' => $request->email,
+            'numero_tel'=>$request->numero_tel,
+            'genre'=>$request->genre,
+            'type' => 'client'
+        ]);
+        $livreur = $user->livreur()->update([
+            'matricule' => $request->matricule,
+            'adresse' => $request->adresse,
+        ]);
+        return response()->json([
+            'status'=>200,
+            'message' => 'Utilisateur mis à jour avec succes',
+            'user' => $user
+        ]);
+
+    }
+    public function modifierPasswordClient(StorePasswordClient $request){
+
+        $user = Auth::user();
+        //dd($user->password);
+        $user->password = Hash::make($request->password);
+        $user->update();
+        return response()->json([
+            'status'=>200,
+            'message' => 'Mot de passe mis à jour avec succes',
+            'user' => $user
+        ]);
+    }
+
+    public function modifierPasswordCommercant(StorePasswordCommercant $request){
 
         $user = Auth::user();
         //dd($user->password);

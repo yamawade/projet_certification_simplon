@@ -42,6 +42,7 @@ Route::middleware(['auth:api','client'])->group(function(){
     Route::get('showClient',[AuthController::class,'showClient']);
     Route::get('listeCommande',[CommandeController::class,'listerCommandeClient']);
     Route::get('showCommande/{commande}',[CommandeController::class,'showCommandeClient']);
+    Route::post('modifierPasswordClient',[AuthController::class,'modifierPasswordClient']);
 });
 
 Route::get('payment', [PaymentController::class, 'index'])->name('payment.index');
@@ -66,6 +67,7 @@ Route::middleware(['auth:api','commercant'])->group(function(){
     Route::get('showCommercant',[AuthController::class,'showCommercant']);
     Route::get('listeVentes',[CommandeController::class,'listerVentesCommercant']);
     Route::get('showVente/{commande}',[CommandeController::class,'showVenteCommercant']);
+    Route::post('modifierPasswordCommercant',[AuthController::class,'modifierPasswordCommercant']);
 });
 
 Route::get('categories',[CategorieController::class,'index']);
@@ -88,6 +90,10 @@ Route::middleware(['auth:api','admin'])->group(function(){
     Route::get('Detailscommandes/{commande}',[CommandeController::class,'show']);
     Route::get('voirProduitSignaler/{produitSignaler}',[AvisController::class,'show']);
     Route::get('bloquerProduitSignaler/{produitSignaler}',[AvisController::class,'bloquerProduitSignaler']);
+    Route::get('NombreproduitsByCategorie',[ProduitController::class,'getNombreProduitsByCategorie']);
+    Route::post('RepondreFeedback/{feedback}',[FeedbackController::class,'repondreFeedback']);
+    Route::post('bloquerUtilisateur/{user}',[AuthController::class,'bloquerUtilisateur']);
+    Route::get('NombreVente',[CommandeController::class,'getNombreVente']);
 });
 
 //LIVREUR
@@ -96,6 +102,8 @@ Route::middleware(['auth:api','livreur'])->group(function(){
     Route::get('ChangerStatut',[CommandeController::class,'ChangerStatut']);
     Route::post('modifierPasswordLivreur',[AuthController::class,'modifierPasswordLivreur']);
     Route::get('listeCommandeAffecter',[CommandeController::class,'listerCommandeAffecterLivreur']);
+    Route::get('showLivreur',[AuthController::class,'showLivreur']);
+    Route::post('modifierInfoLivreur',[AuthController::class,'modifierInfoLivreur']);
 });
 
 //NEWSLETTER
@@ -103,4 +111,7 @@ Route::post('inscriptionNewsletter',[NewsletterController::class,'inscriptionNew
 
 //FEEDBACK
 Route::post('faireFeedback',[FeedbackController::class,'store']);
+
+//PRODUITSIMILAIRES
+Route::get('produitsSimilaire/{produit}',[ProduitController::class,'getProduitsSimilaire']);
 
