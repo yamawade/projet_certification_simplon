@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Panier Local",
-        "description": "Description de l'api Panier Local",
+        "title": "Your API Title",
+        "description": "Your API Description",
         "version": "1.0.0"
     },
     "security": [
@@ -23,6 +23,77 @@
         "multipart/form-data"
     ],
     "paths": {
+        "/api/RepondreFeedback/1": {
+            "post": {
+                "summary": "RepondreFeedback",
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorize",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "FeedBack"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "message": "salut user"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/voirFeedback/{feedback}": {
             "get": {
                 "summary": "VoirFeedback",
@@ -297,7 +368,24 @@
                         "name": "User-Agent",
                         "type": "string"
                     }
-                ]
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "letter": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "letter": "salut user"
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/inscriptionNewsletter": {
@@ -369,6 +457,205 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/modifierInfoLivreur": {
+            "post": {
+                "summary": "ModifierInfoLivreur",
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorize",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Utilisateur"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "prenom": {
+                                        "type": "string"
+                                    },
+                                    "matricule": {
+                                        "type": "string"
+                                    },
+                                    "numero_tel": {
+                                        "type": "string"
+                                    },
+                                    "adresse": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "genre": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "nom": "livreur",
+                                "prenom": "livreur",
+                                "matricule": "DK-6789",
+                                "numero_tel": "750998788",
+                                "adresse": "xc",
+                                "email": "mariamawade69@gmail.com",
+                                "genre": "femme"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/showLivreur": {
+            "get": {
+                "summary": "ShowLivreur",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Utilisateur"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/api/bloquerUtilisateur/{user}": {
+            "post": {
+                "summary": "BloquerUtilisateur",
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorize",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Utilisateur"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "user",
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
             }
         },
         "/api/modifierInfoCommercant": {
@@ -874,6 +1161,51 @@
                 ]
             }
         },
+        "/api/NombreVente": {
+            "get": {
+                "summary": "NombreVente",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Commande"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
         "/api/showVente/{commande}": {
             "get": {
                 "summary": "ShowDetailVenteCommercant",
@@ -1305,7 +1637,7 @@
                 ]
             }
         },
-        "/api/voirProduitSignaler/2": {
+        "/api/voirProduitSignaler/{produitSignaler}": {
             "get": {
                 "summary": "VoirProduitSignaler",
                 "description": "",
@@ -1342,6 +1674,11 @@
                     "Signalement"
                 ],
                 "parameters": [
+                    {
+                        "in": "path",
+                        "name": "produitSignaler",
+                        "type": "string"
+                    },
                     {
                         "in": "header",
                         "name": "User-Agent",
@@ -1740,6 +2077,101 @@
                 }
             }
         },
+        "/api/produitsSimilaire/{produit}": {
+            "get": {
+                "summary": "ProduitSimilaire",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Produit"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "produit",
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/api/NombreproduitsByCategorie": {
+            "get": {
+                "summary": "NombreProduitParCategorie",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Produit"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
         "/api/produits/{categorie}": {
             "get": {
                 "summary": "ProduitParCategorie",
@@ -1790,7 +2222,7 @@
                 ]
             }
         },
-        "/api/Detailsproduits/5": {
+        "/api/Detailsproduits/{produit}": {
             "post": {
                 "summary": "DetailProduit",
                 "description": "",
@@ -2483,6 +2915,148 @@
                 }
             }
         },
+        "/api/modifierPasswordCommercant": {
+            "post": {
+                "summary": "ModifierPasswordCommercant",
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorize",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Authentification"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "password": "passer1234"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/modifierPasswordClient": {
+            "post": {
+                "summary": "ModifierPasswordClient",
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorize",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Authentification"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "password": "passer1234"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/modifierPasswordLivreur": {
             "post": {
                 "summary": "ModifierPasswordLivreur",
@@ -2848,9 +3422,6 @@
                                     },
                                     "genre": {
                                         "type": "string"
-                                    },
-                                    "password": {
-                                        "type": "string"
                                     }
                                 }
                             },
@@ -2861,8 +3432,7 @@
                                 "numero_tel": "750998788",
                                 "adresse": "xc",
                                 "email": "mariamawade69@gmail.com",
-                                "genre": "femme",
-                                "password": "passer1234"
+                                "genre": "femme"
                             }
                         }
                     }
@@ -3037,7 +3607,7 @@
                                 "genre": "femme",
                                 "date_naiss": "2000-07-09",
                                 "numero_tel": "770990987",
-                                "nin": "1345678",
+                                "nin": "3200230987635",
                                 "adresse": "dfgh",
                                 "nom": "vb",
                                 "prenom": "er"
@@ -3132,14 +3702,14 @@
                                 }
                             },
                             "example": {
-                                "nom": "cc",
-                                "prenom": "cc",
-                                "email": "test@gmail.com",
+                                "nom": "client",
+                                "prenom": "client",
+                                "email": "client@gmail.com",
                                 "adresse": "km",
                                 "date_naiss": "2000-09-03",
-                                "password": "passer1234",
+                                "password": "passer@1234",
                                 "genre": "femme",
-                                "numero_tel": "780998778"
+                                "numero_tel": "750998280"
                             }
                         }
                     }
