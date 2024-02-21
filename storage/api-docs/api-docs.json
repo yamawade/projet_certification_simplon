@@ -825,16 +825,7 @@
                                     "prenom": {
                                         "type": "string"
                                     },
-                                    "numero_tel": {
-                                        "type": "string"
-                                    },
                                     "email": {
-                                        "type": "string"
-                                    },
-                                    "password": {
-                                        "type": "string"
-                                    },
-                                    "genre": {
                                         "type": "string"
                                     },
                                     "adresse": {
@@ -842,18 +833,23 @@
                                     },
                                     "date_naiss": {
                                         "type": "string"
+                                    },
+                                    "genre": {
+                                        "type": "string"
+                                    },
+                                    "numero_tel": {
+                                        "type": "string"
                                     }
                                 }
                             },
                             "example": {
-                                "nom": "wade",
-                                "prenom": "ghjk",
-                                "numero_tel": "765444534",
+                                "nom": "client",
+                                "prenom": "client",
                                 "email": "client1@gmail.com",
-                                "password": "passer1234",
+                                "adresse": "keur Massar",
+                                "date_naiss": "2000-09-03",
                                 "genre": "femme",
-                                "adresse": "hjk",
-                                "date_naiss": "2001-09-08"
+                                "numero_tel": "700998280"
                             }
                         }
                     }
@@ -3602,12 +3598,12 @@
                                 }
                             },
                             "example": {
-                                "email": "cc@gmail.com",
+                                "email": "cc1@gmail.com",
                                 "password": "passer1234",
                                 "genre": "femme",
                                 "date_naiss": "2000-07-09",
-                                "numero_tel": "770990987",
-                                "nin": "3200230987635",
+                                "numero_tel": "760990987",
+                                "nin": "7200230987600",
                                 "adresse": "dfgh",
                                 "nom": "vb",
                                 "prenom": "er"
@@ -3704,12 +3700,12 @@
                             "example": {
                                 "nom": "client",
                                 "prenom": "client",
-                                "email": "client@gmail.com",
+                                "email": "client1@gmail.com",
                                 "adresse": "km",
                                 "date_naiss": "2000-09-03",
                                 "password": "passer@1234",
                                 "genre": "femme",
-                                "numero_tel": "750998280"
+                                "numero_tel": "760998280"
                             }
                         }
                     }
