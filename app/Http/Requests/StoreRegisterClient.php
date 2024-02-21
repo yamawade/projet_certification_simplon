@@ -32,7 +32,7 @@ class StoreRegisterClient extends FormRequest
             'date_naiss' => 'required|date|before: -18 years',
             'password' => 'required|string|min:8',
             'genre'=>'required|string|in:homme,femme',
-            'numero_tel' => ['required', 'string', 'regex:/^(77|76|75|78|33)[0-9]{7}$/','unique:users'],
+            'numero_tel' => ['required', 'string', 'regex:/^(77|76|75|78|70|33)[0-9]{7}$/','unique:users'],
         ];
     }
     public function failedValidation(Validator $validator){

@@ -31,7 +31,7 @@ class UpdateRegisterClient extends FormRequest
             'email' => ['required','string', 'email','max:255',Rule::unique('users')->ignore(auth()->user()->id),'regex:/^[a-zA-Z_][\w\.-]*@[a-zA-Z][a-zA-Z.-]+\.[a-zA-Z]{2,4}$/'],
             'date_naiss' => 'required|date|before: -18 years',
             'genre'=>'required|string|in:homme,femme',
-            'numero_tel' => ['required', 'string', 'regex:/^(77|76|75|78|33)[0-9]{7}$/',Rule::unique('users')->ignore(auth()->user()->id)],
+            'numero_tel' => ['required', 'string', 'regex:/^(77|76|75|78|70|33)[0-9]{7}$/',Rule::unique('users')->ignore(auth()->user()->id)],
         ];
     }
 
