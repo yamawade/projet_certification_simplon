@@ -29,7 +29,7 @@ class StoreRegisterCommercant extends FormRequest
             'adresse' => ['required', 'string', 'regex:/^[a-zA-Z0-9 ]+$/','max:255'],
             'date_naiss' => 'required|date|before: -18 years',
             'genre'=>'required|string|in:homme,femme',
-            'numero_tel' => ['required', 'string', 'regex:/^(77|76|75|78|33)[0-9]{7}$/','unique:users'],           
+            'numero_tel' => ['required', 'string', 'regex:/^(77|76|75|78|70|33)[0-9]{7}$/','unique:users'],           
             //'nin' => 'required|string|max:255',
             //'nin' => ['required', 'string', 'regex:/^(1\d|2\d)\d{11}$/','unique:commercants'],
             'nin' => ['required', 'string', 'regex:/^\d{10,13}$/','unique:commercants'],
