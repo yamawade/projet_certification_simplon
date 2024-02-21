@@ -20,9 +20,9 @@ class CommercantFactory extends Factory
             'ninea'=> fake()->optional()->randomNumber(8),
             'adresse'=> fake()->address(),
             'nin'=> fake()->unique()->randomNumber(9),
-            'genre'=> fake()->randomElement(['homme', 'femme']),
+            //'genre'=> fake()->randomElement(['homme', 'femme']),
             'date_naiss'=> fake()->date(),
-            'numero_tel' => fake()->phoneNumber(),
+            //'numero_tel' => fake()->phoneNumber(),
             'user_id' => 1
         ];
     }

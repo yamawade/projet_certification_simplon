@@ -21,7 +21,8 @@ class AuthentificationTest extends TestCase
             'adresse' => 'keur Massar',
             'genre' => 'femme',
             'numero_tel' => '778009876',
-            'date_naiss' => '2002-05-12'
+            'date_naiss' => '2002-05-12',
+            'etat_compte' => 'actif'
         ];
     
         $response = $this->json('POST', '/api/registerClient', $data);
@@ -44,7 +45,8 @@ class AuthentificationTest extends TestCase
             'nin' => '14567896789',
             'numero_tel' => '778009876',
             'genre' => 'homme',
-            'date_naiss' => '1990-01-31'
+            'date_naiss' => '1990-01-31',
+            'etat_compte' => 'actif'
         ];
 
         $response = $this->json('POST', '/api/registerCommercant', $data);
@@ -68,7 +70,9 @@ class AuthentificationTest extends TestCase
             'genre' => 'homme',
             'matricule'=> '123456789',
             'statut'=> 'disponible',
-            'adresse' => 'keur Massar'
+            'adresse' => 'keur Massar',
+            'etat_compte' => 'actif',
+            'numero_tel' => '778009876'
         ];
 
         $response = $this->actingAs($admin)->json('POST', '/api/registerLivreur', $data);
