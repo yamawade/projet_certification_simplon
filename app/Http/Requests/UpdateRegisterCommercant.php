@@ -25,9 +25,9 @@ class UpdateRegisterCommercant extends FormRequest
     public function rules(): array
     {
         return [
-            'nom' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
-            'adresse' => 'required|string|max:255',
+            'nom' => ['required', 'string', 'min:2','max:80', 'regex:/^[a-zA-Z]+$/'],
+            'prenom' => ['required', 'string', 'min:2','max:80', 'regex:/^[a-zA-Z]+$/'],
+            'adresse' => ['required', 'string', 'regex:/^[a-zA-Z0-9 ]+$/','max:255'],
             'date_naiss' => 'required|date|before: -18 years',
             'genre'=>'required|string|in:homme,femme',
             'numero_tel' => ['required', 'string', 'regex:/^(77|76|75|78|33)[0-9]{7}$/',Rule::unique('users')->ignore(auth()->user()->id),'regex:/^[a-zA-Z_][\w\.-]*@[a-zA-Z][a-zA-Z.-]+\.[a-zA-Z]{2,4}$/'],           
@@ -67,7 +67,11 @@ class UpdateRegisterCommercant extends FormRequest
             'nom.min' => 'Le nom doit avoir au moins 2 caractères',
             'nom.max' => 'Le nom doit avoir au plus 255 caractères',
             'prenom.min' => 'Le prenom doit avoir au moins 2 caractères',
-            'prenom.max' => 'Le prenom doit avoir au plus 255 caractères',
+            'prenom.max' => 'Le prenom doit avoir au plus 80 caractères',
+            'prenom.regex' => 'Le prenom doit contenir que des lettres',
+            'adresse.regex' => 'L\'adresse doit contenir que des lettres et des chiffres',
+            'adresse.max' => 'L\'adresse doit avoir au plus 255 caractères',
+            'nom.regex' => 'Le nom doit contenir que des lettres',
         ];
     }
 }

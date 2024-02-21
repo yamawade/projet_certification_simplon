@@ -32,6 +32,9 @@ class UserFactory extends Factory
             'type' => 'client',
             'type' => 'commercant',
             'type' => 'livreur',
+            'etat_compte' => 'actif',
+            'numero_tel' => fake()->phoneNumber(),
+            'genre' => fake()->randomElement(['homme', 'femme']),
         ];
     }
 
