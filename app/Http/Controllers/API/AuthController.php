@@ -93,7 +93,7 @@ class AuthController extends Controller
             $user = Auth::user();
             if($user->etat_compte ==='inactif'){
                 return response()->json([
-                    'status'=>401,
+                    'status'=>405,
                     'message' => 'Compte n\'existe pas',
                 ]);
             }
