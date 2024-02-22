@@ -69,7 +69,7 @@ class ProduitTest extends TestCase
         $commercant = Commercant::factory()->create(['user_id' => $user->id]);
         $produit = Produit::factory()->create(['commercant_id' => $commercant->id]);
 
-        $response = $this->actingAs($user)->json('POST', "/api/produit/{$produit->id}");
+        $response = $this->actingAs($user)->deleteJson("/api/produit/{$produit->id}");
         $response->assertStatus(200)
             ->assertJson([
                 'status'=>200,
@@ -86,7 +86,7 @@ class ProduitTest extends TestCase
         $response->assertStatus(200)
             ->assertJson([
                 'status' => 200,
-                'status_message'=>'Liste des produits',
+                'status_message'=>'Liste des produits non bloqués',
             ]);
     }
 }
