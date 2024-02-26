@@ -243,9 +243,9 @@ class CommandeController extends Controller
             foreach ($detailsCommande as $detail) {
                 $commandeId = $detail->commande_id;
                 //dd($commandeId);
-                //$payment = Payment::where('commande_id', $commandeId)->first();
+                $payment = Payment::where('commande_id', $commandeId)->first();
                 // $payment && 
-                //if($payment) {
+                if($payment) {
                     //on verifie si la commande n'existe dans le tableau
                     if (!isset($listesVentes[$commandeId])) {
 
@@ -260,7 +260,7 @@ class CommandeController extends Controller
         
                     $listesVentes[$commandeId]['nombre_produit'] += $detail->nombre_produit;
                     $listesVentes[$commandeId]['montant_total'] += $detail->montant;
-                //}
+                }
             }
         }
     
