@@ -409,7 +409,8 @@ class AuthController extends Controller
 
     public function resetPassword(Request $request){
         //$user = User::where('email', $request->email)->first();
-        $userId = $request->query('userId');
+       // $userId = $request->query('userId');
+        $userId = $request->get('userId');
         $user = User::find($userId);
 
         if (!$user) {
