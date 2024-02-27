@@ -459,6 +459,77 @@
                 }
             }
         },
+        "/api/verifMail": {
+            "post": {
+                "summary": "VerifMail",
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorize",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Utilisateur"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "email": "mariamawade69@gmail.com"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/modifierInfoLivreur": {
             "post": {
                 "summary": "ModifierInfoLivreur",
@@ -3691,12 +3762,12 @@
                             "example": {
                                 "nom": "client",
                                 "prenom": "client",
-                                "email": "client1@gmail.com",
+                                "email": "saloumfall45@gmail.com",
                                 "adresse": "km",
-                                "date_naiss": "2000-09-03",
-                                "password": "passer@1234",
-                                "genre": "femme",
-                                "numero_tel": "760998280"
+                                "date_naiss": "2000-05-05",
+                                "password": "passer1234",
+                                "genre": "homme",
+                                "numero_tel": "770998280"
                             }
                         }
                     }
