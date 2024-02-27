@@ -7,6 +7,7 @@ use App\Models\Livreur;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreLogin;
 use App\Http\Controllers\Controller;
+use App\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StorePasswordClient;
@@ -24,8 +25,9 @@ class AuthController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'registerClient','registerCommercant']]);
+        $this->middleware('auth:api', ['except' => ['login', 'registerClient','registerCommercant','resetPassword','verifMail']]);
     }
+    
 
     public function registerClient(StoreRegisterClient $request){
         $user =User::create([
@@ -383,6 +385,45 @@ class AuthController extends Controller
             'message' => 'Mot de passe mis à jour avec succes',
             'user' => $user
         ]);
+    }
+
+    public function verifMail(Request $request){
+        $user = User::where('email', $request->email)->first();
+        //dd($user);
+
+        if (!$user) {
+            //return response('User non Trouvé');
+            return response()->json([
+                'status'=>404,
+                'message' => 'User non Trouver'
+            ]);
+        }else{
+            $user->notify(new ResetPassword());
+            return response()->json([
+                'status'=>200,
+                'message' => 'Un e-mail de réinitialisation de mot de passe a été envoyé à l\'adresse e-mail associée à ce compte.'
+            ]);
+        }
+
+    }
+
+    public function resetPassword(Request $request){
+        //$user = User::where('email', $request->email)->first();
+        $userId = $request->query('userId');
+        $user = User::find($userId);
+
+        if (!$user) {
+            return response()->json(['status' => 404, 'message' => 'Utilisateur non trouvé']);
+        }else{
+
+            $user->password = Hash::make($request->password);
+            $user->save();
+            return response()->json([
+                'status'=>200,
+                'message' => 'Mot de passe Modifié avec Success',
+                'user' => $user
+            ]);
+        }
     }
     /**
      * Display a listing of the resource.
