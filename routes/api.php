@@ -42,7 +42,7 @@ Route::middleware(['auth:api','client'])->group(function(){
     Route::get('showClient',[AuthController::class,'showClient']);
     Route::get('listeCommande',[CommandeController::class,'listerCommandeClient']);
     Route::get('showCommande/{commande}',[CommandeController::class,'showCommandeClient']);
-    Route::post('modifierPasswordClient',[AuthController::class,'modifierPasswordClient']);
+    //Route::post('modifierPasswordClient',[AuthController::class,'modifierPasswordClient']);
 });
 
 Route::get('payment', [PaymentController::class, 'index'])->name('payment.index');
@@ -67,7 +67,7 @@ Route::middleware(['auth:api','commercant'])->group(function(){
     Route::get('showCommercant',[AuthController::class,'showCommercant']);
     Route::get('listeVentes',[CommandeController::class,'listerVentesCommercant']);
     Route::get('showVente/{commande}',[CommandeController::class,'showVenteCommercant']);
-    Route::post('modifierPasswordCommercant',[AuthController::class,'modifierPasswordCommercant']);
+    //Route::post('modifierPasswordCommercant',[AuthController::class,'modifierPasswordCommercant']);
 });
 
 Route::get('categories',[CategorieController::class,'index']);
@@ -115,3 +115,6 @@ Route::post('faireFeedback',[FeedbackController::class,'store']);
 //PRODUITSIMILAIRES
 Route::get('produitsSimilaire/{produit}',[ProduitController::class,'getProduitsSimilaire']);
 
+//RESET PASSWORD
+Route::post('verifMail',[AuthController::class,'verifMail']);
+Route::post('resetPassword',[AuthController::class,'resetPassword']);
