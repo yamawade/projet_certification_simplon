@@ -25,7 +25,7 @@ class StoreRegisterClient extends FormRequest
     {
         return [
             'nom' => ['required', 'string', 'min:2','max:80', 'regex:/^[a-zA-Z]+$/'],
-            'prenom' => ['required', 'string', 'min:2','max:80', 'regex:/^[a-zA-Z]+$/'],
+            'prenom' => ['required', 'string', 'min:2','max:80', 'regex:/^[a-zA-Z ]+$/'],
             'adresse' => ['required', 'string', 'regex:/^[a-zA-Z0-9 ]+$/','max:255'],
             // 'email' => 'required|string|email|max:255|unique:users',
             'email' => ['required', 'string', 'regex:/^[a-zA-Z_][\w\.-]*@[a-zA-Z][a-zA-Z.-]+\.[a-zA-Z]{2,4}$/','unique:users'],
