@@ -26,7 +26,7 @@ class UpdateRegisterCommercant extends FormRequest
     {
         return [
             'nom' => ['required', 'string', 'min:2','max:80', 'regex:/^[a-zA-Z]+$/'],
-            'prenom' => ['required', 'string', 'min:2','max:80', 'regex:/^[a-zA-Z]+$/'],
+            'prenom' => ['required', 'string', 'min:2','max:80', 'regex:/^[a-zA-Z ]+$/'],
             'adresse' => ['required', 'string', 'regex:/^[a-zA-Z0-9 ]+$/','max:255'],
             'date_naiss' => 'required|date|before: -18 years',
             'genre'=>'required|string|in:homme,femme',

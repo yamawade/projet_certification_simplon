@@ -26,7 +26,7 @@ class UpdateRegisterLivreur extends FormRequest
     {
         return [
             'nom' => ['required', 'string', 'min:2','max:80', 'regex:/^[a-zA-Z]+$/'],
-            'prenom' => ['required', 'string', 'min:2','max:80', 'regex:/^[a-zA-Z]+$/'],
+            'prenom' => ['required', 'string', 'min:2','max:80', 'regex:/^[a-zA-Z ]+$/'],
             'matricule' => 'required|string|max:255',
             //'email' => 'required|string|email|max:255|unique:users',
             'email' => ['required','string', 'email','max:255',Rule::unique('users')->ignore(auth()->user()->id),'regex:/^[a-zA-Z_][\w\.-]*@[a-zA-Z][a-zA-Z.-]+\.[a-zA-Z]{2,4}$/'],
