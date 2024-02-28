@@ -38,7 +38,7 @@ class ResetPassword extends Notification
         //             ->line('The introduction to the notification.')
         //             ->action('Notification Action', url('/'))
         //             ->line('Thank you for using our application!');
-        $resetPasswordUrl = url('http://localhost:4200/#/accueil?userId='.$notifiable->id);
+        $resetPasswordUrl = url('http://localhost:4200/#/initPass?userId='.$notifiable->id);
         return (new MailMessage)
                 ->view('envoieMailResetPassword',['resetPasswordUrl' => $resetPasswordUrl])
                 ->subject('Réinitialisation Password');
